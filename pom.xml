@@ -31,7 +31,7 @@
 
 		<environment>${ENV_VAR}</environment>
 		<target-properties>target/classes/application.properties</target-properties>
-		<source-properties>src/main/environment/common_${environment}.properties</source-properties>
+		<source-properties>target/classes/common_${environment}.properties</source-properties>
 		<hostname-test>10.208.122.38</hostname-test>
 		<port-test>9990</port-test>
 		<hostname-dev>10.208.122.32</hostname-dev>
@@ -240,6 +240,32 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>filter-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<configuration>
+							<delimiters>@</delimiters>
+							<useDefaultDelimiters>false</useDefaultDelimiters>
+							<resources>
+								<resource>
+									<directory>src/main/environment</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>common_${environment}.properties</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.0.2</version>
 			</plugin>
@@ -278,11 +304,11 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
-						<id>properties-updated</id>
+						<id>merge-properties</id>
 						<configuration>
 							<target>
 								<echo>
-									concatinating properties file ${target-properties} and
+									concatenating properties file ${target-properties} and
 									${source-properties}
 								</echo>
 								<concat destfile="${target-properties}" append="yes"
@@ -291,6 +317,20 @@
 									</fileset>
 								</concat>
 							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<id>clean-property-files</id>
+						<configuration>
+							<tasks>
+								<delete>
+									<file file="${source-properties}"/>
+								</delete>
+							</tasks>
 						</configuration>
 					</execution>
 				</executions>

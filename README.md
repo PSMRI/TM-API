@@ -39,11 +39,12 @@ To build the TM module from source, follow these steps:
   ```
   mvn clean install
   ```
-3. Run the development server by following these steps:
+3.  You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
+4. Run the development server by following these steps:
 - Start the Redis server.
 - Execute the following command:
   ```
-  mvn spring-boot:run
+  mvn spring-boot:run -DENV_VAR=local
   ```
 - Open your browser and navigate to http://localhost:8080/swagger-ui.html#!/
 
