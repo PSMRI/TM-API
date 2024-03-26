@@ -230,7 +230,7 @@ public class LocationServiceImpl implements LocationService {
 	// new, 11-10-2018
 	public String getLocDetailsNew(Integer vanID, Integer spPSMID) {
 		Map<String, Object> resMap = new HashMap<String, Object>();
-		ArrayList<Object[]> resultSet = v_getVanLocDetailsRepo.getVanDetails(vanID);
+		ArrayList<Object[]> resultSet = v_getVanLocDetailsRepo.getVanLocDetails(vanID);
 
 		// state master
 		ArrayList<States> stateList = new ArrayList<>();

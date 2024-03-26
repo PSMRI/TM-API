@@ -37,5 +37,15 @@ public interface V_getVanLocDetailsRepo extends CrudRepository<V_getVanLocDetail
 	@Query(" SELECT distinct t.stateID, t.parkingPlaceID, t.districtID, t.districtName "
 			+ " FROM V_getVanLocDetails t WHERE t.vanID = :vanID ")
 	ArrayList<Object[]> getVanDetails(@Param("vanID") Integer vanID);
+	
+	@Query(value="SELECT distinct dis.stateID, van.parkingPlaceID, dis.districtID, dis.districtName FROM db_iemr.m_van van "
+			+ "left join db_iemr.m_parkingplacesubdistrictmap prkdis on van.ParkingPlaceID = prkdis.ParkingPlaceID "
+			+ "left join db_iemr.m_district dis on prkdis.DistrictID = dis.DistrictID "
+			+ "left join db_iemr.m_districtblock db on db.DistrictID = dis.DistrictID "
+			+ "left join db_iemr.m_userservicerolemapping usrm on usrm.Blockid = db.BlockID "
+			+ "where van.Deleted is false and db.Deleted is false "
+			+ "and prkdis.Deleted is false and dis.Deleted is false "
+			+ "and van.vanid = :vanID ",nativeQuery=true)
+	ArrayList<Object[]> getVanLocDetails(@Param("vanID") Integer vanID);
 
 }
