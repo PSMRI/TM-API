@@ -530,17 +530,14 @@ public class ANCMasterDataServiceImpl {
 	public String getCommonDoctorMasterDataForGenopdAncNcdcarePnc(Integer visitCategoryID, int psmID, String gender,
 			Integer facilityID, Integer vanID) {
 		Map<String, Object> resMap = new HashMap<>();
-
+		ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
+		// Institute institute = new Institute();
+		ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
+		resMap.put("higherHealthCare", Institute.getinstituteDetails(instituteDetails));
+		resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
 		if (visitCategoryID != 7) {
 			ArrayList<Object[]> counsellingTypes = counsellingTypeRepo.getCounsellingTypes();
-			ArrayList<Object[]> additionalServices = serviceMasterRepo.getAdditionalServices();
-			// Institute institute = new Institute();
-
-			ArrayList<Object[]> instituteDetails = instituteRepo.getInstituteDetails(psmID);
 			resMap.put("counsellingTypes", CounsellingType.getCounsellingType(counsellingTypes));
-			resMap.put("higherHealthCare", Institute.getinstituteDetails(instituteDetails));
-			resMap.put("additionalServices", ServiceMaster.getServiceMaster(additionalServices));
-
 		} else {
 			ArrayList<Object[]> procedures = procedureRepo.getProcedureMasterData(psmID, gender);
 			ArrayList<Object[]> ccList = chiefComplaintMasterRepo.getChiefComplaintMaster();

@@ -30,15 +30,13 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class RedisStorage {
-	// @Autowired
-	// private RedisConnection redisConnection;// = new RedisConnection();
 	@Autowired
 	private LettuceConnectionFactory connection;
 
 	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
 
 	public String setObject(String key, String value, int expirationTime) throws RedisSessionException {
 		RedisConnection redCon = connection.getConnection();
@@ -55,7 +53,6 @@ public class RedisStorage {
 	}
 
 	public String getObject(String key, Boolean extendExpirationTime, int expirationTime) throws RedisSessionException {
-
 		RedisConnection redCon = connection.getConnection();
 		byte[] sessionData = redCon.get(key.getBytes());
 		String userRespFromRedis = null;
@@ -63,7 +60,6 @@ public class RedisStorage {
 			userRespFromRedis = new String(redCon.get(key.getBytes()));
 		}
 		if ((userRespFromRedis != null) && (userRespFromRedis.trim().length() != 0)) {
-
 			logger.info("updating session time of redis for " + key);
 			redCon.expire(key.getBytes(), expirationTime);
 		} else {
@@ -82,14 +78,12 @@ public class RedisStorage {
 	public String updateObject(String key, String value, Boolean extendExpirationTime, int expirationTime)
 			throws RedisSessionException {
 		RedisConnection redCon = connection.getConnection();
-
 		byte[] sessionData = redCon.get(key.getBytes());
 		String userRespFromRedis = null;
 		if (sessionData != null) {
 			userRespFromRedis = new String(redCon.get(key.getBytes()));
 		}
 		if ((userRespFromRedis != null) && (userRespFromRedis.trim().length() != 0)) {
-
 			logger.info("updating session time of redis for " + key);
 			redCon.set(key.getBytes(), value.getBytes(), Expiration.seconds(expirationTime), SetOption.UPSERT);
 		} else {
@@ -98,5 +92,4 @@ public class RedisStorage {
 
 		return key;
 	}
-
 }

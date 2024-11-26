@@ -49,10 +49,13 @@ import io.swagger.v3.oas.annotations.Operation;
 
 public class PatientAppCommonMasterController {
 
-	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);
-	@Autowired
+	private Logger logger = LoggerFactory.getLogger(PatientAppCommonMasterController.class);
 	private CommonPatientAppMasterService commonPatientAppMasterService;
 
+	@Autowired
+	public void setCommonPatientAppMasterService(CommonPatientAppMasterService commonPatientAppMasterService) {
+		this.commonPatientAppMasterService = commonPatientAppMasterService;
+	}
 	/**
 	 * @param visitCategoryID
 	 * @return nurse master data for the provided visitCategoryID
