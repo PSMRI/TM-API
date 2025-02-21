@@ -33,6 +33,6 @@ import com.iemr.tm.data.location.States;
 @Repository
 
 public interface StateMasterRepo extends CrudRepository<States, Integer> {
-	@Query(" SELECT stateID, stateName FROM States WHERE deleted != true ")
+	@Query(" SELECT stateID, stateName,govtLGDStateID FROM States WHERE deleted != true ")
 	public ArrayList<Object[]> getStateMaster();
 }

@@ -106,8 +106,7 @@ public class ANCServiceImpl implements ANCService {
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
-	@Autowired
-	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+	
 	@Autowired
 	private CommonServiceImpl commonServiceImpl;
 	@Autowired

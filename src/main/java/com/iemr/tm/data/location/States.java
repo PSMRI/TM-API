@@ -43,6 +43,10 @@ public class States {
 	@Column(name = "StateID")
 	@Expose
 	private Integer stateID;
+	
+	@Column(name = "GovtStateID")
+	@Expose
+	private Integer govtLGDStateID;
 
 	@Column(name = "StateName")
 	@Expose
@@ -155,5 +159,10 @@ public class States {
 	public void setStateName(String stateName) {
 		this.stateName = stateName;
 	}
-
+	
+	public States(int StateID, String StateName, Integer govtLGDStateID) {
+		this.stateID = StateID;
+		this.stateName = StateName;
+		this.govtLGDStateID = govtLGDStateID;
+	}
 }

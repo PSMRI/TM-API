@@ -150,17 +150,6 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@Operation(summary= "Master Data for Patient")
-	@GetMapping(value = {"/patientApp/details/{stateID}" }, produces = MediaType.APPLICATION_JSON)
-	public String patientAppMasterData(@PathVariable("stateID") Integer stateID) {
-		logger.info("master Data for beneficiary:");
-
-		OutputResponse response = new OutputResponse();
-		response.setResponse(commonPatientAppMasterService.getMaster(stateID));
-		logger.info("Nurse master Data for beneficiary:" + response.toString());
-		return response.toString();
-	}
-
 	@CrossOrigin
 	@Operation(summary= "Get patient episode data for specialist in patient app")
 	@PostMapping(value = { "/get/getPatientEpisodeData" })

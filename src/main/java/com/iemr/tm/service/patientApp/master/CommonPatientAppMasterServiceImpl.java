@@ -67,24 +67,6 @@ import com.iemr.tm.utils.mapper.InputMapper;
 @PropertySource("classpath:application.properties")
 public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMasterService {
 
-	@Value("${servicePointID}")
-	private Integer servicePointID;
-	@Value("${parkingPlaceID}")
-	private Integer parkingPlaceID;
-	@Value("${providerServiceMapID}")
-	private Integer providerServiceMapID;
-	@Value("${vanID}")
-	private Integer vanID;
-	@Value("${serviceID}")
-	private Integer serviceID;
-	@Value("${providerID}")
-	private Integer providerID;
-	@Value("${appId}")
-    private Integer appId;
-    @Value("${authKey}")
-    private String authKey;
-    @Value("${authSecret}")
-    private String authSecret;
     @Value("${scheduling-slotsize}")
     private Integer schedulingSlotSize;
 	@Autowired
@@ -127,21 +109,6 @@ public class CommonPatientAppMasterServiceImpl implements CommonPatientAppMaster
 		return new Gson().toJson(resMap);
 	}
 
-	@Override
-    public String getMaster(Integer stateID) {
-        Map<String, Object> resMap = new HashMap<String, Object>();
-        resMap.put("servicePointID", servicePointID);
-        resMap.put("parkingPlaceID", parkingPlaceID);
-        resMap.put("vanID", vanID);
-        resMap.put("providerServiceMapID", providerServiceMapID);
-        resMap.put("serviceID", serviceID);
-        resMap.put("providerID", providerID);
-        resMap.put("appId",appId);
-        resMap.put("authKey",authKey);
-        resMap.put("authSecret",authSecret);
-        resMap.put("schedulingSlotSize", schedulingSlotSize);
-        return new Gson().toJson(resMap);
-    }
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)

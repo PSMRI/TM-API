@@ -30,7 +30,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.iemr.tm.utils.redis.RedisStorage;
 import com.iemr.tm.utils.response.OutputResponse;
 import com.iemr.tm.utils.sessionobject.SessionObject;
 
@@ -39,9 +38,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class HTTPRequestInterceptor implements HandlerInterceptor {
-
 	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
+	
 	private SessionObject sessionObject;
 
 	@Autowired

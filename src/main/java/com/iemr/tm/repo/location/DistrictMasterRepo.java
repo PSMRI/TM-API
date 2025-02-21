@@ -34,7 +34,7 @@ import com.iemr.tm.data.location.Districts;
 @Repository
 
 public interface DistrictMasterRepo extends CrudRepository<Districts, Integer> {
-	@Query(" SELECT d.districtID, d.districtName FROM Districts d " + " WHERE d.stateID = :stateID AND d.deleted != true ")
+	@Query(" SELECT d.districtID, d.districtName,d.govtLGDStateID,d.govtLGDDistrictID FROM Districts d " + " WHERE d.stateID = :stateID AND d.deleted != true ")
 	public ArrayList<Object[]> getDistrictMaster(@Param("stateID") Integer stateID);
 
 }

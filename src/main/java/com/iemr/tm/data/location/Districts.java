@@ -86,6 +86,13 @@ public class Districts {
 	public void setStateID(Integer stateID) {
 		this.stateID = stateID;
 	}
+	@Column(name = "GovtStateID")
+	@Expose
+	private Integer govtLGDStateID;
+	
+	@Column(name = "GovtDistrictID")
+	@Expose
+	private Integer govtLGDDistrictID;
 
 	public Boolean getDeleted() {
 		return deleted;
@@ -133,6 +140,12 @@ public class Districts {
 		this.districtID = DistrictID;
 		this.districtName = DistrictName;
 	}
+	public Districts(Integer districtID, String districtName, Integer govtLGDStateID, Integer govtLGDDistrictID) {
+		this.districtID = districtID;
+		this.districtName = districtName;
+		this.govtLGDStateID = govtLGDStateID;
+		this.govtLGDDistrictID = govtLGDDistrictID;
+		}
 
 	public int getDistrictID() {
 		return this.districtID.intValue();
