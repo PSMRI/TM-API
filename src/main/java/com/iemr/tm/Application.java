@@ -25,8 +25,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.client.RestTemplate;
 
+import com.iemr.tm.data.login.Users;
 import com.iemr.tm.utils.IEMRApplBeans;
 
 @SpringBootApplication
@@ -45,5 +50,20 @@ public class Application {
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
+	
+	@Bean
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(factory);
+
+        // Use StringRedisSerializer for keys (userId)
+        template.setKeySerializer(new StringRedisSerializer());
+
+        // Use Jackson2JsonRedisSerializer for values (Users objects)
+        Jackson2JsonRedisSerializer<Users> serializer = new Jackson2JsonRedisSerializer<>(Users.class);
+        template.setValueSerializer(serializer);
+
+        return template;
+    }
 
 }
