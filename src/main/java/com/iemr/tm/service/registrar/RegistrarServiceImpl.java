@@ -47,6 +47,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,8 +72,11 @@ import com.iemr.tm.repo.registrar.RegistrarRepoBenPhoneMapData;
 import com.iemr.tm.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.tm.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
+import com.iemr.tm.utils.CookieUtil;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @PropertySource("classpath:application.properties")
@@ -102,6 +107,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private RegistrarRepoBeneficiaryDetails registrarRepoBeneficiaryDetails;
 	private BeneficiaryImageRepo beneficiaryImageRepo;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+	@Autowired
+	private CookieUtil cookieUtil;
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -233,7 +240,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 			cal.add(Calendar.YEAR, -(currentAge - ageAtMarriage));
 			cal.set(Calendar.MONTH, 1);
 			cal.set(Calendar.DAY_OF_YEAR, 1);
-
 
 			Timestamp timestamp = new java.sql.Timestamp(cal.getTimeInMillis());
 			benDemoAd.setMarrigeDate(timestamp);
@@ -446,7 +452,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Gson gson = gsonBuilder.create();
 		List<Object[]> resList = registrarRepoBeneficiaryDetails.getBeneficiaryDetails(beneficiaryRegID);
 
-
 		if (resList != null && resList.size() > 0) {
 
 			ArrayList<Map<String, Object>> govIdList = new ArrayList<>();
@@ -652,10 +657,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long beneficiaryID = null;
 
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
 		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
 		headers.add("AUTHORIZATION", Authorization);
+		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
 				String.class);
@@ -693,10 +702,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public Integer updateBeneficiary(String comingRequest, String Authorization) throws Exception {
 		Integer returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		// headers.add("Content-Type", "application/json");
 		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
 		headers.add("AUTHORIZATION", Authorization);
+		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
 				String.class);
@@ -715,10 +728,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public String beneficiaryQuickSearch(String requestObj, String Authorization) throws JSONException {
 		String returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		JSONObject obj = new JSONObject(requestObj);
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
+		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 		if ((obj.has("beneficiaryID") && !obj.isNull("beneficiaryID"))
 				|| (obj.has("HealthID") && !obj.isNull("HealthID"))
 				|| (obj.has("HealthIDNumber") && !obj.isNull("HealthIDNumber"))) {
@@ -745,10 +762,14 @@ public class RegistrarServiceImpl implements RegistrarService {
 	public String beneficiaryAdvanceSearch(String requestObj, String Authorization) throws JSONException {
 		String returnOBJ = null;
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		JSONObject obj = new JSONObject(requestObj);
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", "application/json");
 		headers.add("AUTHORIZATION", Authorization);
+		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 		HttpEntity<Object> request = new HttpEntity<Object>(requestObj, headers);
 		ResponseEntity<String> response = restTemplate.exchange(registrarAdvanceSearchUrl, HttpMethod.POST, request,
 				String.class);

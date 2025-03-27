@@ -27,8 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
@@ -40,6 +43,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.iemr.tm.utils.CookieUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class CSCarestreamServiceImpl implements CSCarestreamService {
@@ -49,16 +55,23 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 	@Value("${carestreamOrderCreateURL}")
 	private String carestreamOrderCreateURL;
 
+	@Autowired
+	private CookieUtil cookieUtil;
+
 	@Override
 	public int createMamographyRequest(ArrayList<Object[]> benDataForCareStream, long benRegID, long benVisitID,
 			String Authorization) {
 		int responseData = 0;
 		RestTemplate restTemplate = new RestTemplate();
+		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getRequest();
+		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		try {
 			// HttpHeaders headers = new HttpHeaders();
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 			headers.add("Content-Type", "application/json");
 			headers.add("AUTHORIZATION", Authorization);
+			headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 			String requestOBJ = getOrderCreationRequestOBJ(benDataForCareStream, benRegID, benVisitID);
 
 			HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
