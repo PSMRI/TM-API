@@ -169,7 +169,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (benVisitID != null && benVisitID > 0) {
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
-				logger.info("start saving BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+				logger.info("Start saving BenNCDCareHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
 				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
@@ -179,7 +179,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 					logger.info("successfully saved BenNCDCareHistoryDetails BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				}
 				// call method to save Vital data
-				logger.info("start saving BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+				logger.info("Start saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
 				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
