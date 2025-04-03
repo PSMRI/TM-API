@@ -93,7 +93,6 @@ public class PNCServiceImpl implements PNCService {
 	private static final String VITAL_DETAILS = "vitalDetails";
 	private static final String EXAMINATION_DETAILS = "examinationDetails";
 
-	
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private PNCNurseServiceImpl pncNurseServiceImpl;
