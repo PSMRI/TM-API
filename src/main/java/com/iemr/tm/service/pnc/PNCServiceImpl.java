@@ -91,6 +91,7 @@ public class PNCServiceImpl implements PNCService {
 	private static final String PNC_DETAILS = "pNCDeatils";
 	private static final String HISTORY_DETAILS = "historyDetails";
 	private static final String VITAL_DETAILS = "vitalDetails";
+	private static final String EXAMINATION_DETAILS = "examinationDetails";
 
 	
 	private CommonNurseServiceImpl commonNurseServiceImpl;
@@ -226,9 +227,9 @@ public class PNCServiceImpl implements PNCService {
 				
 				
 				// call method to save examination data
-				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull()) {
+				if (requestOBJ.has(EXAMINATION_DETAILS) && !requestOBJ.get(EXAMINATION_DETAILS).isJsonNull()) {
 				    logger.info("Start saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
-					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
+					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject(EXAMINATION_DETAILS),
 							benVisitID, benVisitCode);
 					 if (examtnSaveSuccessFlag == null || examtnSaveSuccessFlag <= 0) {
 					        logger.error("Error in saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
