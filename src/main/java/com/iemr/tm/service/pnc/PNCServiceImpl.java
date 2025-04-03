@@ -88,6 +88,11 @@ public class PNCServiceImpl implements PNCService {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
+	private static final String PNC_DETAILS = "pNCDeatils";
+	private static final String HISTORY_DETAILS = "historyDetails";
+	private static final String VITAL_DETAILS = "vitalDetails";
+
+	
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private PNCNurseServiceImpl pncNurseServiceImpl;
@@ -185,9 +190,9 @@ public class PNCServiceImpl implements PNCService {
 				// tc request
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
-				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull()) {
+				if (requestOBJ.has(HISTORY_DETAILS) && !requestOBJ.get(HISTORY_DETAILS).isJsonNull()) {
 				    logger.info("Start saving BenPNCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
-					historySaveSuccessFlag = saveBenPNCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
+					historySaveSuccessFlag = saveBenPNCHistoryDetails(requestOBJ.getAsJsonObject(HISTORY_DETAILS),
 							benVisitID, benVisitCode);
 				 if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
 				        logger.error("Error in saving BenPNCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
@@ -197,7 +202,7 @@ public class PNCServiceImpl implements PNCService {
 				}
 				// call method to save ANC data
 				 
-				if (requestOBJ.has("pNCDeatils") && !requestOBJ.get("pNCDeatils").isJsonNull()) {
+				if (requestOBJ.has(PNC_DETAILS) && !requestOBJ.get(PNC_DETAILS).isJsonNull()) {
 				    logger.info("Start saving BenPNCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					pncSaveSuccessFlag = saveBenPNCDetails(requestOBJ, benVisitID, benVisitCode);
 					   if (pncSaveSuccessFlag == null || pncSaveSuccessFlag <= 0) {
@@ -208,9 +213,9 @@ public class PNCServiceImpl implements PNCService {
 					}
 					
 				// call method to save Vital data
-				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull()) {
+				if (requestOBJ.has(VITAL_DETAILS) && !requestOBJ.get(VITAL_DETAILS).isJsonNull()) {
 				    logger.info("Start saving BenPNCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
-					vitalSaveSuccessFlag = saveBenPNCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
+					vitalSaveSuccessFlag = saveBenPNCVitalDetails(requestOBJ.getAsJsonObject(VITAL_DETAILS),
 							benVisitID, benVisitCode);
 					 if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
 					        logger.error("Error in saving BenPNCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
@@ -717,9 +722,9 @@ public class PNCServiceImpl implements PNCService {
 	public Long saveBenPNCDetails(JsonObject pncDetailsOBJ, Long benVisitID, Long benVisitCode) throws Exception {
 
 		Long pncSuccessFlag = null;
-		if (pncDetailsOBJ != null && pncDetailsOBJ.has("pNCDeatils") && !pncDetailsOBJ.get("pNCDeatils").isJsonNull()) {
+		if (pncDetailsOBJ != null && pncDetailsOBJ.has(PNC_DETAILS) && !pncDetailsOBJ.get(PNC_DETAILS).isJsonNull()) {
 			// Save Ben PNC Care Details
-			PNCCare pncCareDetailsOBJ = InputMapper.gson().fromJson(pncDetailsOBJ.get("pNCDeatils"), PNCCare.class);
+			PNCCare pncCareDetailsOBJ = InputMapper.gson().fromJson(pncDetailsOBJ.get(PNC_DETAILS), PNCCare.class);
 			if (null != pncCareDetailsOBJ) {
 				pncCareDetailsOBJ.setBenVisitID(benVisitID);
 				pncCareDetailsOBJ.setVisitCode(benVisitCode);

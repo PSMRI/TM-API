@@ -86,9 +86,7 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private static final String VITAL_DETAILS = "vitalDetails";
-	
 	private static final String EXAMINATION_DETAILS = "examinationDetails";
-	
 	private static final String HISTORY_DETAILS = "historyDetails";
 	
 	@Autowired
