@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +77,9 @@ import com.iemr.tm.utils.mapper.InputMapper;
 
 @Service
 public class Covid19ServiceImpl implements Covid19Service {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	
 	@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	@Autowired
@@ -153,12 +158,24 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
+				logger.info("Start saving BenCovid19HistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				historySaveSuccessFlag = saveBenCovid19HistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
+				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenCovid19HistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenCovid19HistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// call method to save Vital data
+				logger.info("Start saving BenCovid19VitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				vitalSaveSuccessFlag = saveBenCovid19VitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
-
+				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenCovid19VitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenCovid19VitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
+				
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}

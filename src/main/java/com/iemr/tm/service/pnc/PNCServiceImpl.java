@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +85,9 @@ import com.iemr.tm.utils.mapper.InputMapper;
 
 @Service
 public class PNCServiceImpl implements PNCService {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+	
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private PNCNurseServiceImpl pncNurseServiceImpl;
@@ -180,24 +185,52 @@ public class PNCServiceImpl implements PNCService {
 				// tc request
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
-				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
+				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull()) {
+				    logger.info("Start saving BenPNCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					historySaveSuccessFlag = saveBenPNCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 							benVisitID, benVisitCode);
-
+				 if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				        logger.error("Error in saving BenPNCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    } else {
+				        logger.info("Successfully saved BenPNCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    }
+				}
 				// call method to save ANC data
-				if (requestOBJ.has("pNCDeatils") && !requestOBJ.get("pNCDeatils").isJsonNull())
+				 
+				if (requestOBJ.has("pNCDeatils") && !requestOBJ.get("pNCDeatils").isJsonNull()) {
+				    logger.info("Start saving BenPNCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					pncSaveSuccessFlag = saveBenPNCDetails(requestOBJ, benVisitID, benVisitCode);
-
+					   if (pncSaveSuccessFlag == null || pncSaveSuccessFlag <= 0) {
+					        logger.error("Error in saving BenPNCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    } else {
+					        logger.info("Successfully saved BenPNCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    }
+					}
+					
 				// call method to save Vital data
-				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull())
+				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull()) {
+				    logger.info("Start saving BenPNCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					vitalSaveSuccessFlag = saveBenPNCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 							benVisitID, benVisitCode);
-
+					 if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+					        logger.error("Error in saving BenPNCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    } else {
+					        logger.info("Successfully saved BenPNCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    }
+				}
+				
+				
 				// call method to save examination data
-				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
+				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull()) {
+				    logger.info("Start saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 							benVisitID, benVisitCode);
-
+					 if (examtnSaveSuccessFlag == null || examtnSaveSuccessFlag <= 0) {
+					        logger.error("Error in saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    } else {
+					        logger.info("Successfully saved BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    }
+				}
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
