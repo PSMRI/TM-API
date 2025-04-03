@@ -173,7 +173,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
 				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
-				logger.info("error in saving BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+				logger.error("error in saving BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
 				}
 				else {
 					logger.info("successfully saved BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
@@ -183,7 +183,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
 				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
-					logger.info("error in saving BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+					logger.error("error in saving BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
 					}
 				else {
 					logger.info("successfully saved BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
