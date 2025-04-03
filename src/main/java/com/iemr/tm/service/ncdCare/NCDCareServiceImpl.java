@@ -173,20 +173,19 @@ public class NCDCareServiceImpl implements NCDCareService {
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
 				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
-				logger.error("error in saving BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+				logger.error("error in saving BenNCDCareHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				}
 				else {
-					logger.info("successfully saved BenNCDCareHistoryDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+					logger.info("successfully saved BenNCDCareHistoryDetails BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				}
 				// call method to save Vital data
 				logger.info("start saving BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
 				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
-					logger.error("error in saving BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
-					}
-				else {
-					logger.info("successfully saved BenNCDCareVitalDetails for BenVisitID"+ benVisitID + "and" + benVisitCode);
+				    logger.error("Error in saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				}
 				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
 				// tmpOBJ.get("beneficiaryRegID").getAsLong());
