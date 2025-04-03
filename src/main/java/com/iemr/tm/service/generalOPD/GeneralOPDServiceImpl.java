@@ -85,6 +85,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
+	private static final String VITAL_DETAILS = "vitalDetails";
+	
+
 	
 	@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
@@ -162,9 +165,9 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				}
 
 				// call method to save vital data
-				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull()) {
+				if (requestOBJ.has(VITAL_DETAILS) && !requestOBJ.get(VITAL_DETAILS).isJsonNull()) {
 				    logger.info("Start saving BenVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
-					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID,
+					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject(VITAL_DETAILS), benVisitID,
 							benVisitCode);
 					 if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
 					        logger.error("Error in saving BenVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
