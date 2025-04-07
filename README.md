@@ -7,25 +7,32 @@ The AMRIT Telemedicine (TM) Service enhances the capabilities of Health and Well
 
 ## Features of Telemedicine (TM)
 
-Telemedicine plays a crucial role in the services provided by Health and Wellness Centers (HWCs). Here's how HWCs and telemedicine are connected:
+### **Telemedicine in Health and Wellness Centers (HWCs)**
 
-1. **Teleconsultation**: HWCs utilize telemedicine technology to offer virtual consultations between patients and healthcare professionals. Through video calls, patients can connect with doctors and specialists to discuss their medical concerns, receive diagnoses, and obtain medical advice remotely, eliminating the need for in-person visits.
+Telemedicine is integral to HWCs, enhancing accessibility and efficiency in healthcare services.
 
-2. **Improved Accessibility**: Telemedicine in HWCs improves accessibility to healthcare services. Patients who face difficulties in traveling to the center, such as those residing in remote areas or with limited mobility, can conveniently access medical consultations and services from their own location.
+1. **Teleconsultation** – HWCs use telemedicine for virtual consultations, allowing patients to connect with doctors via video calls for diagnoses, medical advice, and follow-ups, reducing the need for in-person visits.
 
-3. **Outpatient Services**: HWCs primarily focus on outpatient services, catering to patients who do not require hospitalization. Telemedicine facilitates the delivery of these outpatient services by enabling virtual visits, follow-ups, and monitoring, eliminating the need for physical appointments.
+2. **Improved Accessibility** – Patients in remote areas or with mobility issues can access healthcare conveniently without traveling to HWCs.
 
-4. **Medication Management**: Telemedicine can be integrated into the medication management process at HWCs. Doctors can remotely prescribe medications and provide necessary instructions to patients. Patients can then obtain their prescribed medications from the center's drug dispensing facility, ensuring a streamlined medication management process.
+3. **Outpatient Services** – Telemedicine supports outpatient care by enabling virtual visits, follow-ups, and remote monitoring, ensuring timely medical attention without physical appointments.
 
-5. **Collaborative Care**: Telemedicine allows for collaboration between healthcare professionals within the HWC and specialists located in different locations. If a patient requires specialized expertise, telemedicine facilitates video consultations and discussions between the HWC's healthcare team and remote specialists, ensuring comprehensive care for the patient.
+4. **Medication Management** – Doctors can remotely prescribe medications, and patients can collect them from the HWC’s drug dispensing facility, ensuring a smooth medication process.
 
-6. **Integration with Laboratory Services**: HWCs often have laboratory facilities for conducting diagnostic tests. Telemedicine can streamline this process by enabling remote monitoring and consultation regarding test results. For example, IoT devices in the laboratory can transmit test data directly to the HWC's application, facilitating seamless communication and interpretation of results during teleconsultations.
+5. **Collaborative Care** – HWCs can consult specialists via telemedicine for expert opinions, ensuring comprehensive patient care through seamless collaboration.
+
+6. **Integration with Laboratory Services** – IoT-enabled labs can transmit test data directly to the HWC’s application, facilitating real-time consultations and efficient interpretation of results.
+
+Telemedicine strengthens HWCs by bridging geographical gaps, optimizing resources, and ensuring timely medical intervention.
+
 
 ## Building From Source
 
 This microservice is built using Java and the Spring Boot framework, with MySQL as the underlying database. Before building the TM module, ensure you have the following prerequisites:
+For step-by-step guide, follow this [guide] (https://piramal-swasthya.gitbook.io/amrit/developer-guide/development-environment-setup) .
 
-- JDK 1.8
+## Prerequisites
+- JDK 17 (LTS)
 - Maven
 - Redis
 - Spring Boot V2
