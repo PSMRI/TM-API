@@ -43,7 +43,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/master", headers = "Authorization", consumes = "application/json", produces = "application/json")
 
@@ -88,7 +88,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Save COVID data in patient app")
 	@PostMapping(value = { "/save/covidScreeningDataPatientApp" })
 	public String saveBenCovidDoctorDataPatientApp(@RequestBody String requestObj,
@@ -108,7 +108,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Save chief-complaints data in patient app")
 	@PostMapping(value = { "/save/chiefComplaintsDataPatientApp" })
 	public String saveBenChiefComplaintsDataPatientApp(@RequestBody String requestObj,
@@ -128,7 +128,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Save tele-consultation slot in data patient app")
 	@PostMapping(value = { "/save/tcSlotDetailsDataPatientApp" })
 	public String saveTCSlotDataPatientApp(@RequestBody String requestObj,
@@ -150,7 +150,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Get patient episode data for specialist in patient app")
 	@PostMapping(value = { "/get/getPatientEpisodeData" })
 	public String getPatientEpisodeDataMobileApp(@RequestBody String requestObj,
@@ -172,7 +172,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Get patient booked slot data in patient app")
 	@PostMapping(value = { "/get/getPatientBookedSlotDetails" })
 	public String getPatientBookedSlotDetails(@RequestBody String requestObj,
@@ -194,7 +194,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Save specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/saveSpecialistDiagnosisData" })
 	public String saveSpecialistDiagnosisData(@RequestBody String requestObj,
@@ -216,7 +216,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Get specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/getSpecialistDiagnosisData" })
 	public String getSpecialistDiagnosisData(@RequestBody String requestObj,
@@ -238,7 +238,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Get last 3 episode data of the patient in patient app")
 	@PostMapping(value = { "/get/getPatientsEpisodes" })
 	public String getPatientsLast_3_Episode(@RequestBody String requestObj,

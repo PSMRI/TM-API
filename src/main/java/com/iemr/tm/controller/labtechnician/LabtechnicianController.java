@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 
 @RestController
-@CrossOrigin
+
 @RequestMapping(value = "/labTechnician", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class LabtechnicianController {
 	
@@ -65,7 +65,7 @@ public class LabtechnicianController {
 	 * @param JSON requestObj 
 	 * @return success or failure response
 	 */
-	@CrossOrigin
+	
 	@Operation(summary = "Save lab test result")
 	@PostMapping(value = { "/save/LabTestResult" })
 	public String saveLabTestResult(@RequestBody String requestObj) {
@@ -96,7 +96,7 @@ public class LabtechnicianController {
 		return response.toString();
 	}
 	
-	@CrossOrigin
+	
 	@Operation(summary = "Get beneficiary lab test prescription")
 	@PostMapping(value = { "/get/prescribedProceduresList" })
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
@@ -127,7 +127,7 @@ public class LabtechnicianController {
 	}
 
 	// API for getting lab result based on beneficiaryRegID and visitCode
-	@CrossOrigin()
+	
 	@Operation(summary = "Get lab test result for a beneficiary visit")
 	@PostMapping(value = { "/get/labResultForVisitcode" })
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {

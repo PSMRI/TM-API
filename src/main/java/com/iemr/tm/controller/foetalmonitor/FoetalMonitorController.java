@@ -48,7 +48,7 @@ import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
 
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/foetalMonitor", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class FoetalMonitorController {
@@ -63,7 +63,7 @@ public class FoetalMonitorController {
 	 * @return success or failure response
 	 */
 
-	@CrossOrigin
+	
 	@Operation(summary= "Send the mother data and prescribed test details to foetal monitor")
 	@PostMapping(value = "/sendMotherTestDetailsToFoetalMonitor", headers = "Authorization")
 	public ResponseEntity<String> sendANCMotherTestDetailsToFoetalMonitor(
@@ -98,7 +98,7 @@ public class FoetalMonitorController {
 	 * @param authorization
 	 * @return
 	 */
-	@CrossOrigin
+	
 	@Operation(summary= "Foetal monitor device status check")
 	@PostMapping(value = "/registerMother", headers = "Authorization")
 	public String saveMother(@RequestBody String requestObj,
@@ -116,7 +116,7 @@ public class FoetalMonitorController {
 		return output.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Get the foetal monitor details")
 	@GetMapping(value = "/fetch/foetalMonitorDetails/{benFlowID}", headers = "Authorization")
 	public String getFoetalMonitorDetails(@Param("{\"benFlowID\":\"Long\"}") @PathVariable("benFlowID") Long benFlowID) {
@@ -137,7 +137,7 @@ public class FoetalMonitorController {
 		return output.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Fetch foetal monitor pdf report (Base64 format)")
 	@PostMapping(value = "/fetch/reportGraphBase64", headers = "Authorization")
 	public ResponseEntity<String> getFoetalMonitorDetails(
@@ -165,7 +165,7 @@ public class FoetalMonitorController {
 		return output.toStringWithHttpStatus();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary= "Update foetal monitor data")
 	@PostMapping(value = "/update/foetalMonitorData")
 	public ResponseEntity<String> updateFoetalMonitorData(

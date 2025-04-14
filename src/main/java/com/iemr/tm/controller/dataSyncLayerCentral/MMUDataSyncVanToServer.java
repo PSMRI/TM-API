@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @operation Class used for data sync from van-to-server & server-to-van
  *
  */
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/dataSync", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class MMUDataSyncVanToServer {
@@ -58,7 +58,7 @@ public class MMUDataSyncVanToServer {
 	@Autowired
 	private GetMasterDataFromCentralForVanImpl getMasterDataFromCentralForVanImpl;
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Download data from van-to-server (Mobile Medical Unit)")
 	@PostMapping(value = { "/van-to-server" })
 	public String dataSyncToServer(@RequestBody String requestOBJ,
@@ -77,7 +77,7 @@ public class MMUDataSyncVanToServer {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Download data from server to van (Mobile Medical Unit)")
 	@PostMapping(value = { "/server-to-van" })
 	public String dataDownloadFromServer(@RequestBody SyncDownloadMaster syncDownloadMaster,
