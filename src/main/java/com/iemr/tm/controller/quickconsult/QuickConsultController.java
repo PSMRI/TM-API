@@ -53,7 +53,7 @@ import io.swagger.v3.oas.annotations.Operation;
  * @Date 12-01-2018
  *
  */
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class QuickConsultController {
@@ -74,7 +74,7 @@ public class QuickConsultController {
 	 *            Beneficiary Vital and Anthropometry Detail Object and pushed to
 	 *            Database table
 	 */
-	@CrossOrigin
+	
 	@Operation(summary = "Save quick consult nurse data")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj,
@@ -112,7 +112,7 @@ public class QuickConsultController {
 	 * @objective Save beneficiary data for doctor quick consult - QC.
 	 */
 
-	@CrossOrigin
+	
 	@Operation(summary = "Save quick consult doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveQuickConsultationDetail(
@@ -151,7 +151,7 @@ public class QuickConsultController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get quick consult beneficiary visit details")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
@@ -183,7 +183,7 @@ public class QuickConsultController {
 	 * @return visit details in JSON format
 	 */
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get quick consult beneficiary vital details")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
@@ -215,7 +215,7 @@ public class QuickConsultController {
 	 * @param benRegID and benVisitID
 	 * @return visit details in JSON format
 	 */
-	@CrossOrigin()
+	
 	@Operation(summary = "Get quick consult beneficiary case record")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" })
 	@Transactional(rollbackFor = Exception.class)
@@ -243,7 +243,7 @@ public class QuickConsultController {
 		return response.toString();
 	}
 
-	@CrossOrigin
+	
 	@Operation(summary = "Update quick consult doctor data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDQCDoctorData(@RequestBody String requestObj,

@@ -53,7 +53,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/registrar", headers = "Authorization", consumes = "application/json", produces = "application/json")
 /**
@@ -84,7 +84,7 @@ public class RegistrarController {
 	}
 
 	// Registrar Work List API .....
-	@CrossOrigin()
+	
 	@Operation(summary = "Get registrar worklist data")
 	@PostMapping(value = { "/registrarWorkListData" })
 	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
@@ -104,7 +104,7 @@ public class RegistrarController {
 	}
 
 	// Registrar Quick search .....
-	@CrossOrigin()
+	
 	@Operation(summary = "Search for the beneficiary based on beneficiary id")
 	@PostMapping(value = { "/quickSearch" })
 	public String quickSearchBeneficiary(
@@ -123,7 +123,7 @@ public class RegistrarController {
 	}
 
 	// Registrar Advance search .....
-	@CrossOrigin()
+	
 	@Operation(summary = "Search for the beneficiary based on provided data")
 	@PostMapping(value = { "/advanceSearch" })
 	public String advanceSearch(
@@ -146,7 +146,7 @@ public class RegistrarController {
 	}
 
 	// API for left side ben data
-	@CrossOrigin()
+	
 	@Operation(summary = "Get beneficiary details based on beneficiary register id")
 	@PostMapping(value = { "/get/benDetailsByRegID" })
 	public String getBenDetailsByRegID(
@@ -176,7 +176,7 @@ public class RegistrarController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get beneficiary details")
 	@PostMapping(value = { "/get/beneficiaryDetails" })
 	public String getBeneficiaryDetails(
@@ -211,7 +211,7 @@ public class RegistrarController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/get/beneficiaryImage" })
 	public String getBeneficiaryImage(
@@ -238,7 +238,7 @@ public class RegistrarController {
 	}
 
 	// beneficiary quick search new integrated with common and identity
-	@CrossOrigin()
+	
 	@Operation(summary = "Search beneficiary based on beneficiary id or beneficiary phone number")
 	@PostMapping(value = { "/quickSearchNew" })
 	public String quickSearchNew(@RequestBody String requestObj,
@@ -262,7 +262,7 @@ public class RegistrarController {
 	}
 
 	// beneficiary Advance search new integrated with common and identity
-	@CrossOrigin()
+	
 	@Operation(summary = "Beneficiary advance search integrated with common and identity API")
 	@PostMapping(value = { "/advanceSearchNew" })
 	public String advanceSearchNew(@RequestBody String requestObj,
@@ -286,7 +286,7 @@ public class RegistrarController {
 	}
 
 	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
-	@CrossOrigin()
+	
 	@Operation(summary = "Get beneficiary details for side panel")
 	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
 	public String getBenDetailsForLeftSidePanelByRegID(
@@ -318,7 +318,7 @@ public class RegistrarController {
 	}
 
 	// new api for ben image
-	@CrossOrigin()
+	
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/getBenImage" })
 	public String getBenImage(@RequestBody String requestObj,
@@ -335,7 +335,7 @@ public class RegistrarController {
 
 	}
 	
-	@CrossOrigin()
+	
 	@Operation(summary = "Register a new beneficiary")
 	@PostMapping(value = { "/registrarBeneficaryRegistration" })
 	public String createBeneficiary(
@@ -399,7 +399,7 @@ public class RegistrarController {
 	}
 
 	// beneficiary registration with common and identity new
-	@CrossOrigin()
+	
 	@Operation(summary = "Register a new beneficiary new API")
 	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
@@ -417,7 +417,7 @@ public class RegistrarController {
 
 	}
 	
-	@CrossOrigin()
+	
 	@Operation(summary = "Update registered beneficiary data")
 	@PostMapping(value = { "/update/BeneficiaryDetails" })
 	public String updateBeneficiary(
@@ -525,7 +525,7 @@ public class RegistrarController {
 		return response.toString();
 	}
 	
-	@CrossOrigin()
+	
 	@Operation(summary = "Get master data for registrar")
 	@PostMapping(value = { "/registrarMasterData" })
 	public String masterDataForRegistration(

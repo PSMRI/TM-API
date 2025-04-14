@@ -41,7 +41,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/user", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class IemrMmuLoginController {
@@ -56,7 +56,7 @@ public class IemrMmuLoginController {
 		this.iemrMmuLoginServiceImpl = iemrMmuLoginServiceImpl;
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get user service point van details")
 	@PostMapping(value = "/getUserServicePointVanDetails", produces = {
 			"application/json" })
@@ -78,7 +78,7 @@ public class IemrMmuLoginController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get service point villages")
 	@PostMapping(value = "/getServicepointVillages", produces = {
 			"application/json" })
@@ -99,7 +99,7 @@ public class IemrMmuLoginController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get user service point van details")
 	@PostMapping(value = "/getUserVanSpDetails", produces = { "application/json" })
 	public String getUserVanSpDetails(@RequestBody String comingRequest) {
@@ -124,7 +124,7 @@ public class IemrMmuLoginController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
+	
 	@Operation(summary = "Get user spoke details")
 	@GetMapping(value = "/getUserSpokeDetails/{psmId}", produces = {
 			"application/json" })

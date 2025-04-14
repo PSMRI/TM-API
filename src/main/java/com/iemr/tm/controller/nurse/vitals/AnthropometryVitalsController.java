@@ -17,7 +17,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@CrossOrigin
+
 @RequestMapping(value = "/anthropometryVitals", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class AnthropometryVitalsController {
 
@@ -28,7 +28,7 @@ public class AnthropometryVitalsController {
 	private AnthropometryVitalsService anthropometryVitalsService;
 	
 	//Auto-patching height in anthropometry details
-		@CrossOrigin()
+		
 		@Operation(summary = "Get beneficiary height details")
 		@PostMapping(value = { "/getBenHeightDetailsFrmNurse" })
 		public String getBenHeightDetailsFrmNurse(

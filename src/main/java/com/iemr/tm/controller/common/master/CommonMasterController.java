@@ -40,7 +40,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 
 
-@CrossOrigin
+
 @RestController
 @RequestMapping(value = "/master", headers = "Authorization", consumes = "application/json", produces = "application/json")
 /** Objective: provides master data based on given visitCategory */
