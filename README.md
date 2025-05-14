@@ -34,9 +34,6 @@ For step-by-step guide, follow this [guide] (https://piramal-swasthya.gitbook.io
 ## Prerequisites
 - JDK 17 (LTS)
 - Maven
-- Redis
-- Spring Boot V2
-- MySQL
 
 To build the TM module from source, follow these steps:
 
