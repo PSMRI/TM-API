@@ -6,7 +6,7 @@
 
 	<groupId>com.iemr.tm</groupId>
 	<artifactId>tmapi-v1.0</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>3.1.0</version>
 	<packaging>war</packaging>
 
 	<name>tm-api</name>
@@ -300,7 +300,7 @@
 
 
 	<build>
-		<finalName>tmapi-v3.0.0</finalName>
+		<finalName>${artifactId}-${version}</finalName>
 
 		<plugins>
 			<plugin>
