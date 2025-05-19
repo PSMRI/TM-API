@@ -9,7 +9,7 @@
 	<version>3.1.0</version>
 	<packaging>war</packaging>
 
-	<name>tm-api</name>
+	<name>TM-API</name>
 	<description>Piramal TM</description>
 
 	<parent>
