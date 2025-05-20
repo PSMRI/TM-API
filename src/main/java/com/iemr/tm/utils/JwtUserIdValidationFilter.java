@@ -51,10 +51,8 @@ public class JwtUserIdValidationFilter implements Filter {
 		// Skip login and public endpoints
 		if (path.equals(contextPath + "/user/userAuthenticate")
 				|| path.equalsIgnoreCase(contextPath + "/user/logOutUserFromConcurrentSession")
-				|| path.startsWith(contextPath + "/swagger-ui")
-				|| path.startsWith(contextPath + "/v3/api-docs")
-				|| path.startsWith(contextPath + "/user/refreshToken")
-				|| path.startsWith(contextPath + "/public")) {
+				|| path.startsWith(contextPath + "/swagger-ui") || path.startsWith(contextPath + "/v3/api-docs")
+				|| path.startsWith(contextPath + "/user/refreshToken") || path.startsWith(contextPath + "/public")) {
 			logger.info("Skipping filter for path: " + path);
 			filterChain.doFilter(servletRequest, servletResponse);
 			return;
@@ -90,18 +88,20 @@ public class JwtUserIdValidationFilter implements Filter {
 
 			logger.warn("No valid authentication token found");
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid or missing token");
-		
+
 		} catch (Exception e) {
 			logger.error("Authorization error: ", e);
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization error: " + e.getMessage());
 		}
 	}
+
 	private boolean isMobileClient(String userAgent) {
 		if (userAgent == null)
 			return false;
 		userAgent = userAgent.toLowerCase();
 		return userAgent.contains("okhttp"); // iOS (custom clients)
 	}
+
 	private String getJwtTokenFromCookies(HttpServletRequest request) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
