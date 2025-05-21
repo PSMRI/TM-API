@@ -1894,24 +1894,26 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		BenMenstrualDetails menstrualHistoryDetails = BenMenstrualDetails.getBenMenstrualDetails(menstrualHistory);
 
 		// CRs changes, 30-10-2018
-		String problemID = menstrualHistoryDetails.getMenstrualProblemID();
-		String problemName = menstrualHistoryDetails.getProblemName();
+		if (null != menstrualHistoryDetails) {
+			String problemID = menstrualHistoryDetails.getMenstrualProblemID();
+			String problemName = menstrualHistoryDetails.getProblemName();
 
-		if (problemID != null && problemName != null) {
-			String[] problemIdArr = problemID.split(",");
-			String[] problemNameArr = problemName.split(",");
-			ArrayList<Map<String, Object>> menstrualProblemList = new ArrayList<>();
-			Map<String, Object> menstrualProblemMap = null;
+			if (problemID != null && problemName != null) {
+				String[] problemIdArr = problemID.split(",");
+				String[] problemNameArr = problemName.split(",");
+				ArrayList<Map<String, Object>> menstrualProblemList = new ArrayList<>();
+				Map<String, Object> menstrualProblemMap = null;
 
-			if (problemIdArr.length == problemNameArr.length) {
-				for (int i = 0; i < problemIdArr.length; i++) {
-					menstrualProblemMap = new HashMap<String, Object>();
-					menstrualProblemMap.put("menstrualProblemID", problemIdArr[i]);
-					menstrualProblemMap.put("problemName", problemNameArr[i]);
-					menstrualProblemList.add(menstrualProblemMap);
+				if (problemIdArr.length == problemNameArr.length) {
+					for (int i = 0; i < problemIdArr.length; i++) {
+						menstrualProblemMap = new HashMap<String, Object>();
+						menstrualProblemMap.put("menstrualProblemID", problemIdArr[i]);
+						menstrualProblemMap.put("problemName", problemNameArr[i]);
+						menstrualProblemList.add(menstrualProblemMap);
+					}
 				}
+				menstrualHistoryDetails.setMenstrualProblemList(menstrualProblemList);
 			}
-			menstrualHistoryDetails.setMenstrualProblemList(menstrualProblemList);
 		}
 
 		return menstrualHistoryDetails;
