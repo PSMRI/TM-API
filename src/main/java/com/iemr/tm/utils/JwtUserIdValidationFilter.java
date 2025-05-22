@@ -68,7 +68,7 @@ public class JwtUserIdValidationFilter implements Filter {
 			if (jwtFromCookie != null) {
 				logger.info("Validating JWT token from cookie");
 				if (jwtAuthenticationUtil.validateUserIdAndJwtToken(jwtFromCookie)) {
-					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new com.iemr.tm.utils.http.AuthorizationHeaderRequestWrapper(
+					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new AuthorizationHeaderRequestWrapper(
 							request, "");
 					filterChain.doFilter(authorizationHeaderRequestWrapper, servletResponse);
 					return;
@@ -76,7 +76,7 @@ public class JwtUserIdValidationFilter implements Filter {
 			} else if (jwtFromHeader != null) {
 				logger.info("Validating JWT token from header");
 				if (jwtAuthenticationUtil.validateUserIdAndJwtToken(jwtFromHeader)) {
-					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new com.iemr.tm.utils.http.AuthorizationHeaderRequestWrapper(
+					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new AuthorizationHeaderRequestWrapper(
 							request, "");
 					filterChain.doFilter(authorizationHeaderRequestWrapper, servletResponse);
 					return;
