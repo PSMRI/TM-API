@@ -44,6 +44,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -63,19 +64,11 @@ public class CSCarestreamServiceImpl implements CSCarestreamService {
 			String Authorization) {
 		int responseData = 0;
 		RestTemplate restTemplate = new RestTemplate();
-		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-				.getRequest();
-		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		try {
-			// HttpHeaders headers = new HttpHeaders();
-			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-			headers.add("Content-Type", "application/json");
-			headers.add("AUTHORIZATION", Authorization);
-			headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
+			
 			String requestOBJ = getOrderCreationRequestOBJ(benDataForCareStream, benRegID, benVisitID);
 
-			HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
-			// System.out.println("hello");
+			HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestOBJ, Authorization);
 			ResponseEntity<String> response = restTemplate.exchange(carestreamOrderCreateURL, HttpMethod.POST, request,
 					String.class);
 			if (response != null) {
