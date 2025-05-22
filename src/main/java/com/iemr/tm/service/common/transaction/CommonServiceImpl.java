@@ -65,6 +65,7 @@ import com.iemr.tm.service.pnc.PNCServiceImpl;
 import com.iemr.tm.service.quickConsultation.QuickConsultationServiceImpl;
 import com.iemr.tm.service.tele_consultation.TeleConsultationServiceImpl;
 import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
 import com.iemr.tm.utils.exception.IEMRException;
 import com.iemr.tm.utils.mapper.InputMapper;
 
@@ -553,7 +554,6 @@ public class CommonServiceImpl implements CommonService {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		String fileUUID = null;
 		JSONObject obj = new JSONObject(requestOBJ);
 		if (obj.has("fileID")) {
@@ -563,11 +563,7 @@ public class CommonServiceImpl implements CommonService {
 				Map<String, Object> requestBody = new HashMap<>();
 				requestBody.put("fileUID", fileUUID);
 
-				MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-				headers.add("Content-Type", "application/json");
-				headers.add("AUTHORIZATION", Authorization);
-				headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
-				HttpEntity<Object> request = new HttpEntity<Object>(requestBody, headers);
+				HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestBody, Authorization);
 				ResponseEntity<String> response = restTemplate.exchange(openkmDocUrl, HttpMethod.POST, request,
 						String.class);
 				return response.getBody();
