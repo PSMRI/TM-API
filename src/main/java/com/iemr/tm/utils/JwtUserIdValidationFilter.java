@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.iemr.tm.utils.http.AuthorizationHeaderRequestWrapper;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -66,7 +68,8 @@ public class JwtUserIdValidationFilter implements Filter {
 			if (jwtFromCookie != null) {
 				logger.info("Validating JWT token from cookie");
 				if (jwtAuthenticationUtil.validateUserIdAndJwtToken(jwtFromCookie)) {
-					filterChain.doFilter(servletRequest, servletResponse);
+					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new com.iemr.tm.utils.http.AuthorizationHeaderRequestWrapper(request, "");
+					filterChain.doFilter(authorizationHeaderRequestWrapper, servletResponse);
 					return;
 				}
 			}
@@ -74,7 +77,8 @@ public class JwtUserIdValidationFilter implements Filter {
 			if (jwtFromHeader != null) {
 				logger.info("Validating JWT token from header");
 				if (jwtAuthenticationUtil.validateUserIdAndJwtToken(jwtFromHeader)) {
-					filterChain.doFilter(servletRequest, servletResponse);
+					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new com.iemr.tm.utils.http.AuthorizationHeaderRequestWrapper(request, "");
+					filterChain.doFilter(authorizationHeaderRequestWrapper, servletResponse);
 					return;
 				}
 			}
