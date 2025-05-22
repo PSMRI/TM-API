@@ -73,6 +73,7 @@ import com.iemr.tm.repo.registrar.RegistrarRepoBeneficiaryDetails;
 import com.iemr.tm.repo.registrar.ReistrarRepoBenSearch;
 import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.UserAgentContext;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
 
@@ -662,7 +663,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
 		headers.add("Content-Type", MediaType.APPLICATION_JSON + ";charset=utf-8");
-		// headers.add("Content-Type", MediaType.APPLICATION_JSON);
+		headers.add("User-Agent",UserAgentContext.getUserAgent());
 		headers.add("AUTHORIZATION", Authorization);
 		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
 		HttpEntity<Object> request = new HttpEntity<Object>(comingRequest, headers);

@@ -82,6 +82,7 @@ public class JwtUserIdValidationFilter implements Filter {
 			logger.info("User-Agent: " + userAgent);
 
 			if (userAgent != null && isMobileClient(userAgent) && authHeader != null) {
+				UserAgentContext.setUserAgent(userAgent);
 				filterChain.doFilter(servletRequest, servletResponse);
 				return;
 			}
