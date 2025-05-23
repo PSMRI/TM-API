@@ -68,6 +68,7 @@ public class JwtUserIdValidationFilter implements Filter {
 			if (jwtFromCookie != null) {
 				logger.info("Validating JWT token from cookie");
 				if (jwtAuthenticationUtil.validateUserIdAndJwtToken(jwtFromCookie)) {
+
 					AuthorizationHeaderRequestWrapper authorizationHeaderRequestWrapper = new AuthorizationHeaderRequestWrapper(
 							request, "");
 					filterChain.doFilter(authorizationHeaderRequestWrapper, servletResponse);
@@ -92,13 +93,13 @@ public class JwtUserIdValidationFilter implements Filter {
 					} finally {
 						UserAgentContext.clear();
 					}
+
 					return;
 				}
 			}
 
 			logger.warn("No valid authentication token found");
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized: Invalid or missing token");
-
 		} catch (Exception e) {
 			logger.error("Authorization error: ", e);
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authorization error: " + e.getMessage());
