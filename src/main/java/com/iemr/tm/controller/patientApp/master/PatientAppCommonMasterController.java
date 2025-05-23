@@ -21,28 +21,20 @@
 */
 package com.iemr.tm.controller.patientApp.master;
 
-import javax.ws.rs.core.MediaType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.iemr.tm.controller.common.master.CommonMasterController;
 import com.iemr.tm.service.patientApp.master.CommonPatientAppMasterService;
 import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
-
-
 
 @RestController
 @RequestMapping(value = "/master", headers = "Authorization", consumes = "application/json", produces = "application/json")
@@ -56,11 +48,12 @@ public class PatientAppCommonMasterController {
 	public void setCommonPatientAppMasterService(CommonPatientAppMasterService commonPatientAppMasterService) {
 		this.commonPatientAppMasterService = commonPatientAppMasterService;
 	}
+
 	/**
 	 * @param visitCategoryID
 	 * @return nurse master data for the provided visitCategoryID
 	 */
-	@Operation(summary= "Chief complaints master data API for patient app")
+	@Operation(summary = "Chief complaints master data API for patient app")
 	@PostMapping(value = "/patientApp/chiefComplaintsMaster/{visitCategoryID}/{providerServiceMapID}/{gender}")
 	public String patientAppChiefComplaintsMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
@@ -74,7 +67,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	@Operation(summary= "COVID master data API for patient app")
+	@Operation(summary = "COVID master data API for patient app")
 	@PostMapping(value = "/patientApp/covidMaster/{visitCategoryID}/{providerServiceMapID}/{gender}")
 	public String patientAppCovidMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
@@ -88,8 +81,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Save COVID data in patient app")
+	@Operation(summary = "Save COVID data in patient app")
 	@PostMapping(value = { "/save/covidScreeningDataPatientApp" })
 	public String saveBenCovidDoctorDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -108,8 +100,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Save chief-complaints data in patient app")
+	@Operation(summary = "Save chief-complaints data in patient app")
 	@PostMapping(value = { "/save/chiefComplaintsDataPatientApp" })
 	public String saveBenChiefComplaintsDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -128,8 +119,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Save tele-consultation slot in data patient app")
+	@Operation(summary = "Save tele-consultation slot in data patient app")
 	@PostMapping(value = { "/save/tcSlotDetailsDataPatientApp" })
 	public String saveTCSlotDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -150,8 +140,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Get patient episode data for specialist in patient app")
+	@Operation(summary = "Get patient episode data for specialist in patient app")
 	@PostMapping(value = { "/get/getPatientEpisodeData" })
 	public String getPatientEpisodeDataMobileApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -172,8 +161,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Get patient booked slot data in patient app")
+	@Operation(summary = "Get patient booked slot data in patient app")
 	@PostMapping(value = { "/get/getPatientBookedSlotDetails" })
 	public String getPatientBookedSlotDetails(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -194,8 +182,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Save specialist diagnosis data in patient app")
+	@Operation(summary = "Save specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/saveSpecialistDiagnosisData" })
 	public String saveSpecialistDiagnosisData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -216,8 +203,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Get specialist diagnosis data in patient app")
+	@Operation(summary = "Get specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/getSpecialistDiagnosisData" })
 	public String getSpecialistDiagnosisData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -238,8 +224,7 @@ public class PatientAppCommonMasterController {
 		return response.toString();
 	}
 
-	
-	@Operation(summary= "Get last 3 episode data of the patient in patient app")
+	@Operation(summary = "Get last 3 episode data of the patient in patient app")
 	@PostMapping(value = { "/get/getPatientsEpisodes" })
 	public String getPatientsLast_3_Episode(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {

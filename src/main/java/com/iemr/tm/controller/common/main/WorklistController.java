@@ -27,14 +27,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.data.benFlowStatus.BeneficiaryFlowStatus;
@@ -46,9 +44,6 @@ import com.iemr.tm.utils.response.OutputResponse;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
-
-
-
 
 @RestController
 @RequestMapping(value = "/common", headers = "Authorization", consumes = "application/json", produces = "application/json")
@@ -76,7 +71,7 @@ public class WorklistController {
 	}
 
 	// doc worklist new
-	
+
 	@Operation(summary = "Get doctor worklist")
 	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -99,11 +94,11 @@ public class WorklistController {
 		}
 		return response.toString();
 	}
-	
+
 	// doc worklist new (TM future scheduled beneficiary)
-	
+
 	@Operation(summary = "Get doctor future worklist scheduled for telemedicine")
-	@GetMapping(value = {"/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@GetMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getDocWorkListNewFutureScheduledForTM(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
@@ -128,7 +123,7 @@ public class WorklistController {
 	}
 
 	// nurse worklist new
-	
+
 	@Operation(summary = "Get nurse worklist")
 	@GetMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -148,7 +143,7 @@ public class WorklistController {
 	}
 
 	// nurse worklist TC schedule (current-date) new
-	
+
 	@Operation(summary = "Get worklist for teleconsultation for the current date")
 	@GetMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -169,7 +164,7 @@ public class WorklistController {
 	}
 
 	// nurse worklist TC schedule (future-date) new
-	
+
 	@Operation(summary = "Get worklist for teleconsultation for the future date")
 	@GetMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -189,7 +184,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get previous significant findings")
 	@PostMapping(value = { "/getDoctorPreviousSignificantFindings" })
 	public String getDoctorPreviousSignificantFindings(
@@ -216,7 +210,7 @@ public class WorklistController {
 	}
 
 	// Get Lab technician worklist new
-	
+
 	@Operation(summary = "Get lab technician worklist")
 	@GetMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -237,7 +231,7 @@ public class WorklistController {
 	}
 
 	// Get radiologist worklist new
-	
+
 	@Operation(summary = "Get radiologist worklist")
 	@GetMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -258,7 +252,7 @@ public class WorklistController {
 	}
 
 	// Get oncologist worklist new
-	
+
 	@Operation(summary = "Get oncologist worklist")
 	@GetMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -278,7 +272,7 @@ public class WorklistController {
 	}
 
 	// Get pharma worklist new
-	
+
 	@Operation(summary = "Get pharmacist worklist")
 	@GetMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -298,7 +292,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Print case sheet of beneficiary")
 	@PostMapping(value = { "/get/Case-sheet/printData" })
 	public String getCasesheetPrintData(@RequestBody String comingReq,
@@ -319,7 +312,7 @@ public class WorklistController {
 	}
 
 	// Start of Fetch Previous Medical History...
-	
+
 	@Operation(summary = "Get beneficiary history")
 	@PostMapping(value = { "/getBenPastHistory" })
 	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -344,7 +337,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary tobacco consumption history")
 	@PostMapping(value = { "/getBenTobaccoHistory" })
 	public String getBenTobaccoHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -369,7 +361,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary alcohol consumption history")
 	@PostMapping(value = { "/getBenAlcoholHistory" })
 	public String getBenAlcoholHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -394,11 +385,9 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary allergy history")
 	@PostMapping(value = { "/getBenAllergyHistory" })
-	public String getBenANCAllergyHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenANCAllergyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -420,11 +409,9 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary medication history")
 	@PostMapping(value = { "/getBenMedicationHistory" })
-	public String getBenMedicationHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenMedicationHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -446,7 +433,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary family history")
 	@PostMapping(value = { "/getBenFamilyHistory" })
 	public String getBenFamilyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -471,11 +457,9 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary menstrual history")
 	@PostMapping(value = { "/getBenMenstrualHistory" })
-	public String getBenMenstrualHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenMenstrualHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -497,7 +481,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary obstetric history")
 	@PostMapping(value = { "/getBenPastObstetricHistory" })
 	public String getBenPastObstetricHistory(
@@ -523,7 +506,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary comorbidity condition details")
 	@PostMapping(value = { "/getBenComorbidityConditionHistory" })
 	public String getBenANCComorbidityConditionHistory(
@@ -549,7 +531,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary optional vaccine details")
 	@PostMapping(value = { "/getBenOptionalVaccineHistory" })
 	public String getBenOptionalVaccineHistory(
@@ -575,7 +556,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get child beneficiary vaccine details")
 	@PostMapping(value = { "/getBenChildVaccineHistory" })
 	public String getBenImmunizationHistory(
@@ -601,11 +581,9 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary perinatal history")
 	@PostMapping(value = { "/getBenPerinatalHistory" })
-	public String getBenPerinatalHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenPerinatalHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -627,7 +605,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get child beneficiary feeding history")
 	@PostMapping(value = { "/getBenFeedingHistory" })
 	public String getBenFeedingHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
@@ -652,7 +629,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get child beneficiary development history")
 	@PostMapping(value = { "/getBenDevelopmentHistory" })
 	public String getBenDevelopmentHistory(
@@ -684,7 +660,7 @@ public class WorklistController {
 	 * fetch ben previous visit details for history case-record(Platform).
 	 * 08-08-2018
 	 */
-	
+
 	@Operation(summary = "Get beneficiary casesheet history")
 	@PostMapping(value = { "/getBeneficiaryCaseSheetHistory" })
 	public String getBeneficiaryCaseSheetHistory(
@@ -704,7 +680,7 @@ public class WorklistController {
 	}
 
 	// TC specialist worklist new
-	
+
 	@Operation(summary = "Get teleconsultation specialist worklist")
 	@GetMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}/{userID}" })
 	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -730,10 +706,9 @@ public class WorklistController {
 	}
 
 	// TC specialist worklist new, patient App, 14-08-2020
-	
+
 	@Operation(summary = "Get teleconsultation specialist worklist for patient app")
-	@GetMapping(value = {
-			"/getTCSpecialistWorklistPatientApp/{providerServiceMapID}/{serviceID}/{userID}/{vanID}" })
+	@GetMapping(value = { "/getTCSpecialistWorklistPatientApp/{providerServiceMapID}/{serviceID}/{userID}/{vanID}" })
 	public String getTCSpecialistWorkListNewPatientApp(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
@@ -758,10 +733,9 @@ public class WorklistController {
 	}
 
 	// TC specialist worklist new future scheduled
-	
+
 	@Operation(summary = "Get teleconsultation specialist future scheduled")
-	@GetMapping(value = {
-			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" })
+	@GetMapping(value = { "/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}/{userID}" })
 	public String getTCSpecialistWorklistFutureScheduled(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
 			@PathVariable("serviceID") Integer serviceID) {
@@ -786,7 +760,7 @@ public class WorklistController {
 	}
 
 	// openkm file download
-	
+
 	@Operation(summary = "Add file as string to openKM")
 	@PostMapping(value = "/getKMFile", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
 	public String getKMFile(@Param(value = "{}") @RequestBody String request,
@@ -805,11 +779,9 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary physical history")
 	@PostMapping(value = { "/getBenPhysicalHistory" })
-	public String getBenPhysicalHistory(
-			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenPhysicalHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -831,7 +803,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary symptomatic questionnaire answer details")
 	@PostMapping(value = { "/getBenSymptomaticQuestionnaireDetails" })
 	public String getBenSymptomaticQuestionnaireDetails(
@@ -857,7 +828,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary previous diabetes history")
 	@PostMapping(value = { "/getBenPreviousDiabetesHistoryDetails" })
 	public String getBenPreviousDiabetesHistoryDetails(
@@ -884,7 +854,7 @@ public class WorklistController {
 	}
 
 	// nurse worklist coming from MMU application
-	
+
 	@Operation(summary = "Get mmu nurse worklist")
 	@GetMapping(value = { "/getMmuNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getMmuNurseWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -903,7 +873,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get beneficiary previous referral history")
 	@PostMapping(value = { "/getBenPreviousReferralHistoryDetails" })
 	public String getBenPreviousReferralHistoryDetails(
@@ -933,7 +902,7 @@ public class WorklistController {
 	 * @param comingRequest
 	 * @return ProviderSpecificMasterData
 	 */
-	
+
 	@Operation(summary = "Get provider specific data")
 	@PostMapping(value = { "/getProviderSpecificData" })
 	public String getProviderSpecificData(
@@ -955,7 +924,7 @@ public class WorklistController {
 	 * @param comingRequest
 	 * @return ProviderSpecificMasterData
 	 */
-	
+
 	@Operation(summary = "Calculate beneficiary BMI status")
 	@PostMapping(value = { "/calculateBMIStatus" })
 	public String calculateBMIStatus(
@@ -973,7 +942,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Update beneficiary status flag")
 	@PostMapping(value = { "/update/benDetailsAndSubmitToNurse" })
 	public String saveBeneficiaryVisitDetail(
@@ -1008,7 +976,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Extend redis session for 30 mins")
 	@PostMapping(value = { "/extend/redisSession" })
 	public String extendRedisSession() {
@@ -1022,7 +989,6 @@ public class WorklistController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Soft delete prescribed medicine")
 	@PostMapping(value = { "/doctor/delete/prescribedMedicine" })
 	public String deletePrescribedMedicine(@RequestBody String requestOBJ) {

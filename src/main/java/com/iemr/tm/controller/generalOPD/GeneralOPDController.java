@@ -26,24 +26,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.iemr.tm.service.generalOPD.GeneralOPDService;
-import com.iemr.tm.service.generalOPD.GeneralOPDServiceImpl;
 import com.iemr.tm.utils.response.OutputResponse;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
-
 
 /***
  * @Objective Saving General OPD data for Nurse and Doctor.
@@ -69,7 +65,7 @@ public class GeneralOPDController {
 	 * @return success or failure response
 	 * @throws Exception
 	 */
-	
+
 	@Operation(summary = "Save general OPD data collected by nurse")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenGenOPDNurseData(@RequestBody String requestObj,
@@ -106,7 +102,7 @@ public class GeneralOPDController {
 	 * @param requestObj
 	 * @return success or failure response
 	 */
-	
+
 	@Operation(summary = "Save general OPD data collected by doctor")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenGenOPDDoctorData(@RequestBody String requestObj,
@@ -138,7 +134,6 @@ public class GeneralOPDController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Get general OPD beneficiary visit details")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" })
 	@Transactional(rollbackFor = Exception.class)
@@ -171,7 +166,7 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return history details in JSON format
 	 */
-	
+
 	@Operation(summary = "Get general OPD beneficiary history")
 	@PostMapping(value = { "/getBenHistoryDetails" })
 
@@ -203,7 +198,7 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return vital details in JSON format
 	 */
-	
+
 	@Operation(summary = "Get general OPD beneficiary vitals")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
@@ -235,7 +230,7 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return examination details in JSON format
 	 */
-	
+
 	@Operation(summary = "Get general OPD beneficiary examination details")
 	@PostMapping(value = { "/getBenExaminationDetails" })
 
@@ -267,7 +262,7 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return doctor details in JSON format
 	 */
-	
+
 	@Operation(summary = "Get general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" })
 	@Transactional(rollbackFor = Exception.class)
@@ -295,7 +290,6 @@ public class GeneralOPDController {
 		return response.toString();
 	}
 
-	
 	@Operation(summary = "Update beneficiary's general OPD visit details")
 	@PostMapping(value = { "/update/visitDetailsScreen" })
 	public String updateVisitNurse(@RequestBody String requestObj) {
@@ -331,7 +325,6 @@ public class GeneralOPDController {
 	 *            entered by Doctor
 	 */
 
-	
 	@Operation(summary = "Update beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
@@ -367,7 +360,6 @@ public class GeneralOPDController {
 	 *            entered by Doctor
 	 */
 
-	
 	@Operation(summary = "Update general OPD beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
 	public String updateVitalNurse(@RequestBody String requestObj) {
@@ -403,7 +395,6 @@ public class GeneralOPDController {
 	 *            details entered by Doctor
 	 */
 
-	
 	@Operation(summary = "Update general OPD beneficiary examination data")
 	@PostMapping(value = { "/update/examinationScreen" })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
@@ -437,7 +428,7 @@ public class GeneralOPDController {
 	 * @return success or failure response
 	 * @objective Replace General OPD doctor data for the doctor next visit
 	 */
-	
+
 	@Operation(summary = "Update general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,
