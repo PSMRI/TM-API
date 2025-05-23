@@ -19,6 +19,7 @@ public class RestTemplateUtil {
         
 		ServletRequestAttributes servletRequestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
 		if (servletRequestAttributes == null) {
+			logger.info("Null servletRequestAttributes");
 			MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE + ";charset=utf-8");
 			headers.add(HttpHeaders.AUTHORIZATION, authorization);
