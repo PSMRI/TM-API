@@ -660,6 +660,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
+		logger.info("Before Calling Common-API registration : "+request.getHeaders());
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
 				String.class);
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
