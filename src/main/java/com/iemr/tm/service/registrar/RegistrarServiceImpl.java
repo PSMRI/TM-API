@@ -672,7 +672,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
-				response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+				response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID +"and BenRegID is : "+beneficiaryRegID);
 			} else {
 				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
 						beneficiaryID);
@@ -680,7 +680,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 				if (i > 0) {
 					if (i == 1)
 						response1.setResponse(
-								"Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID);
+								"Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID +"and BenRegID is : "+beneficiaryRegID);
 				} else {
 					response1.setError(5000, "Error in registration; please contact administrator");
 					// log error that beneficiaryID generated but flow part is not
