@@ -658,7 +658,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
 		Map<String, Object> responseMap = new HashMap<>();
-		Map<String, Object> responseMap1 = new HashMap<>();
         
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
