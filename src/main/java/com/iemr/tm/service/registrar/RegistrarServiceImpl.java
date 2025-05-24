@@ -675,7 +675,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
 				responseMap.put("response", "Beneficiary successfully registered");
-		        
 		        response1.setResponse(new Gson().toJson(responseMap));
 
 			} else {
@@ -683,15 +682,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 						beneficiaryID);
 
 				if (i > 0) {
-					if (i == 1) {
-						responseMap.put("response", "Beneficiary successfully registered");
-						response1.setResponse(new Gson().toJson(responseMap));
-					}
+					responseMap.put("response", "Beneficiary successfully registered");
+					response1.setResponse(new Gson().toJson(responseMap));
 
 				} else {
 					response1.setError(5000, "Error in registration; please contact administrator");
-					// log error that beneficiaryID generated but flow part is not
-					// done successfully.
 				}
 			}
 		} else {
