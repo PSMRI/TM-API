@@ -657,7 +657,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 		OutputResponse response1 = new OutputResponse();
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
-
+		Map<String, Object> responseMap = new HashMap<>();
+        
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		logger.info("Before Calling Common-API registration : "+request.getHeaders());
@@ -668,23 +669,24 @@ public class RegistrarServiceImpl implements RegistrarService {
 			JSONObject responseOBJ = new JSONObject(responseStr);
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
-			// System.out.println("hello");
+			responseMap.put("benGenId", beneficiaryID);
+			responseMap.put("benRegId", beneficiaryRegID);
 
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
-				response1.setResponse("Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID +"and BenRegID is : "+beneficiaryRegID);
+				responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+beneficiaryID);
+		        response1.setResponse(new Gson().toJson(responseMap));
+
 			} else {
 				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
 						beneficiaryID);
 
 				if (i > 0) {
-					if (i == 1)
-						response1.setResponse(
-								"Beneficiary successfully registered. Beneficiary ID is : " + beneficiaryID +"and BenRegID is : "+beneficiaryRegID);
+					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+beneficiaryID);
+					response1.setResponse(new Gson().toJson(responseMap));
+
 				} else {
 					response1.setError(5000, "Error in registration; please contact administrator");
-					// log error that beneficiaryID generated but flow part is not
-					// done successfully.
 				}
 			}
 		} else {
