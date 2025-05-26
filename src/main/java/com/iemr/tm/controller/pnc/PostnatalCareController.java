@@ -290,7 +290,6 @@ public class PostnatalCareController {
 	 * @param comingRequest
 	 * @return doctor data in JSON format
 	 */
-
 	@Operation(summary = "Get PNC beneficiary case record")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" })
 	@Transactional(rollbackFor = Exception.class)

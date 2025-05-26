@@ -245,7 +245,6 @@ public class WorklistController {
 	}
 
 	// Get oncologist worklist new
-
 	@Operation(summary = "Get oncologist worklist")
 	@GetMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
