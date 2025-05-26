@@ -134,7 +134,6 @@ public class TeleConsultationController {
 	}
 
 	// TC request List
-
 	@Operation(summary = "Get teleconsultation request list for a specialist")
 	@PostMapping(value = { "/getTCRequestList" })
 	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {

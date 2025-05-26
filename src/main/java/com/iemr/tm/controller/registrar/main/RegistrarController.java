@@ -80,7 +80,6 @@ public class RegistrarController {
 	}
 
 	// Registrar Work List API .....
-
 	@Operation(summary = "Get registrar worklist data")
 	@PostMapping(value = { "/registrarWorkListData" })
 	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
@@ -118,7 +117,6 @@ public class RegistrarController {
 	}
 
 	// Registrar Advance search .....
-
 	@Operation(summary = "Search for the beneficiary based on provided data")
 	@PostMapping(value = { "/advanceSearch" })
 	public String advanceSearch(
@@ -141,7 +139,6 @@ public class RegistrarController {
 	}
 
 	// API for left side ben data
-
 	@Operation(summary = "Get beneficiary details based on beneficiary register id")
 	@PostMapping(value = { "/get/benDetailsByRegID" })
 	public String getBenDetailsByRegID(
@@ -231,7 +228,6 @@ public class RegistrarController {
 	}
 
 	// beneficiary quick search new integrated with common and identity
-
 	@Operation(summary = "Search beneficiary based on beneficiary id or beneficiary phone number")
 	@PostMapping(value = { "/quickSearchNew" })
 	public String quickSearchNew(@RequestBody String requestObj,
@@ -255,7 +251,6 @@ public class RegistrarController {
 	}
 
 	// beneficiary Advance search new integrated with common and identity
-
 	@Operation(summary = "Beneficiary advance search integrated with common and identity API")
 	@PostMapping(value = { "/advanceSearchNew" })
 	public String advanceSearchNew(@RequestBody String requestObj,
@@ -279,7 +274,6 @@ public class RegistrarController {
 	}
 
 	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
-
 	@Operation(summary = "Get beneficiary details for side panel")
 	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
 	public String getBenDetailsForLeftSidePanelByRegID(
@@ -311,7 +305,6 @@ public class RegistrarController {
 	}
 
 	// new api for ben image
-
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/getBenImage" })
 	public String getBenImage(@RequestBody String requestObj,
@@ -391,7 +384,6 @@ public class RegistrarController {
 	}
 
 	// beneficiary registration with common and identity new
-
 	@Operation(summary = "Register a new beneficiary new API")
 	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,

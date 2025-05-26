@@ -49,7 +49,6 @@ import io.swagger.v3.oas.annotations.Operation;
  * @Objective Saving NCD Care data for Nurse and Doctor.
  * @Date 16-04-2020
  */
-
 @RestController
 @RequestMapping(value = "/pandemic/covid", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class CovidController {
@@ -94,7 +93,6 @@ public class CovidController {
 	 * @param JSON requestObj
 	 * @return success or failure response
 	 */
-
 	@Operation(summary = "Save COVID doctor data")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenCovidDoctorData(@RequestBody String requestObj,
@@ -158,7 +156,6 @@ public class CovidController {
 	 * @param comingRequest
 	 * @return visit details in JSON format
 	 */
-
 	@Operation(summary = "Get COVID beneficiary history")
 	@PostMapping(value = { "/getBenCovid19HistoryDetails" })
 	public String getBenCovid19HistoryDetails(
@@ -221,7 +218,6 @@ public class CovidController {
 	 * @param comingRequest
 	 * @return visit details in JSON format
 	 */
-
 	@Operation(summary = "Get COVID beneficiary case-record and referral details")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorCovid" })
 	@Transactional(rollbackFor = Exception.class)
@@ -321,7 +317,6 @@ public class CovidController {
 	 * @return success or failure response
 	 * @objective Replace covid 19 doctor data for the doctor next visit
 	 */
-
 	@Operation(summary = "Update COVID beneficiary case-record and referral details")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateCovid19DoctorData(@RequestBody String requestObj,

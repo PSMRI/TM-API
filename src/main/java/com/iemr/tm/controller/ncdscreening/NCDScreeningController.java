@@ -48,7 +48,6 @@ import io.swagger.v3.oas.annotations.Operation;
 /**
  * @Objective Saving NCD Screening nurse data.
  */
-
 @RestController
 @RequestMapping(value = "/NCD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class NCDScreeningController {
@@ -71,7 +70,6 @@ public class NCDScreeningController {
 	 * @return success or failure response
 	 * @throws Exception
 	 */
-
 	@Operation(summary = "Save NCD screening beneficiary data collected by nurse")
 
 	@PostMapping(value = { "/save/nurseData" })
@@ -187,7 +185,6 @@ public class NCDScreeningController {
 	 * @param comingRequest
 	 * @return visit details in JSON format
 	 */
-
 	@Operation(summary = "Get NCD screening beneficiary case record and referral")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorNCDScreening" })
 	@Transactional(rollbackFor = Exception.class)
@@ -355,7 +352,6 @@ public class NCDScreeningController {
 	/*
 	 * Updating the history WDF requirement 9-12-2020
 	 */
-
 	@Operation(summary = "Update NCD screening beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {

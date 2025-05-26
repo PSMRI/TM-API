@@ -71,7 +71,6 @@ public class WorklistController {
 	}
 
 	// doc worklist new
-
 	@Operation(summary = "Get doctor worklist")
 	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -96,7 +95,6 @@ public class WorklistController {
 	}
 
 	// doc worklist new (TM future scheduled beneficiary)
-
 	@Operation(summary = "Get doctor future worklist scheduled for telemedicine")
 	@GetMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getDocWorkListNewFutureScheduledForTM(
@@ -123,7 +121,6 @@ public class WorklistController {
 	}
 
 	// nurse worklist new
-
 	@Operation(summary = "Get nurse worklist")
 	@GetMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -143,7 +140,6 @@ public class WorklistController {
 	}
 
 	// nurse worklist TC schedule (current-date) new
-
 	@Operation(summary = "Get worklist for teleconsultation for the current date")
 	@GetMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -164,7 +160,6 @@ public class WorklistController {
 	}
 
 	// nurse worklist TC schedule (future-date) new
-
 	@Operation(summary = "Get worklist for teleconsultation for the future date")
 	@GetMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -210,7 +205,6 @@ public class WorklistController {
 	}
 
 	// Get Lab technician worklist new
-
 	@Operation(summary = "Get lab technician worklist")
 	@GetMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -231,7 +225,6 @@ public class WorklistController {
 	}
 
 	// Get radiologist worklist new
-
 	@Operation(summary = "Get radiologist worklist")
 	@GetMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -272,7 +265,6 @@ public class WorklistController {
 	}
 
 	// Get pharma worklist new
-
 	@Operation(summary = "Get pharmacist worklist")
 	@GetMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
@@ -312,7 +304,6 @@ public class WorklistController {
 	}
 
 	// Start of Fetch Previous Medical History...
-
 	@Operation(summary = "Get beneficiary history")
 	@PostMapping(value = { "/getBenPastHistory" })
 	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {

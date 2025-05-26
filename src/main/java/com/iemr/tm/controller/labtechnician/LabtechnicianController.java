@@ -41,7 +41,6 @@ import io.swagger.v3.oas.annotations.Operation;
  * 
  * @Objective Saving lab test results given by LabTechnician
  */
-
 @RestController
 
 @RequestMapping(value = "/labTechnician", headers = "Authorization", consumes = "application/json", produces = "application/json")
@@ -61,7 +60,6 @@ public class LabtechnicianController {
 	 * @param JSON requestObj
 	 * @return success or failure response
 	 */
-
 	@Operation(summary = "Save lab test result")
 	@PostMapping(value = { "/save/LabTestResult" })
 	public String saveLabTestResult(@RequestBody String requestObj) {
@@ -122,7 +120,6 @@ public class LabtechnicianController {
 	}
 
 	// API for getting lab result based on beneficiaryRegID and visitCode
-	
 	@Operation(summary = "Get lab test result for a beneficiary visit")
 	@PostMapping(value = { "/get/labResultForVisitcode" })
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {

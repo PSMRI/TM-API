@@ -45,7 +45,6 @@ import io.swagger.v3.oas.annotations.Operation;
  * @Objective Saving PNC nurse and doctor data
  *
  */
-
 @RestController
 @RequestMapping(value = "/PNC", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class PostnatalCareController {
@@ -166,7 +165,6 @@ public class PostnatalCareController {
 	 * @param comingRequest
 	 * @return PNC Care data in JSON format
 	 */
-
 	@Operation(summary = "Get PNC beneficiary details from nurse")
 	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
@@ -199,7 +197,6 @@ public class PostnatalCareController {
 	 * @param comingRequest
 	 * @return history data in JSON format
 	 */
-
 	@Operation(summary = "Get PNC beneficiary history nurse")
 	@PostMapping(value = { "/getBenHistoryDetails" })
 
@@ -231,7 +228,6 @@ public class PostnatalCareController {
 	 * @param comingRequest
 	 * @return vital data in JSON format
 	 */
-
 	@Operation(summary = "Get PNC beneficiary vital details from nurse")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
@@ -263,7 +259,6 @@ public class PostnatalCareController {
 	 * @param comingRequest
 	 * @return examination data in JSON format
 	 */
-
 	@Operation(summary = "Get PNC beneficiary examination details from nurse")
 	@PostMapping(value = { "/getBenExaminationDetailsPNC" })
 

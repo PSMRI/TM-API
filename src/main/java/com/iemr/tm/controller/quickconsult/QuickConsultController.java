@@ -50,7 +50,6 @@ import io.swagger.v3.oas.annotations.Operation;
  * @Date 12-01-2018
  *
  */
-
 @RestController
 @RequestMapping(value = "/genOPD-QC-quickConsult", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class QuickConsultController {
@@ -71,7 +70,6 @@ public class QuickConsultController {
 	 *            Beneficiary Vital and Anthropometry Detail Object and pushed to
 	 *            Database table
 	 */
-
 	@Operation(summary = "Save quick consult nurse data")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenQuickConsultDataNurse(@RequestBody String requestObj,
@@ -209,7 +207,6 @@ public class QuickConsultController {
 	 * @param benRegID and benVisitID
 	 * @return visit details in JSON format
 	 */
-
 	@Operation(summary = "Get quick consult beneficiary case record")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorQuickConsult" })
 	@Transactional(rollbackFor = Exception.class)
