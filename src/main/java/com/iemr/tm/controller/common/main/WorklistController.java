@@ -401,7 +401,8 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary medication history")
 	@PostMapping(value = { "/getBenMedicationHistory" })
-	public String getBenMedicationHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenMedicationHistory(
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
@@ -449,7 +450,8 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary menstrual history")
 	@PostMapping(value = { "/getBenMenstrualHistory" })
-	public String getBenMenstrualHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
+	public String getBenMenstrualHistory(
+			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
 		try {
