@@ -83,6 +83,7 @@ import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
 import com.iemr.tm.service.snomedct.SnomedServiceImpl;
 import com.iemr.tm.service.tele_consultation.SMSGatewayServiceImpl;
 import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.RestTemplateUtil;
 import com.iemr.tm.utils.exception.IEMRException;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.mapper.OutputMapper;
@@ -989,14 +990,7 @@ public class CommonDoctorServiceImpl {
 		String requestOBJ = OutputMapper.gson().toJson(tcSpecialistSlotBookingRequestOBJ);
 
 		RestTemplate restTemplate = new RestTemplate();
-		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-				.getRequest();
-		String jwtTokenFromCookie = cookieUtil.getJwtTokenFromCookie(requestHeader);
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "application/json");
-		headers.add("AUTHORIZATION", Authorization);
-		headers.add("Cookie", "Jwttoken=" + jwtTokenFromCookie);
-		HttpEntity<Object> request = new HttpEntity<Object>(requestOBJ, headers);
+		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestOBJ, Authorization);
 		ResponseEntity<String> response = restTemplate.exchange(tcSpecialistSlotBook, HttpMethod.POST, request,
 				String.class);
 		// System.out.println(response.getBody());
