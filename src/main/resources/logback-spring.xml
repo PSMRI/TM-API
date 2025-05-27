@@ -1,6 +1,6 @@
 <configuration>
     <property name="LOG_FILE"
-        value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/my-api}" />
+        value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/tm-api}" />
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
     <appender name="ECS_JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
