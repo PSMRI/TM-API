@@ -52,12 +52,4 @@ public class TokenDenylist {
             return false;
         }
     }
-
-    // Remove a token's jti from the denylist (Redis)
-    public void removeTokenFromDenylist(String jti) {
-        if (jti != null && !jti.trim().isEmpty()) {
-            String key = getKey(jti);  // Use helper method to get the key
-            redisTemplate.delete(key);
-        }
-    }
 }

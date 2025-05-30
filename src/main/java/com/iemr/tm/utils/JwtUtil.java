@@ -1,8 +1,6 @@
 package com.iemr.tm.utils;
 
-import java.util.Date;
 import java.util.function.Function;
-
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +32,15 @@ public class JwtUtil {
 	public Claims validateToken(String token) {
 		try {
 			Claims claims = Jwts.parser()
-				.setSigningKey(getSigningKey())
+				.verifyWith(getSigningKey())
 				.build()
-				.parseClaimsJws(token)
-				.getBody();
+				.parseSignedClaims(token)
+				.getPayload();
 				
 			String jti = claims.getId();
 			
-			// Check if token is denylisted
-			if (tokenDenylist.isTokenDenylisted(jti)) {
+			// Check if token is denylisted (only if jti exists)
+			if (jti != null && tokenDenylist.isTokenDenylisted(jti)) {
 				return null;
 			}
 			
@@ -63,9 +61,9 @@ public class JwtUtil {
 
 	private Claims extractAllClaims(String token) {
 		return Jwts.parser()
-			.setSigningKey(getSigningKey())
+			.verifyWith(getSigningKey())
 			.build()
-			.parseClaimsJws(token)
-			.getBody();
+			.parseSignedClaims(token)
+			.getPayload();
 	}
 }
