@@ -228,13 +228,32 @@ public class CSServiceImpl implements CSService {
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 
 				// call method to save history data
+				logger.info("Start saving BenHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				Long historySaveSuccessFlag = saveBenHistoryDetails(requestOBJ, benVisitID, benVisitCode);
+				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
+				
 				// call method to save Examination data
+				logger.info("Start saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				Long examinationSuccessFlag = saveBenExaminationDetails(requestOBJ, benVisitID, Authorization,
 						benVisitCode, benFlowID);
+				if (examinationSuccessFlag == null || examinationSuccessFlag <= 0) {
+				    logger.error("Error in saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// call method to save vitals data
+				logger.info("Start saving BenVitalsDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				Long vitalSaveSuccessFlag = saveBenVitalsDetails(requestOBJ, benVisitID, benVisitCode);
-
+				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenVitalsDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenVitalsDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
+				
 				if ((historySaveSuccessFlag != null && historySaveSuccessFlag > 0)
 						&& (examinationSuccessFlag != null && examinationSuccessFlag > 0)
 						&& (vitalSaveSuccessFlag != null && vitalSaveSuccessFlag > 0)) {

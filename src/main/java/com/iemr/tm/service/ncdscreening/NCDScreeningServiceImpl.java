@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +82,8 @@ import com.iemr.tm.utils.mapper.InputMapper;
 
 @Service
 public class NCDScreeningServiceImpl implements NCDScreeningService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	private NCDScreeningNurseServiceImpl ncdScreeningNurseServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
@@ -193,14 +197,32 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 					historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 							benVisitID, benVisitCode);
 				// call method to save Vital data
+				logger.info("Start saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
+				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// call method to save IDRS data
+				logger.info("Start saving IDRS details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				idrsFlag = saveidrsDetails(requestOBJ.getAsJsonObject("idrsDetails"), benVisitID, benVisitCode);
+				if (idrsFlag == null || idrsFlag <= 0) {
+				    logger.error("Error in saving IDRS details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved IDRS details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// call method to save physical activity
+				logger.info("Start saving Physical Activity details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				physicalActivityFlag = savePhysicalActivityDetails(
 						requestOBJ.getAsJsonObject("historyDetails").getAsJsonObject("physicalActivityHistory"),
 						benVisitID, benVisitCode);
+				if (physicalActivityFlag == null || physicalActivityFlag <= 0) {
+				    logger.error("Error in saving Physical Activity details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved Physical Activity details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}

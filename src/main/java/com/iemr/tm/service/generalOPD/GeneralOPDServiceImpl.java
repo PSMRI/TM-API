@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +82,13 @@ import com.iemr.tm.utils.mapper.InputMapper;
 
 @Service
 public class GeneralOPDServiceImpl implements GeneralOPDService {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
+	private static final String VITAL_DETAILS = "vitalDetails";
+	private static final String EXAMINATION_DETAILS = "examinationDetails";
+	private static final String HISTORY_DETAILS = "historyDetails";
+	
 	@Autowired
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	@Autowired
@@ -144,19 +153,40 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 				// create tc request
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
-				if (requestOBJ.has("historyDetails") && !requestOBJ.get("historyDetails").isJsonNull())
+				if (requestOBJ.has(HISTORY_DETAILS) && !requestOBJ.get(HISTORY_DETAILS).isJsonNull()) {
+				    logger.info("Start saving BenGeneralOPDHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 					historySaveSuccessFlag = saveBenGeneralOPDHistoryDetails(
-							requestOBJ.getAsJsonObject("historyDetails"), benVisitID, benVisitCode);
+							requestOBJ.getAsJsonObject(HISTORY_DETAILS), benVisitID, benVisitCode);
+					if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				        logger.error("Error in saving BenGeneralOPDHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    } else {
+				        logger.info("Successfully saved BenGeneralOPDHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    }
+				}
 
 				// call method to save vital data
-				if (requestOBJ.has("vitalDetails") && !requestOBJ.get("vitalDetails").isJsonNull())
-					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID,
+				if (requestOBJ.has(VITAL_DETAILS) && !requestOBJ.get(VITAL_DETAILS).isJsonNull()) {
+				    logger.info("Start saving BenVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					vitalSaveSuccessFlag = saveBenVitalDetails(requestOBJ.getAsJsonObject(VITAL_DETAILS), benVisitID,
 							benVisitCode);
-
+					 if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+					        logger.error("Error in saving BenVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    } else {
+					        logger.info("Successfully saved BenVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					    }
+					}
+					
 				// call method to save examination data
-				if (requestOBJ.has("examinationDetails") && !requestOBJ.get("examinationDetails").isJsonNull())
-					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
+				if (requestOBJ.has(EXAMINATION_DETAILS) && !requestOBJ.get(EXAMINATION_DETAILS).isJsonNull()) {
+				    logger.info("Start saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+					examtnSaveSuccessFlag = saveBenExaminationDetails(requestOBJ.getAsJsonObject(EXAMINATION_DETAILS),
 							benVisitID, benVisitCode);
+					if (examtnSaveSuccessFlag == null || examtnSaveSuccessFlag <= 0) {
+				        logger.error("Error in saving BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    } else {
+				        logger.info("Successfully saved BenExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    }
+				}
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}
