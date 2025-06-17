@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -44,13 +44,11 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
 
-
 /***
  * @Objective Saving General OPD data for Nurse and Doctor.
  */
 
 @RestController
-@CrossOrigin
 @RequestMapping(value = "/generalOPD", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class GeneralOPDController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
@@ -58,10 +56,11 @@ public class GeneralOPDController {
 	@Autowired
 	private GeneralOPDService generalOPDService;
 
-//	@Autowired
-//	public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl generalOPDServiceImpl) {
-//		this.generalOPDService = generalOPDService;
-//	}
+	// @Autowired
+	// public void setGeneralOPDServiceImpl(GeneralOPDServiceImpl
+	// generalOPDServiceImpl) {
+	// this.generalOPDService = generalOPDService;
+	// }
 
 	/**
 	 * @Objective Save General OPD data for nurse.
@@ -69,7 +68,6 @@ public class GeneralOPDController {
 	 * @return success or failure response
 	 * @throws Exception
 	 */
-	@CrossOrigin
 	@Operation(summary = "Save general OPD data collected by nurse")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenGenOPDNurseData(@RequestBody String requestObj,
@@ -106,7 +104,6 @@ public class GeneralOPDController {
 	 * @param requestObj
 	 * @return success or failure response
 	 */
-	@CrossOrigin
 	@Operation(summary = "Save general OPD data collected by doctor")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenGenOPDDoctorData(@RequestBody String requestObj,
@@ -138,7 +135,6 @@ public class GeneralOPDController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Get general OPD beneficiary visit details")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" })
 	@Transactional(rollbackFor = Exception.class)
@@ -171,7 +167,6 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return history details in JSON format
 	 */
-	@CrossOrigin()
 	@Operation(summary = "Get general OPD beneficiary history")
 	@PostMapping(value = { "/getBenHistoryDetails" })
 
@@ -203,7 +198,6 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return vital details in JSON format
 	 */
-	@CrossOrigin()
 	@Operation(summary = "Get general OPD beneficiary vitals")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
 	public String getBenVitalDetailsFrmNurse(
@@ -235,7 +229,6 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return examination details in JSON format
 	 */
-	@CrossOrigin()
 	@Operation(summary = "Get general OPD beneficiary examination details")
 	@PostMapping(value = { "/getBenExaminationDetails" })
 
@@ -267,7 +260,6 @@ public class GeneralOPDController {
 	 * @param comingRequest
 	 * @return doctor details in JSON format
 	 */
-	@CrossOrigin()
 	@Operation(summary = "Get general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" })
 	@Transactional(rollbackFor = Exception.class)
@@ -295,7 +287,6 @@ public class GeneralOPDController {
 		return response.toString();
 	}
 
-	@CrossOrigin
 	@Operation(summary = "Update beneficiary's general OPD visit details")
 	@PostMapping(value = { "/update/visitDetailsScreen" })
 	public String updateVisitNurse(@RequestBody String requestObj) {
@@ -330,8 +321,6 @@ public class GeneralOPDController {
 	 * @objective Replace General OPD History Data entered by Nurse with the details
 	 *            entered by Doctor
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
 	public String updateHistoryNurse(@RequestBody String requestObj) {
@@ -366,8 +355,6 @@ public class GeneralOPDController {
 	 * @objective Replace General OPD Vital Data entered by Nurse with the details
 	 *            entered by Doctor
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update general OPD beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
 	public String updateVitalNurse(@RequestBody String requestObj) {
@@ -402,8 +389,6 @@ public class GeneralOPDController {
 	 * @objective Replace General OPD Examination Data entered by Nurse with the
 	 *            details entered by Doctor
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update general OPD beneficiary examination data")
 	@PostMapping(value = { "/update/examinationScreen" })
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
@@ -437,7 +422,6 @@ public class GeneralOPDController {
 	 * @return success or failure response
 	 * @objective Replace General OPD doctor data for the doctor next visit
 	 */
-	@CrossOrigin
 	@Operation(summary = "Update general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,

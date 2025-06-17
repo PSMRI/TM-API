@@ -24,7 +24,7 @@ package com.iemr.tm.controller.snomedct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,8 +40,6 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
 
-
-
 @RequestMapping(value = "/snomed", consumes = "application/json", produces = "application/json")
 @RestController
 public class SnomedController {
@@ -54,9 +52,8 @@ public class SnomedController {
 		this.snomedService = snomedService;
 	}
 
-	@CrossOrigin
 	@Operation(summary = "Retrieve Snomed clinical term")
-	@PostMapping(value = "/getSnomedCTRecord",  headers = "Authorization")
+	@PostMapping(value = "/getSnomedCTRecord", headers = "Authorization")
 	public String getSnomedCTRecord(@Param(value = "{\"term\":\"String\"}") @RequestBody String request) {
 		OutputResponse output = new OutputResponse();
 		try {
@@ -80,7 +77,6 @@ public class SnomedController {
 		return output.toString();
 	}
 
-	@CrossOrigin
 	@Operation(summary = "Retrieve Snomed clinical term list")
 	@PostMapping(value = "/getSnomedCTRecordList", headers = "Authorization")
 	public String getSnomedCTRecordList(@Param(value = "{\"term\":\"String\"}") @RequestBody String request) {
@@ -91,7 +87,6 @@ public class SnomedController {
 
 			logger.info("getSnomedCTRecord request " + sctdescription.toString());
 
-			
 			String sctList = snomedService.findSnomedCTRecordList(sctdescription);
 
 			if (sctList != null)

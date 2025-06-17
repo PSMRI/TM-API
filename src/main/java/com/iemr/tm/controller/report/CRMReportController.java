@@ -27,7 +27,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +43,6 @@ import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
 @RequestMapping("/TMReport")
 @RestController
 public class CRMReportController {
@@ -53,7 +52,6 @@ public class CRMReportController {
 	@Autowired
 	private CRMReportService cRMReportService;
 
-	@CrossOrigin()
 	@Operation(summary = "Fetch chief complaints report")
 	@PostMapping(value = "/chiefcomplaintreport", headers = "Authorization", produces = { "application/json" })
 	public String chiefcomplaintreport(@RequestBody ReportInput input) {
@@ -78,7 +76,6 @@ public class CRMReportController {
 
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Fetch consultation report")
 	@PostMapping(value = "/ConsultationReport", headers = "Authorization", produces = { "application/json" })
 	public String getConsultationReport(@RequestBody ReportInput input) {
@@ -103,7 +100,6 @@ public class CRMReportController {
 
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Fetch total consultation report")
 	@PostMapping(value = "/TotalConsultationReport", headers = "Authorization", produces = { "application/json" })
 	public String getTotalConsultationReport(@RequestBody ReportInput input) {
@@ -128,7 +124,6 @@ public class CRMReportController {
 
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Fetch monthly report")
 	@PostMapping(value = "/MonthlyReport", headers = "Authorization", produces = {
 			"application/json" })
@@ -154,7 +149,6 @@ public class CRMReportController {
 
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Fetch daily report")
 	@PostMapping(value = "/DailyReport", headers = "Authorization", produces = {
 			"application/json" })
