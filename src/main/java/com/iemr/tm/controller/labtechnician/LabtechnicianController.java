@@ -24,7 +24,7 @@ package com.iemr.tm.controller.labtechnician;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,33 +39,29 @@ import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
-
 /***
  * 
  * @Objective Saving lab test results given by LabTechnician
  */
 
 @RestController
-@CrossOrigin
 @RequestMapping(value = "/labTechnician", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class LabtechnicianController {
-	
+
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	
+
 	private LabTechnicianServiceImpl labTechnicianServiceImpl;
-	
+
 	@Autowired
 	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
 		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
-	
+
 	/**
 	 * @Objective Save lab test results given by LabTechnician
-	 * @param JSON requestObj 
+	 * @param JSON requestObj
 	 * @return success or failure response
 	 */
-	@CrossOrigin
 	@Operation(summary = "Save lab test result")
 	@PostMapping(value = { "/save/LabTestResult" })
 	public String saveLabTestResult(@RequestBody String requestObj) {
@@ -95,8 +91,7 @@ public class LabtechnicianController {
 		}
 		return response.toString();
 	}
-	
-	@CrossOrigin
+
 	@Operation(summary = "Get beneficiary lab test prescription")
 	@PostMapping(value = { "/get/prescribedProceduresList" })
 	public String getBeneficiaryPrescribedProcedure(@RequestBody String requestOBJ) {
@@ -127,7 +122,6 @@ public class LabtechnicianController {
 	}
 
 	// API for getting lab result based on beneficiaryRegID and visitCode
-	@CrossOrigin()
 	@Operation(summary = "Get lab test result for a beneficiary visit")
 	@PostMapping(value = { "/get/labResultForVisitcode" })
 	public String getLabResultForVisitCode(@RequestBody String requestOBJ) {
@@ -154,5 +148,5 @@ public class LabtechnicianController {
 		}
 		return response.toString();
 	}
-	
+
 }

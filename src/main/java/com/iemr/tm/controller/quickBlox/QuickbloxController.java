@@ -24,7 +24,7 @@ package com.iemr.tm.controller.quickBlox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,8 +41,6 @@ import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 
-
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/quickblox", headers = "Authorization", consumes = "application/json", produces = "application/json")
 
@@ -50,8 +48,8 @@ public class QuickbloxController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	@Autowired
 	private QuickbloxService quickbloxService;
-	@CrossOrigin
-	@Operation(summary= "Get quickblox id")
+
+	@Operation(summary = "Get quickblox id")
 	@PostMapping(value = { "/getquickbloxIds" })
 	public String getquickbloxIds(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -62,14 +60,11 @@ public class QuickbloxController {
 					quickbloxService.getQuickbloxIds(requestObj));
 			return response.toString();
 
-
 		} catch (Exception e) {
 			logger.error("Error while getting quickblox Ids :" + e);
 			response.setError(5000, "Error while getting quickblox Ids");
 		}
 		return response.toString();
 	}
-	
-
 
 }
