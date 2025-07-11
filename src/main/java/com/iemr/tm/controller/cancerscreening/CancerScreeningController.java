@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -49,7 +49,6 @@ import io.swagger.v3.oas.annotations.Operation;
 /**
  * @Objective Saving Cancer screening data for Nurse and Doctor both.
  */
-@CrossOrigin
 @RestController
 @RequestMapping(value = "/CS-cancerScreening", headers = "Authorization", consumes = "application/json", produces = "application/json")
 public class CancerScreeningController {
@@ -69,8 +68,6 @@ public class CancerScreeningController {
 	 * @return success or failure response
 	 * @throws Exception
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Save cancer screening data collected by nurse")
 	@PostMapping(value = { "/save/nurseData" })
 	public String saveBenCancerScreeningNurseData(@RequestBody String requestObj,
@@ -107,8 +104,6 @@ public class CancerScreeningController {
 	 * @param JSON requestObj
 	 * @return success or failure response
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update cancer screening data by the doctor")
 	@PostMapping(value = { "/save/doctorData" })
 	public String saveBenCancerScreeningDoctorData(@RequestBody String requestObj,
@@ -140,7 +135,6 @@ public class CancerScreeningController {
 		return response.toString();
 	}
 
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary visit details")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVisitDetailsScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVisitDetails(
@@ -170,8 +164,6 @@ public class CancerScreeningController {
 	 * @param benRegID and benVisitID
 	 * @return history details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary cancer history")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocHistoryScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnHistory(
@@ -201,8 +193,6 @@ public class CancerScreeningController {
 	 * @param benRegID and benVisitID
 	 * @return vital details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary vitals")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocVitalScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnVital(
@@ -232,8 +222,6 @@ public class CancerScreeningController {
 	 * @param benRegID and benVisitID
 	 * @return examination details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary examination details")
 	@PostMapping(value = { "/getBenDataFrmNurseToDocExaminationScreen" })
 	public String getBenDataFrmNurseScrnToDocScrnExamination(
@@ -263,8 +251,6 @@ public class CancerScreeningController {
 	 * @param benRegID
 	 * @return previous family history details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary family history")
 	@PostMapping(value = { "/getBenCancerFamilyHistory" })
 	public String getBenCancerFamilyHistory(
@@ -296,8 +282,6 @@ public class CancerScreeningController {
 	 * @param benRegID
 	 * @return previous personal history details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary personal history")
 	@PostMapping(value = { "/getBenCancerPersonalHistory" })
 	public String getBenCancerPersonalHistory(
@@ -329,8 +313,6 @@ public class CancerScreeningController {
 	 * @param benRegID
 	 * @return previous personal history details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary personal diet history")
 	@PostMapping(value = { "/getBenCancerPersonalDietHistory" })
 	public String getBenCancerPersonalDietHistory(
@@ -362,8 +344,6 @@ public class CancerScreeningController {
 	 * @param benRegID
 	 * @return previous obstetric history details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary obstetric history")
 	@PostMapping(value = { "/getBenCancerObstetricHistory" })
 	public String getBenCancerObstetricHistory(
@@ -394,8 +374,6 @@ public class CancerScreeningController {
 	 * @param benRegID
 	 * @return diagnosis details in JSON format
 	 */
-
-	@CrossOrigin()
 	@Operation(summary = "Get beneficiary case record and referral details")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorCS" })
 	@Transactional(rollbackFor = Exception.class)
@@ -422,7 +400,6 @@ public class CancerScreeningController {
 		return response.toString();
 	}
 
-	@CrossOrigin
 	@Operation(summary = "Update cancer screening history")
 	@PostMapping(value = { "/update/historyScreen" })
 	public String updateCSHistoryNurse(
@@ -474,8 +451,6 @@ public class CancerScreeningController {
 	 * @objective Replace Cancer Screening Vital Details entered by Nurse with the
 	 *            details entered by Doctor
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
 	public String upodateBenVitalDetail(
@@ -514,8 +489,6 @@ public class CancerScreeningController {
 	 * @objective Replace Cancer Screening examination Details entered by Nurse with
 	 *            the details entered by Doctor
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update beneficiary examination details")
 	@PostMapping(value = { "/update/examinationScreen" })
 	public String upodateBenExaminationDetail(@RequestBody String requestObj) {
@@ -551,8 +524,6 @@ public class CancerScreeningController {
 	 * @objective update Cancer Diagnosis Details By Oncologist
 	 * 
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update cancer diagnosis details by oncologist")
 	@PostMapping(value = { "/update/examinationScreen/diagnosis" })
 	public String updateCancerDiagnosisDetailsByOncologist(
@@ -587,8 +558,6 @@ public class CancerScreeningController {
 	 * @objective Replace doctor data for the doctor next visit
 	 * 
 	 */
-
-	@CrossOrigin
 	@Operation(summary = "Update cancer screening data")
 	@PostMapping(value = { "/update/doctorData" })
 	public String updateCancerScreeningDoctorData(@RequestBody String requestObj) {
