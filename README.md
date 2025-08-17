@@ -25,13 +25,13 @@ Telemedicine is integral to HWCs, enhancing accessibility and efficiency in heal
 
 Telemedicine strengthens HWCs by bridging geographical gaps, optimizing resources, and ensuring timely medical intervention.
 
-
 ## Building From Source
 
 This microservice is built using Java and the Spring Boot framework, with MySQL as the underlying database. Before building the TM module, ensure you have the following prerequisites:
 For step-by-step guide, follow this [guide] (https://piramal-swasthya.gitbook.io/amrit/developer-guide/development-environment-setup) .
 
 ## Prerequisites
+
 - JDK 17 (LTS)
 - Maven
 
@@ -39,12 +39,15 @@ To build the TM module from source, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Install the required dependencies and build the module using the following command:
+
 - Execute the following command:
   ```
   mvn clean install
   ```
+
 3.  You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
-4. Run the development server by following these steps:
+4.  Run the development server by following these steps:
+
 - Start the Redis server.
 - Execute the following command:
   ```
@@ -60,10 +63,61 @@ With the TM module, you can efficiently manage all aspects of your telemedicine 
 
 ## Filing Issues
 
-If you encounter any issues, bugs, or have feature requests, please file them in the [main AMRIT repository](https://github.com/PSMRI/AMRIT/issues). Centralizing all feedback helps us streamline improvements and address concerns efficiently.  
+If you encounter any issues, bugs, or have feature requests, please file them in the [main AMRIT repository](https://github.com/PSMRI/AMRIT/issues). Centralizing all feedback helps us streamline improvements and address concerns efficiently.
 
 ## Join Our Community
 
 We’d love to have you join our community discussions and get real-time support!  
-Join our [Discord server](https://discord.gg/FVQWsf5ENS) to connect with contributors, ask questions, and stay updated.  
+Join our [Discord server](https://discord.gg/FVQWsf5ENS) to connect with contributors, ask questions, and stay updated.
 
+## Setting Up Commit Hooks
+
+This project uses Git hooks to enforce consistent code quality and commit message standards. Even though this is a Java project, the hooks are powered by Node.js. Follow these steps to set up the hooks locally:
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm (comes with Node.js)
+
+### Setup Steps
+
+1. **Install Node.js and npm**
+   - Download and install from [nodejs.org](https://nodejs.org/)
+   - Verify installation with:
+     ```
+     node --version
+     npm --version
+     ```
+2. **Install dependencies**
+   - From the project root directory, run:
+     ```
+     npm ci
+     ```
+   - This will install all required dependencies including Husky and commitlint
+3. **Verify hooks installation**
+   - The hooks should be automatically installed by Husky
+   - You can verify by checking if the `.husky` directory contains executable hooks
+
+### Commit Message Convention
+
+This project follows a specific commit message format:
+
+- Format: `type(scope): subject`
+- Example: `feat(login): add remember me functionality`
+  Types include:
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code changes that neither fix bugs nor add features
+- `perf`: Performance improvements
+- `test`: Adding or fixing tests
+- `build`: Changes to build process or tools
+- `ci`: Changes to CI configuration
+- `chore`: Other changes (e.g., maintenance tasks, dependencies)
+  Your commit messages will be automatically validated when you commit, ensuring project consistency.
+
+## Usage
+
+OVER-CODER marked this conversation as resolved.
+All the features of the TM module have been exposed as REST endpoints. For detailed information on how to use the service, refer to the SWAGGER API specification.

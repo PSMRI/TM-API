@@ -58,3 +58,6 @@ command_output.log
 
 # Properties
 src/main/environment/common_local.properties
+
+# Exclude pack-lock.json
+package-lock.json
