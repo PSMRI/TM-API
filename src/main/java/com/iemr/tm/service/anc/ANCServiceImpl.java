@@ -33,6 +33,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +102,9 @@ import com.iemr.tm.utils.mapper.InputMapper;
 @Service
 public class ANCServiceImpl implements ANCService {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
+	
 	private ANCNurseServiceImpl ancNurseServiceImpl;
 	private ANCDoctorServiceImpl ancDoctorServiceImpl;
 	private CommonNurseServiceImpl commonNurseServiceImpl;
@@ -208,17 +213,44 @@ public class ANCServiceImpl implements ANCService {
 				// create tc request
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save ANC data
+			    logger.info("Start saving ANC details for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+
 				ancSaveSuccessFlag = saveBenANCDetails(requestOBJ.getAsJsonObject("ancDetails"), benVisitID,
 						benVisitCode);
+				 if (ancSaveSuccessFlag == null || ancSaveSuccessFlag <= 0) {
+				        logger.error("Error in saving BenANCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    } else {
+				        logger.info("Successfully saved BenANCDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    }
 				// call method to save History data
+				    logger.info("Start saving BenANCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				historySaveSuccessFlag = saveBenANCHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
+				 if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				        logger.error("Error in saving BenANCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    } else {
+				        logger.info("Successfully saved BenANCHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				    }
 				// call method to save Vital data
+				    logger.info("Start saving BenANCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+
 				vitalSaveSuccessFlag = saveBenANCVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"), benVisitID,
 						benVisitCode);
+				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+			        logger.error("Error in saving BenANCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+			    } else {
+			        logger.info("Successfully saved BenANCVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+			    }
+				
 				// call method to save Examination data
+			    logger.info("Start saving BenANCExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				examtnSaveSuccessFlag = saveBenANCExaminationDetails(requestOBJ.getAsJsonObject("examinationDetails"),
 						benVisitID, benVisitCode);
+				if (examtnSaveSuccessFlag == null || examtnSaveSuccessFlag <= 0) {
+			        logger.error("Error in saving BenANCExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+			    } else {
+			        logger.info("Successfully saved BenANCExaminationDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+			    }
 			} else {
 				throw new RuntimeException("Error occurred while creating beneficiary visit");
 			}

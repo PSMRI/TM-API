@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +79,9 @@ import com.iemr.tm.utils.mapper.InputMapper;
 
 @Service
 public class NCDCareServiceImpl implements NCDCareService {
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
 	private CommonNurseServiceImpl commonNurseServiceImpl;
 	private CommonDoctorServiceImpl commonDoctorServiceImpl;
 	private NCDCareDoctorServiceImpl ncdCareDoctorServiceImpl;
@@ -164,12 +169,24 @@ public class NCDCareServiceImpl implements NCDCareService {
 			if (benVisitID != null && benVisitID > 0) {
 				tcRequestOBJ = commonServiceImpl.createTcRequest(requestOBJ, nurseUtilityClass, Authorization);
 				// call method to save History data
+				logger.info("Start saving BenNCDCareHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				historySaveSuccessFlag = saveBenNCDCareHistoryDetails(requestOBJ.getAsJsonObject("historyDetails"),
 						benVisitID, benVisitCode);
+				if (historySaveSuccessFlag == null || historySaveSuccessFlag <= 0) {
+				logger.error("error in saving BenNCDCareHistoryDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
+				else {
+					logger.info("successfully saved BenNCDCareHistoryDetails BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// call method to save Vital data
+				logger.info("Start saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
 				vitalSaveSuccessFlag = saveBenNCDCareVitalDetails(requestOBJ.getAsJsonObject("vitalDetails"),
 						benVisitID, benVisitCode);
-
+				if (vitalSaveSuccessFlag == null || vitalSaveSuccessFlag <= 0) {
+				    logger.error("Error in saving BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				} else {
+				    logger.info("Successfully saved BenNCDCareVitalDetails for BenVisitID={} and BenVisitCode={}", benVisitID, benVisitCode);
+				}
 				// i = commonNurseServiceImpl.updateBeneficiaryStatus('N',
 				// tmpOBJ.get("beneficiaryRegID").getAsLong());
 			} else {
