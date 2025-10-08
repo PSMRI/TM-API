@@ -35,16 +35,23 @@ import com.iemr.tm.utils.sessionobject.SessionObject;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import com.iemr.tm.utils.validator.Validator;
 
 @Component
 public class HTTPRequestInterceptor implements HandlerInterceptor {
+	private Validator validator;
 	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-	
+
 	private SessionObject sessionObject;
 
 	@Autowired
 	public void setSessionObject(SessionObject sessionObject) {
 		this.sessionObject = sessionObject;
+	}
+
+	@Autowired
+	public void setValidator(Validator validator) {
+		this.validator = validator;
 	}
 
 	@Override
@@ -83,11 +90,16 @@ public class HTTPRequestInterceptor implements HandlerInterceptor {
 				case "api-docs":
 					break;
 
-				case "error":
-					status = false;
-					break;
-				default:
-					break;
+					case "error":
+						status = false;
+						break;
+					default:
+						String remoteAddress = request.getHeader("X-FORWARDED-FOR");
+						if (remoteAddress == null || remoteAddress.trim().length() == 0) {
+							remoteAddress = request.getRemoteAddr();
+						}
+						validator.checkKeyExists(authorization, remoteAddress);
+						break;
 				}
 			} catch (Exception e) {
 				OutputResponse output = new OutputResponse();
