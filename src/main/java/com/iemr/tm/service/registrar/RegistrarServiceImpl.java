@@ -46,6 +46,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -654,44 +657,89 @@ public class RegistrarServiceImpl implements RegistrarService {
 	// New beneficiary registration with common and identity
 	public String registerBeneficiary(String comingRequest, String Authorization) throws Exception {
 
+		logger.info("=== Starting Beneficiary Registration ===");
+		logger.info("Registration URL: {}", registrationUrl);
+		logger.info("Request Payload: {}", comingRequest);
+
 		OutputResponse response1 = new OutputResponse();
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
 		Map<String, Object> responseMap = new HashMap<>();
-        
-		RestTemplate restTemplate = new RestTemplate();
-		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
-		logger.info("Before Calling Common-API registration : "+request.getHeaders());
-		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
-				String.class);
-		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
-			String responseStr = response.getBody();
-			JSONObject responseOBJ = new JSONObject(responseStr);
-			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
-			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
-			responseMap.put("benGenId", beneficiaryID);
-			responseMap.put("benRegId", beneficiaryRegID);
 
-			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
-			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
-				responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
-		        response1.setResponse(new Gson().toJson(responseMap));
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 
-			} else {
-				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
-						beneficiaryID);
+			logger.info("Request Headers: {}", request.getHeaders());
+			logger.info("Calling Common-API registration endpoint: {} with method: POST", registrationUrl);
 
-				if (i > 0) {
-					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
+			long startTime = System.currentTimeMillis();
+
+			ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
+					String.class);
+
+			long endTime = System.currentTimeMillis();
+			logger.info("API call completed in {} ms", (endTime - startTime));
+			logger.info("Response Status Code: {}", response.getStatusCodeValue());
+			logger.info("Response Body: {}", response.getBody());
+
+			if (response.getStatusCodeValue() == 200 && response.hasBody()) {
+				String responseStr = response.getBody();
+				JSONObject responseOBJ = new JSONObject(responseStr);
+				beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
+				beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
+
+				logger.info("Successfully registered - BeneficiaryID: {}, BenRegID: {}", beneficiaryID,
+						beneficiaryRegID);
+
+				responseMap.put("benGenId", beneficiaryID);
+				responseMap.put("benRegId", beneficiaryRegID);
+
+				BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+				if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
+					logger.info("Mobile registration flow detected");
+					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "
+							+ beneficiaryID + " , BenRegID is : " + beneficiaryRegID);
 					response1.setResponse(new Gson().toJson(responseMap));
 
 				} else {
-					response1.setError(5000, "Error in registration; please contact administrator");
+					logger.info("Creating beneficiary flow record");
+					int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
+							beneficiaryID);
+
+					if (i > 0) {
+						logger.info("Beneficiary flow record created successfully");
+						responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "
+								+ beneficiaryID + " , BenRegID is : " + beneficiaryRegID);
+						response1.setResponse(new Gson().toJson(responseMap));
+					} else {
+						logger.error("Failed to create beneficiary flow record");
+						response1.setError(5000, "Error in registration; please contact administrator");
+					}
 				}
+			} else {
+				logger.error("Registration failed - Status Code: {}, Has Body: {}",
+						response.getStatusCodeValue(), response.hasBody());
 			}
-		} else {
-			// log error that registration failed.
+
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			logger.error("HTTP Error calling registration API: {} - Status: {}, Response: {}",
+					registrationUrl, e.getStatusCode(), e.getResponseBodyAsString(), e);
+			throw e;
+
+		} catch (ResourceAccessException e) {
+			logger.error("Connection timeout or network error calling registration API: {}",
+					registrationUrl, e);
+			logger.error("Possible causes: API is down, network issue, firewall blocking, incorrect URL");
+			logger.error("Exception details: {}", e.getMessage());
+			throw e;
+
+		} catch (Exception e) {
+			logger.error("Unexpected error during beneficiary registration", e);
+			throw e;
 		}
+
+		logger.info("=== Beneficiary Registration Completed ===");
 		return response1.toString();
 	}
 
@@ -719,7 +767,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		RestTemplate restTemplate = new RestTemplate();
 		JSONObject obj = new JSONObject(requestObj);
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestObj, Authorization);
-		
+
 		if ((obj.has("beneficiaryID") && !obj.isNull("beneficiaryID"))
 				|| (obj.has("HealthID") && !obj.isNull("HealthID"))
 				|| (obj.has("HealthIDNumber") && !obj.isNull("HealthIDNumber"))) {
