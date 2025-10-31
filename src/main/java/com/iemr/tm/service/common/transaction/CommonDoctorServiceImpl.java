@@ -676,11 +676,12 @@ public class CommonDoctorServiceImpl {
 					referDetailsList.add(referDetailsTemp);
 				}
 			}
-		} /*
-			 * else { if (referDetails.getReferredToInstituteName() != null ||
-			 * referDetails.getRevisitDate() != null || referDetails.getReferralReason() !=
-			 * null) referDetailsList.add(referDetails); }
-			 */
+		} else {
+			if (referDetails.getReferredToInstituteName() != null ||
+					referDetails.getRevisitDate() != null || referDetails.getReferralReason() != null) {
+				referDetailsList.add(referDetails);
+			}
+		}
 
 		ArrayList<BenReferDetails> res = (ArrayList<BenReferDetails>) benReferDetailsRepo.saveAll(referDetailsList);
 		if (referDetailsList.size() == res.size()) {
