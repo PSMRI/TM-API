@@ -27,6 +27,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.checkerframework.checker.units.qual.s;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,11 +243,11 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 	}
 
 	public int updateBenFlowAfterDocData(Long benFlowID, Long benRegID, Long benID, Long benVisitID, short docFlag,
-			short pharmaFlag, short oncologistFlag, short tcSpecialistFlag, int tcUserID, Timestamp tcDate,short labTechnicianFlag) {
+			short pharmaFlag, short oncologistFlag, short tcSpecialistFlag, int tcUserID, Timestamp tcDate,short labTechnicianFlag, Boolean signatureFlag) {
 		int i = 0;
 		try {
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, docFlag,
-					pharmaFlag, oncologistFlag, tcSpecialistFlag, tcUserID, tcDate,labTechnicianFlag);
+					pharmaFlag, oncologistFlag, tcSpecialistFlag, tcUserID, tcDate,labTechnicianFlag, signatureFlag);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
 		}
@@ -291,7 +292,7 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 				pharmaF1 = pharmaFlag;
 
 			i = beneficiaryFlowStatusRepo.updateBenFlowStatusAfterDoctorActivity(benFlowID, benRegID, benID, docFlag,
-					pharmaF1, oncologistFlag, tcSpecialistFlag, tcUserID, tcDate,labTechnicianFlag);
+					pharmaF1, oncologistFlag, tcSpecialistFlag, tcUserID, tcDate,labTechnicianFlag, false);
 		} catch (Exception e) {
 			logger.error("Error in ben flow creation = " + e);
 			throw new Exception(e);
