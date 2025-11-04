@@ -783,7 +783,7 @@ public class CommonDoctorServiceImpl {
 			// updating lab technician flag as well after feto sense
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
-					tcSpecialistFlag, labTechnicianFlag);
+					tcSpecialistFlag, labTechnicianFlag,signatureFlag);
 			if (tcSpecialistFlag == 9) {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
 						commonUtilityClass.getVisitCode(), "D");
@@ -897,7 +897,7 @@ public class CommonDoctorServiceImpl {
 
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateTCSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
-					tcSpecialistFlag, tcUserID, tcDate, labTechnicianFlag);
+					tcSpecialistFlag, tcUserID, tcDate, labTechnicianFlag, doctorSignatureFlag);
 
 			if (tcSpecialistFlag == 9) {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
@@ -945,7 +945,7 @@ public class CommonDoctorServiceImpl {
 
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate,
-					labTechnicianFlag);
+					labTechnicianFlag, doctorSignatureFlag);
 
 		}
 

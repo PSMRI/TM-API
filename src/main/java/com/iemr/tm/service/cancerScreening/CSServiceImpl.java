@@ -811,6 +811,12 @@ public class CSServiceImpl implements CSService {
 		Long docDataSuccessFlag = null;
 		Long tcRequestStatusFlag = null;
 
+		Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
+
 		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -916,7 +922,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
-							tcUserID, tcDate, (short) 0);
+							tcUserID, tcDate, (short) 0, doctorSignatureFlag);
 				}
 
 				if (l1 > 0 || l2 > 0)
