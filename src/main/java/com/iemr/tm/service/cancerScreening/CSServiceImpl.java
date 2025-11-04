@@ -913,7 +913,7 @@ public class CSServiceImpl implements CSService {
 						&& commonUtilityClass.getIsSpecialist() == true) {
 					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
-							tcSpecialistFlag, (short) 0);
+							tcSpecialistFlag, (short) 0, doctorSignatureFlag);
 
 					if (tcSpecialistFlag == 9) {
 						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
