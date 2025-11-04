@@ -269,7 +269,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
-			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag, @Param("tcSpecialistFlag") Short tcSpecialistFlag);
+			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag, @Param("tcSpecialistFlag") Short tcSpecialistFlag, @Param("signatureFlag") Boolean signatureFlag);
 
 	@Query("SELECT t from BeneficiaryFlowStatus t "
 			+ " WHERE t.benVisitDate >= Date(:fromDate) AND t.vanID = :vanID AND t.radiologist_flag = 1 "
