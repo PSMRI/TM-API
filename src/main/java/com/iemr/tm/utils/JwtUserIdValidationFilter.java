@@ -77,18 +77,6 @@ public class JwtUserIdValidationFilter implements Filter {
 			logger.warn("Origin [{}] is NOT allowed. CORS headers NOT added.", origin);
 		}
 
-		if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-			// OPTIONS (preflight) - respond with full allowed methods
-			response.setHeader("Access-Control-Allow-Origin", origin);
-			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
-			response.setHeader("Access-Control-Allow-Headers",
-					"Authorization, Content-Type, Accept, Jwttoken, serverAuthorization, ServerAuthorization, serverauthorization, Serverauthorization");
-			response.setHeader("Access-Control-Allow-Credentials", "true");
-			logger.info("OPTIONS request - skipping JWT validation");
-			response.setStatus(HttpServletResponse.SC_OK);
-			return;
-		}
-
 		logger.info("JwtUserIdValidationFilter invoked for path: " + path);
 
 		// Log cookies for debugging
