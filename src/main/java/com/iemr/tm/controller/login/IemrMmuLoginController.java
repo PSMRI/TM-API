@@ -35,10 +35,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.controller.registrar.main.RegistrarController;
 import com.iemr.tm.service.login.IemrMmuLoginServiceImpl;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.JwtUtil;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/user", headers = "Authorization", consumes = "application/json", produces = "application/json")
@@ -49,6 +52,10 @@ public class IemrMmuLoginController {
 
 	private IemrMmuLoginServiceImpl iemrMmuLoginServiceImpl;
 
+
+	@Autowired
+	private JwtUtil jwtUtil;
+	
 	@Autowired
 	public void setIemrMmuLoginServiceImpl(IemrMmuLoginServiceImpl iemrMmuLoginServiceImpl) {
 		this.iemrMmuLoginServiceImpl = iemrMmuLoginServiceImpl;
@@ -57,12 +64,20 @@ public class IemrMmuLoginController {
 	@Operation(summary = "Get user service point van details")
 	@PostMapping(value = "/getUserServicePointVanDetails", produces = {
 			"application/json" })
-	public String getUserServicePointVanDetails(@RequestBody String comingRequest) {
+	public String getUserServicePointVanDetails(@RequestBody String comingRequest, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
+
+		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
+		String userId = jwtUtil.getUserIdFromToken(jwtToken);
+
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getUserServicePointVanDetails request " + comingRequest);
+			if (!obj.has("userID") || !obj.get("userID").toString().equals(userId)) {
+				response.setError(5001, "Unauthorized access - userID does not match token");
+				return response.toString();
+			}
 			String responseData = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(obj.getInt("userID"));
 			response.setResponse(responseData);
 		} catch (Exception e) {
@@ -97,16 +112,25 @@ public class IemrMmuLoginController {
 
 	@Operation(summary = "Get user service point van details")
 	@PostMapping(value = "/getUserVanSpDetails", produces = { "application/json" })
-	public String getUserVanSpDetails(@RequestBody String comingRequest) {
+	public String getUserVanSpDetails(@RequestBody String comingRequest, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
+		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
+		String userId = jwtUtil.getUserIdFromToken(jwtToken);
 		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getServicepointVillages request " + comingRequest);
+			
 			if (obj.has("userID") && obj.has("providerServiceMapID")) {
-				String responseData = iemrMmuLoginServiceImpl.getUserVanSpDetails(obj.getInt("userID"),
-						obj.getInt("providerServiceMapID"));
-				response.setResponse(responseData);
+				// read userID from payload and compare with userId from token
+				String payloadUserId = String.valueOf(obj.getInt("userID"));
+				if (payloadUserId.equals(userId)) {
+					String responseData = iemrMmuLoginServiceImpl.getUserVanSpDetails(obj.getInt("userID"),
+							obj.getInt("providerServiceMapID"));
+					response.setResponse(responseData);
+				} else {
+					response.setError(5001, "Unauthorized access - userID does not match token");
+				}
 			} else {
 				response.setError(5000, "Invalid request");
 			}
