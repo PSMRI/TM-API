@@ -56,16 +56,16 @@ public class VideoConsultationController {
 	public String login(@PathVariable("userID") Long userID, HttpServletRequest request) {
 
 		OutputResponse response = new OutputResponse();
+		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
 
-		try {
 			if(userID.toString().equals(userId)) {
 				String createdData = videoConsultationService.login(userID);
 
 				response.setResponse(createdData.toString());
-			}else {
-				response.setError(5000, "Unauthorized access!");
+			} else {
+				response.setError(403, "Unauthorized access!");
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());

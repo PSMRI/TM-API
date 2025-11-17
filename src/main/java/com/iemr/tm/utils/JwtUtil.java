@@ -67,7 +67,12 @@ public class JwtUtil {
 			.getPayload();
 	}
 
-	 public String getUserIdFromToken(String token) {
-        return extractAllClaims(token).get("userId", String.class);
-    }
+	public String getUserIdFromToken(String token) {
+     Claims claims = validateToken(token);
+     if (claims == null) {
+         return null;
+     }
+     return claims.get("userId", String.class);
+ }
 }
+

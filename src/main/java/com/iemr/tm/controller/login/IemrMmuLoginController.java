@@ -114,9 +114,9 @@ public class IemrMmuLoginController {
 	@PostMapping(value = "/getUserVanSpDetails", produces = { "application/json" })
 	public String getUserVanSpDetails(@RequestBody String comingRequest, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
+		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-		try {
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getServicepointVillages request " + comingRequest);
@@ -129,7 +129,7 @@ public class IemrMmuLoginController {
 							obj.getInt("providerServiceMapID"));
 					response.setResponse(responseData);
 				} else {
-					response.setError(5001, "Unauthorized access - userID does not match token");
+					response.setError(403, "Unauthorized access - userID does not match token");
 				}
 			} else {
 				response.setError(5000, "Invalid request");

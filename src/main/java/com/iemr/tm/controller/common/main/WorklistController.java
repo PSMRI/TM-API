@@ -686,18 +686,16 @@ public class WorklistController {
 	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("userID") Integer userID, @PathVariable("serviceID") Integer serviceID, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
+		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-		try {
 			if (providerServiceMapID != null && userID != null && userID.toString().equals(userId)) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTM(providerServiceMapID, userID,
 						serviceID);
 				if (s != null)
 					response.setResponse(s);
-			}
-			else if(userId  == null || !userID.toString().equals(userId))
-			{
-				response.setError(5000, "Unauthorized access!");
+			} else if(userId  == null || !userID.toString().equals(userId)) {
+				response.setError(403, "Unauthorized access!");
 			} else {
 				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
 						+ providerServiceMapID + " SID = " + userID);
@@ -719,22 +717,18 @@ public class WorklistController {
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
-
+		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
 
-		try {
 			if (providerServiceMapID != null && userID != null && userID.toString().equals(userId)) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTMPatientApp(providerServiceMapID,
 						userID, serviceID, vanID);
 				if (s != null)
 					response.setResponse(s);
-			}
-			else if(userId  == null || !userID.toString().equals(userId))
-			{
-				response.setError(5000, "Unauthorized access!");
-			}
-			 else {
+			} else if(userId  == null || !userID.toString().equals(userId)) {
+				response.setError(403, "Unauthorized access!");
+			} else {
 				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
 						+ providerServiceMapID + " SID = " + userID);
 				response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
@@ -755,22 +749,19 @@ public class WorklistController {
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("userID") Integer userID,
 			@PathVariable("serviceID") Integer serviceID, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
+		try {
 
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
 
-		try {
 			if (providerServiceMapID != null && userID != null && userID.toString().equals(userId)) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewFutureScheduledForTM(providerServiceMapID,
 						userID, serviceID);
 				if (s != null)
 					response.setResponse(s);
-			} 
-			else if(userId  == null || !userID.toString().equals(userId))
-			{
-				response.setError(5000, "Unauthorized access!");
-			}	
-			else {
+			} else if(userId  == null || !userID.toString().equals(userId)) {
+				response.setError(403, "Unauthorized access!");
+			} else {
 				logger.error("Invalid request, either ProviderServiceMapID or userID is invalid. PSMID = "
 						+ providerServiceMapID + " UserID = " + userID);
 				response.setError(5000, "Invalid request, either ProviderServiceMapID or userID is invalid");
