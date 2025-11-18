@@ -159,7 +159,8 @@ public class JwtUserIdValidationFilter implements Filter {
 				.anyMatch(pattern -> {
 					String regex = pattern
 							.replace(".", "\\.")
-							.replace("*", ".*");
+							.replace("*", ".*")
+						    .replace("http://localhost:.*", "http://localhost:\\d+");
 
 					boolean matched = origin.matches(regex);
 					return matched;
