@@ -148,24 +148,25 @@ public class TeleConsultationController {
 		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
+		Integer userID=Integer.parseInt(userId);
 
 			if (requestOBJ != null) {
 				JsonObject jsnOBJ = new JsonObject();
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
-				if (userId != null && jsnOBJ.has("userID") && jsnOBJ.get("userID").getAsString().equals(userId)) {
+				if (userId != null) {
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
-						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
+						jsnOBJ.get("psmID").getAsInt(), userID,
 						jsnOBJ.get("date").getAsString());
 				if (s != null)
 					response.setResponse(s);
 			} else {
 				response.setError(403, "Unauthorized access!");
 			} } else {
-				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid");
+				logger.error("Invalid request, either ProviderServiceMapID or reqDate is invalid");
 				response.setError(5000,
-						"Invalid request, either ProviderServiceMapID or UserID or RequestDate is invalid");
+						"Invalid request, either ProviderServiceMapID or RequestDate is invalid");
 			}
 
 		} catch (Exception e) {

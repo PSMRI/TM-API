@@ -66,19 +66,19 @@ public class IemrMmuLoginController {
 			"application/json" })
 	public String getUserServicePointVanDetails(@RequestBody String comingRequest, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
-
-		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
-		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-
 		try {
+
+			String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
+			String userId = jwtUtil.getUserIdFromToken(jwtToken);
+			Integer userID=Integer.parseInt(userId);
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getUserServicePointVanDetails request " + comingRequest);
-			if (!obj.has("userID") || !obj.get("userID").toString().equals(userId)) {
-				response.setError(5001, "Unauthorized access - userID does not match token");
+			if (userId == null || jwtToken ==null) {
+				response.setError(403, "Unauthorized access: Missing or invalid token");
 				return response.toString();
 			}
-			String responseData = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(obj.getInt("userID"));
+			String responseData = iemrMmuLoginServiceImpl.getUserServicePointVanDetails(userID);
 			response.setResponse(responseData);
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -117,21 +117,18 @@ public class IemrMmuLoginController {
 		try {
 		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
 		String userId = jwtUtil.getUserIdFromToken(jwtToken);
+		Integer userID=Integer.parseInt(userId);
 
 			JSONObject obj = new JSONObject(comingRequest);
 			logger.info("getServicepointVillages request " + comingRequest);
 			
-			if (obj.has("userID") && obj.has("providerServiceMapID")) {
-				// read userID from payload and compare with userId from token
-				String payloadUserId = String.valueOf(obj.getInt("userID"));
-				if (payloadUserId.equals(userId)) {
-					String responseData = iemrMmuLoginServiceImpl.getUserVanSpDetails(obj.getInt("userID"),
+			if (userId !=null  && obj.has("providerServiceMapID")) {
+					String responseData = iemrMmuLoginServiceImpl.getUserVanSpDetails(userID,
 							obj.getInt("providerServiceMapID"));
 					response.setResponse(responseData);
+				} else if(userId == null || jwtToken ==null) {
+					response.setError(403, "Unauthorized access : Missing or invalid token");
 				} else {
-					response.setError(403, "Unauthorized access - userID does not match token");
-				}
-			} else {
 				response.setError(5000, "Invalid request");
 			}
 		} catch (Exception e) {
