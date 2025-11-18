@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(value = "/location", headers = "Authorization", produces = { "application/json" })
+// @PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('DOCTOR') || hasRole('ADMIN') || hasRole('LAB TECH') || hasRole('REGISTRAR')")
 public class LocationController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);
