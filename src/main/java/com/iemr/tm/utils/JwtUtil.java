@@ -66,4 +66,13 @@ public class JwtUtil {
 			.parseSignedClaims(token)
 			.getPayload();
 	}
+
+	public String getUserIdFromToken(String token) {
+     Claims claims = validateToken(token);
+     if (claims == null) {
+         return null;
+     }
+     return claims.get("userId", String.class);
+ }
 }
+

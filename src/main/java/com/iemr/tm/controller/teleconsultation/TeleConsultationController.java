@@ -30,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpServletRequest;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.JwtUtil;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -46,6 +49,9 @@ public class TeleConsultationController {
 
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	@Operation(summary = "Update beneficiary arrival status based on request")
 	@PostMapping(value = { "/update/benArrivalStatus" })
@@ -137,24 +143,30 @@ public class TeleConsultationController {
 	// TC request List
 	@Operation(summary = "Get teleconsultation request list for a specialist")
 	@PostMapping(value = { "/getTCRequestList" })
-	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
+	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ, HttpServletRequest request) {
 		OutputResponse response = new OutputResponse();
 		try {
+		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
+		String userId = jwtUtil.getUserIdFromToken(jwtToken);
+		Integer userID=Integer.parseInt(userId);
+
 			if (requestOBJ != null) {
 				JsonObject jsnOBJ = new JsonObject();
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
-
+				if (userId != null) {
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
-						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
+						jsnOBJ.get("psmID").getAsInt(), userID,
 						jsnOBJ.get("date").getAsString());
 				if (s != null)
 					response.setResponse(s);
 			} else {
-				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid");
+				response.setError(403, "Unauthorized access!");
+			} } else {
+				logger.error("Invalid request, either ProviderServiceMapID or reqDate is invalid");
 				response.setError(5000,
-						"Invalid request, either ProviderServiceMapID or UserID or RequestDate is invalid");
+						"Invalid request, either ProviderServiceMapID or RequestDate is invalid");
 			}
 
 		} catch (Exception e) {

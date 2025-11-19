@@ -32,6 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.service.videoconsultation.VideoConsultationService;
 import com.iemr.tm.utils.response.OutputResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -44,19 +47,26 @@ public class VideoConsultationController {
 	@Autowired
 	private VideoConsultationService videoConsultationService;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	@Operation(summary = "Login to video consultation service")
 	@GetMapping(value = "/login/{userID}", headers = "Authorization", produces = {
 			"application/json" })
-	public String login(@PathVariable("userID") Long userID) {
+	public String login(@PathVariable("userID") Long userID, HttpServletRequest request) {
 
 		OutputResponse response = new OutputResponse();
-
 		try {
+		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
+		String userId = jwtUtil.getUserIdFromToken(jwtToken);
 
-			String createdData = videoConsultationService.login(userID);
+			if(userID.toString().equals(userId)) {
+				String createdData = videoConsultationService.login(userID);
 
-			response.setResponse(createdData.toString());
-
+				response.setResponse(createdData.toString());
+			} else {
+				response.setError(403, "Unauthorized access!");
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
