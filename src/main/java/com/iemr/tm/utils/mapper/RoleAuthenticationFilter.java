@@ -51,12 +51,12 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 				filterChain.doFilter(request, response);
 				return;
 			}
-			Claims extractAllClaims = jwtUtil.extractAllClaims(jwtToken);
-			if(null == extractAllClaims) {
+			Claims claims = jwtUtil.validateToken(jwtToken);
+			if(null == claims) {
 				filterChain.doFilter(request, response);
 				return;
 			}
-			Object userIdObj = extractAllClaims.get("userId");
+			Object userIdObj = claims.get("userId");
 			String userId = userIdObj != null ? userIdObj.toString() : null;
 			if (null == userId || userId.trim().isEmpty()) {
 				filterChain.doFilter(request, response);

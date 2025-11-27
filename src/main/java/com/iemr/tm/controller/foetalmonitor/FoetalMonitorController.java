@@ -50,7 +50,6 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(value = "/foetalMonitor", headers = "Authorization", consumes = "application/json", produces = "application/json")
-@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 public class FoetalMonitorController {
 	@Autowired
 	private FoetalMonitorService foetalMonitorService;

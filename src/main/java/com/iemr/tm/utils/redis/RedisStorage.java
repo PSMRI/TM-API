@@ -104,6 +104,7 @@ public class RedisStorage {
 			 String key = "roles:" + userId;
 		        redisTemplate.delete(key); // Clear previous cache
 		        redisTemplate.opsForList().rightPushAll(key, roles);
+		        redisTemplate.expire(key, 30, java.util.concurrent.TimeUnit.MINUTES);
 		} catch (Exception e) {
 			logger.warn("Failed to cache role for user {} : {} ", userId, e.getMessage());
 		}
