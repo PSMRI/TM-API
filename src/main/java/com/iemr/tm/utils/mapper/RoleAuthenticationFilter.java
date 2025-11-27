@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +28,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class RoleAuthenticationFilter extends OncePerRequestFilter {
-	Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 	
 	@Autowired
     private JwtUtil jwtUtil;
@@ -69,12 +66,10 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 			try {
 				userIdLong=Long.valueOf(userId);
 			}catch (NumberFormatException ex) {
-				logger.warn("Invalid userId format: {}",userId);
 				filterChain.doFilter(request, response);
 				return;
 			}
 			authRoles = redisService.getUserRoleFromCache(userIdLong);
-			logger.info("Roles fetched from Redis for userId {}: {}", userId, authRoles);
 			if (authRoles == null || authRoles.isEmpty()) {
 			    List<String> roles = userService.getUserRoles(userIdLong); // assuming this returns multiple roles
 			    authRoles = roles.stream()
@@ -92,7 +87,6 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userId, null, authorities);
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		} catch (Exception e) {
-			logger.error("Authentication filter error for request {}: {}", request.getRequestURI(), e.getMessage());
 			SecurityContextHolder.clearContext();
 		} finally {
 			filterChain.doFilter(request, response);
