@@ -42,7 +42,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(value = "/location", headers = "Authorization", produces = { "application/json" })
-// @PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('DOCTOR') || hasRole('ADMIN') || hasRole('LAB TECH') || hasRole('REGISTRAR')")
+@PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('LABTECHNICIAN') || hasRole('REGISTRAR') || hasRole('DATASYNC') || hasRole('DATA_SYNC') || hasRole('DOCTOR') || hasRole('LAB_TECHNICIAN') || hasRole('TC_SPECIALIST') || hasRole('ONCOLOGIST') || hasRole('RADIOLOGIST')")
 public class LocationController {
 	private OutputResponse response;
 	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);

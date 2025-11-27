@@ -21,12 +21,15 @@
 */
 package com.iemr.tm.utils.redis;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.stereotype.Component;
 
@@ -91,5 +94,28 @@ public class RedisStorage {
 		}
 
 		return key;
+	}
+
+	@Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+	public void cacheUserRoles(Long userId, List<String> roles) {
+		try {
+			 String key = "roles:" + userId;
+		        redisTemplate.delete(key); // Clear previous cache
+		        redisTemplate.opsForList().rightPushAll(key, roles);
+		} catch (Exception e) {
+			logger.warn("Failed to cache role for user {} : {} ", userId, e.getMessage());
+		}
+
+	}
+
+	public List<String> getUserRoleFromCache(Long userId) {
+		try {
+			return redisTemplate.opsForList().range("roles:" + userId, 0, -1);
+		} catch (Exception e) {
+			logger.warn("Failed to retrieve cached role for user {} : {} ", userId, e.getMessage());
+			return null;
+		}
 	}
 }
