@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,6 +82,7 @@ public class WorklistController {
 	// doc worklist new
 	@Operation(summary = "Get doctor worklist")
 	@GetMapping(value = { "/getDocWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String getDocWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -105,6 +107,7 @@ public class WorklistController {
 	// doc worklist new (TM future scheduled beneficiary)
 	@Operation(summary = "Get doctor future worklist scheduled for telemedicine")
 	@GetMapping(value = { "/getDocWorkListNewFutureScheduledForTM/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('TC_SPECIALIST') || hasRole('TCSPECIALIST') ")
 	public String getDocWorkListNewFutureScheduledForTM(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID) {
@@ -131,6 +134,7 @@ public class WorklistController {
 	// nurse worklist new
 	@Operation(summary = "Get nurse worklist")
 	@GetMapping(value = { "/getNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('NURSE') ")
 	public String getNurseWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -150,6 +154,7 @@ public class WorklistController {
 	// nurse worklist TC schedule (current-date) new
 	@Operation(summary = "Get worklist for teleconsultation for the current date")
 	@GetMapping(value = { "/getNurseWorkListTcCurrentDate/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('TC_SPECIALIST') || hasRole('TCSPECIALIST') ")
 	public String getNurseWorkListTcCurrentDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -170,6 +175,7 @@ public class WorklistController {
 	// nurse worklist TC schedule (future-date) new
 	@Operation(summary = "Get worklist for teleconsultation for the future date")
 	@GetMapping(value = { "/getNurseWorkListTcFutureDate/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('TC_SPECIALIST') || hasRole('TCSPECIALIST') ")
 	public String getNurseWorkListTcFutureDateNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -189,6 +195,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get previous significant findings")
 	@PostMapping(value = { "/getDoctorPreviousSignificantFindings" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String getDoctorPreviousSignificantFindings(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -215,6 +222,7 @@ public class WorklistController {
 	// Get Lab technician worklist new
 	@Operation(summary = "Get lab technician worklist")
 	@GetMapping(value = { "/getLabWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('LAB_TECHNICIAN') || hasRole('LABTECHNICIAN') ")
 	public String getLabWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -235,6 +243,7 @@ public class WorklistController {
 	// Get radiologist worklist new
 	@Operation(summary = "Get radiologist worklist")
 	@GetMapping(value = { "/getRadiologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('RADIOLOGIST') ")
 	public String getRadiologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -255,6 +264,7 @@ public class WorklistController {
 	// Get oncologist worklist new
 	@Operation(summary = "Get oncologist worklist")
 	@GetMapping(value = { "/getOncologist-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('ONCOLOGIST') ")
 	public String getOncologistWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -274,6 +284,7 @@ public class WorklistController {
 	// Get pharma worklist new
 	@Operation(summary = "Get pharmacist worklist")
 	@GetMapping(value = { "/getPharma-worklist-New/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('PHARMACIST') ")
 	public String getPharmaWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -293,7 +304,8 @@ public class WorklistController {
 
 	@Operation(summary = "Print case sheet of beneficiary")
 	@PostMapping(value = { "/get/Case-sheet/printData" })
-	public String getCasesheetPrintData(@RequestBody String comingReq,
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
+		public String getCasesheetPrintData(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -313,6 +325,7 @@ public class WorklistController {
 	// Start of Fetch Previous Medical History...
 	@Operation(summary = "Get beneficiary history")
 	@PostMapping(value = { "/getBenPastHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenPastHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -337,6 +350,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary tobacco consumption history")
 	@PostMapping(value = { "/getBenTobaccoHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenTobaccoHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -361,6 +375,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary alcohol consumption history")
 	@PostMapping(value = { "/getBenAlcoholHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenAlcoholHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -385,6 +400,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary allergy history")
 	@PostMapping(value = { "/getBenAllergyHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenANCAllergyHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -410,6 +426,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary medication history")
 	@PostMapping(value = { "/getBenMedicationHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenMedicationHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -435,6 +452,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary family history")
 	@PostMapping(value = { "/getBenFamilyHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenFamilyHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -459,6 +477,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary menstrual history")
 	@PostMapping(value = { "/getBenMenstrualHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenMenstrualHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -484,6 +503,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary obstetric history")
 	@PostMapping(value = { "/getBenPastObstetricHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenPastObstetricHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -509,6 +529,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary comorbidity condition details")
 	@PostMapping(value = { "/getBenComorbidityConditionHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenANCComorbidityConditionHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -534,6 +555,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary optional vaccine details")
 	@PostMapping(value = { "/getBenOptionalVaccineHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenOptionalVaccineHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -559,6 +581,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get child beneficiary vaccine details")
 	@PostMapping(value = { "/getBenChildVaccineHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenImmunizationHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -584,6 +607,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary perinatal history")
 	@PostMapping(value = { "/getBenPerinatalHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenPerinatalHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -609,6 +633,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get child beneficiary feeding history")
 	@PostMapping(value = { "/getBenFeedingHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenFeedingHistory(@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
 
@@ -633,6 +658,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get child beneficiary development history")
 	@PostMapping(value = { "/getBenDevelopmentHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBenDevelopmentHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -664,6 +690,7 @@ public class WorklistController {
 	 */
 	@Operation(summary = "Get beneficiary casesheet history")
 	@PostMapping(value = { "/getBeneficiaryCaseSheetHistory" })
+	@PreAuthorize("hasRole('DOCTOR') || hasRole('NURSE') ")
 	public String getBeneficiaryCaseSheetHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -775,6 +802,7 @@ public class WorklistController {
 	// openkm file download
 	@Operation(summary = "Add file as string to openKM")
 	@PostMapping(value = "/getKMFile", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getKMFile(@Param(value = "{}") @RequestBody String request,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -793,6 +821,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary physical history")
 	@PostMapping(value = { "/getBenPhysicalHistory" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenPhysicalHistory(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -818,6 +847,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary symptomatic questionnaire answer details")
 	@PostMapping(value = { "/getBenSymptomaticQuestionnaireDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenSymptomaticQuestionnaireDetails(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -843,6 +873,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary previous diabetes history")
 	@PostMapping(value = { "/getBenPreviousDiabetesHistoryDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenPreviousDiabetesHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -869,6 +900,7 @@ public class WorklistController {
 	// nurse worklist coming from MMU application
 	@Operation(summary = "Get mmu nurse worklist")
 	@GetMapping(value = { "/getMmuNurseWorklistNew/{providerServiceMapID}/{serviceID}/{vanID}" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getMmuNurseWorklistNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
 			@PathVariable("vanID") Integer vanID) {
 		OutputResponse response = new OutputResponse();
@@ -887,6 +919,7 @@ public class WorklistController {
 
 	@Operation(summary = "Get beneficiary previous referral history")
 	@PostMapping(value = { "/getBenPreviousReferralHistoryDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenPreviousReferralHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -916,6 +949,7 @@ public class WorklistController {
 	 */
 	@Operation(summary = "Get provider specific data")
 	@PostMapping(value = { "/getProviderSpecificData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getProviderSpecificData(
 			@Param(value = "{\"benvisitID\":\"Long\",\"benvisitCode\":\"Long\",\"fetchMMUDataFor\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -937,6 +971,7 @@ public class WorklistController {
 	 */
 	@Operation(summary = "Calculate beneficiary BMI status")
 	@PostMapping(value = { "/calculateBMIStatus" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String calculateBMIStatus(
 			@Param(value = "{\"bmi\":\"double\",\"yearMonth\":\"String\",\"gender\":\"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -954,6 +989,7 @@ public class WorklistController {
 
 	@Operation(summary = "Update beneficiary status flag")
 	@PostMapping(value = { "/update/benDetailsAndSubmitToNurse" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String saveBeneficiaryVisitDetail(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 
@@ -988,6 +1024,7 @@ public class WorklistController {
 
 	@Operation(summary = "Extend redis session for 30 mins")
 	@PostMapping(value = { "/extend/redisSession" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('LABTECHNICIAN') || hasRole('REGISTRAR') || hasRole('DATASYNC') || hasRole('DATA_SYNC') || hasRole('DOCTOR') || hasRole('LAB_TECHNICIAN') || hasRole('TC_SPECIALIST') || hasRole('ONCOLOGIST') || hasRole('RADIOLOGIST')")
 	public String extendRedisSession() {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -1001,6 +1038,7 @@ public class WorklistController {
 
 	@Operation(summary = "Soft delete prescribed medicine")
 	@PostMapping(value = { "/doctor/delete/prescribedMedicine" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String deletePrescribedMedicine(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {

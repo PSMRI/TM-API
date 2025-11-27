@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +84,7 @@ public class RegistrarController {
 	// Registrar Work List API .....
 	@Operation(summary = "Get registrar worklist data")
 	@PostMapping(value = { "/registrarWorkListData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String getRegistrarWorkList(@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest)
 			throws JSONException {
 		OutputResponse response = new OutputResponse();
@@ -102,6 +104,7 @@ public class RegistrarController {
 	// Registrar Quick search .....
 	@Operation(summary = "Search for the beneficiary based on beneficiary id")
 	@PostMapping(value = { "/quickSearch" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String quickSearchBeneficiary(
 			@Param(value = "{\"benID\": \"String\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -120,6 +123,7 @@ public class RegistrarController {
 	// Registrar Advance search .....
 	@Operation(summary = "Search for the beneficiary based on provided data")
 	@PostMapping(value = { "/advanceSearch" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String advanceSearch(
 			@Param(value = "{\"firstName\": \"String\", \"lastName\": \"String\", \"phoneNo\": \"String\","
 					+ "\"beneficiaryID\": \"String\", \"stateID\": \"Integer\", \"districtID\": \"Integer\", \"aadharNo\": \"String\"},"
@@ -142,6 +146,7 @@ public class RegistrarController {
 	// API for left side ben data
 	@Operation(summary = "Get beneficiary details based on beneficiary register id")
 	@PostMapping(value = { "/get/benDetailsByRegID" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String getBenDetailsByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -171,6 +176,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Get beneficiary details")
 	@PostMapping(value = { "/get/beneficiaryDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN') || hasRole('LAB_TECHNICIAN') || hasRole('PHARMACIST') || hasRole('REGISTRAR')")
 	public String getBeneficiaryDetails(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -205,6 +211,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/get/beneficiaryImage" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN') || hasRole('LAB_TECHNICIAN') || hasRole('PHARMACIST') || hasRole('REGISTRAR')")
 	public String getBeneficiaryImage(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String requestObj) {
 		OutputResponse response = new OutputResponse();
@@ -231,6 +238,7 @@ public class RegistrarController {
 	// beneficiary quick search new integrated with common and identity
 	@Operation(summary = "Search beneficiary based on beneficiary id or beneficiary phone number")
 	@PostMapping(value = { "/quickSearchNew" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String quickSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String searchList = null;
@@ -254,6 +262,7 @@ public class RegistrarController {
 	// beneficiary Advance search new integrated with common and identity
 	@Operation(summary = "Beneficiary advance search integrated with common and identity API")
 	@PostMapping(value = { "/advanceSearchNew" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String advanceSearchNew(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String searchList = null;
@@ -277,6 +286,7 @@ public class RegistrarController {
 	// Get Beneficiary Details for left side panel of given beneficiaryRegID new
 	@Operation(summary = "Get beneficiary details for side panel")
 	@PostMapping(value = { "/get/benDetailsByRegIDForLeftPanelNew" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN') || hasRole('LAB_TECHNICIAN') || hasRole('PHARMACIST')")
 	public String getBenDetailsForLeftSidePanelByRegID(
 			@Param(value = "{\"beneficiaryRegID\": \"Long\"}") @RequestBody String comingRequest,
 			@RequestHeader(value = "Authorization") String Authorization) {
@@ -308,6 +318,7 @@ public class RegistrarController {
 	// new api for ben image
 	@Operation(summary = "Get beneficiary image")
 	@PostMapping(value = { "/getBenImage" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN') || hasRole('LAB_TECHNICIAN')  || hasRole('PHARMACIST')")
 	public String getBenImage(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -324,6 +335,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Register a new beneficiary")
 	@PostMapping(value = { "/registrarBeneficaryRegistration" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('REGISTRAR')")
 	public String createBeneficiary(
 			@Param(value = "{\"benD\":{\"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
@@ -387,6 +399,7 @@ public class RegistrarController {
 	// beneficiary registration with common and identity new
 	@Operation(summary = "Register a new beneficiary new API")
 	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('REGISTRAR')")
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String s;
@@ -404,6 +417,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Update registered beneficiary data")
 	@PostMapping(value = { "/update/BeneficiaryDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('REGISTRAR') || hasRole('DOCTOR')")
 	public String updateBeneficiary(
 			@Param(value = "{\"benD\": {\"beneficiaryRegID\": \"Long\", \"firstName\": \"String\", \"lastName\": \"String\", \"gender\": \"Short\","
 					+ "\"dob\": \"Timestamp\", \"maritalStatus\": \"Short\", \"fatherName\": \"String\", \"motherName\": \"String\","
@@ -467,6 +481,7 @@ public class RegistrarController {
 	// revisit to nurse by searching and submitting new
 	@Operation(summary = "Search and submit beneficiary to nurse for revisit")
 	@PostMapping(value = { "/create/BenReVisitToNurse" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('REGISTRAR')")
 	public String createReVisitForBenToNurse(@RequestBody String requestOBJ) {
 		OutputResponse response = new OutputResponse();
 		try {
@@ -488,6 +503,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Update registered beneficiary details")
 	@PostMapping(value = { "/update/BeneficiaryUpdate" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String beneficiaryUpdate(@RequestBody String requestOBJ,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -511,6 +527,7 @@ public class RegistrarController {
 
 	@Operation(summary = "Get master data for registrar")
 	@PostMapping(value = { "/registrarMasterData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('REGISTRAR')")
 	public String masterDataForRegistration(
 			@Param(value = "{\"spID\": \"Integer\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();

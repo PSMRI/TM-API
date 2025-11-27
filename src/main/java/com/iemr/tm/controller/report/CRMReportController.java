@@ -27,6 +27,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,8 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RequestMapping("/TMReport")
 @RestController
+@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN') || hasRole('LAB_TECHNICIAN')  || hasRole('PHARMACIST') || hasRole('TC_SPECIALIST') || hasRole('TCSPECIALIST') || hasRole('ONCOLOGIST') || hasRole('RADIOLOGIST')")
+
 public class CRMReportController {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
