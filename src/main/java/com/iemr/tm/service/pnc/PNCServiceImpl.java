@@ -315,6 +315,11 @@ public class PNCServiceImpl implements PNCService {
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
 
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
 					&& requestOBJ.get("investigation") != null) {
@@ -416,7 +421,7 @@ public class PNCServiceImpl implements PNCService {
 					
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed, tcRequestOBJ);
+						isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					saveSuccessFlag = diagnosisSuccessFlag;
@@ -1381,6 +1386,11 @@ public class PNCServiceImpl implements PNCService {
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
 
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
 					&& requestOBJ.get("investigation") != null) {
@@ -1489,7 +1499,7 @@ public class PNCServiceImpl implements PNCService {
 					
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					updateSuccessFlag = investigationSuccessFlag;

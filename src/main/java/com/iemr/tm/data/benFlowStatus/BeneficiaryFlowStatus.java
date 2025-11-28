@@ -295,7 +295,11 @@ public class BeneficiaryFlowStatus {
 	@Expose
 	@Column(name = "referred_visit_id")
 	private Long referred_visit_id;
-	
+
+	@Expose
+	@Column(name = "doctor_signature_flag")
+	private Boolean doctorSignatureFlag = false;
+
 	@Transient
 	private I_bendemographics i_bendemographics;
 	@Transient
@@ -374,6 +378,9 @@ public class BeneficiaryFlowStatus {
 						(String) objArr[11], (String) objArr[12], (String) objArr[13], (Long) objArr[14],
 						(Timestamp) objArr[15], (Timestamp) objArr[16], (Long) objArr[17], (Timestamp) objArr[18],
 						(String) objArr[19], (String) objArr[20]);
+				if (objArr.length > 21) {
+					obj.setDoctorSignatureFlag((Boolean) objArr[21]);
+				}
 			}
 		}
 		return obj;
@@ -991,9 +998,12 @@ public class BeneficiaryFlowStatus {
 	public void setReferred_visit_id(Long referred_visit_id) {
 		this.referred_visit_id = referred_visit_id;
 	}
-	
-	
-	
-	
+	public Boolean getDoctorSignatureFlag() {
+		return doctorSignatureFlag;
+	}
+
+	public void setDoctorSignatureFlag(Boolean doctorSignatureFlag) {
+		this.doctorSignatureFlag = doctorSignatureFlag;
+	}
 
 }
