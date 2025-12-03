@@ -2887,7 +2887,8 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (form != null && dose != null && frequency != null && duration != null && durationUnit != null) {
 			double qtyInOneDay = getQtyForOneDay(form, dose, frequency);
 
-			if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")) {
+			if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")||
+					frequency.equalsIgnoreCase("Single Dose Before  Food") || frequency.equalsIgnoreCase("Single Dose After  Food")) {
 				qtyPrescribed = (int) Math.ceil(qtyInOneDay);
 			} else {
 				if (durationUnit.equalsIgnoreCase("Day(s)"))
@@ -3007,7 +3008,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 							}
 						} else {
 							if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")|| 
-									frequency.equalsIgnoreCase("Single Dose Before  Food") || frequency.equalsIgnoreCase("Single Dose After Food")) {
+									frequency.equalsIgnoreCase("Single Dose Before  Food") || frequency.equalsIgnoreCase("Single Dose After  Food")) {
 								if (form.equalsIgnoreCase("Tablet")) {
 									if (dose.equalsIgnoreCase("Half Tab")) {
 										qtyInOneDay = .5;

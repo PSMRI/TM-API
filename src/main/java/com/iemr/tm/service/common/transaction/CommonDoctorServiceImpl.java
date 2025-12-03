@@ -702,7 +702,7 @@ public class CommonDoctorServiceImpl {
 	/// ------Start of beneficiary flow table after doctor data save-------------
 
 	public int updateBenFlowtableAfterDocDataSave(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) throws IEMRException {
+			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ, Boolean signatureFlag) throws IEMRException {
 		short pharmaFalg;
 		short docFlag = (short) 1;
 		short tcSpecialistFlag = (short) 0;
@@ -783,7 +783,7 @@ public class CommonDoctorServiceImpl {
 			// updating lab technician flag as well after feto sense
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
-					tcSpecialistFlag, labTechnicianFlag);
+					tcSpecialistFlag, labTechnicianFlag,signatureFlag);
 			if (tcSpecialistFlag == 9) {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
 						commonUtilityClass.getVisitCode(), "D");
@@ -808,7 +808,7 @@ public class CommonDoctorServiceImpl {
 		} else
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate,
-					labTechnicianFlag);
+					labTechnicianFlag, signatureFlag);
 		// TM Prescription SMS
 		if (commonUtilityClass.getIsSpecialist() == true) {
 			if (tcSpecialistFlag == 9) {
@@ -846,7 +846,7 @@ public class CommonDoctorServiceImpl {
 	 * @return
 	 */
 	public int updateBenFlowtableAfterDocDataUpdate(CommonUtilityClass commonUtilityClass, Boolean isTestPrescribed,
-			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ) throws Exception {
+			Boolean isMedicinePrescribed, TeleconsultationRequestOBJ tcRequestOBJ, Boolean doctorSignatureFlag) throws Exception {
 		int i = 0;
 		short pharmaFalg;
 		short docFlag = (short) 0;
@@ -897,7 +897,7 @@ public class CommonDoctorServiceImpl {
 
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdateTCSpecialist(tmpBenFlowID,
 					tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0,
-					tcSpecialistFlag, tcUserID, tcDate, labTechnicianFlag);
+					tcSpecialistFlag, tcUserID, tcDate, labTechnicianFlag, doctorSignatureFlag);
 
 			if (tcSpecialistFlag == 9) {
 				int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(commonUtilityClass.getBeneficiaryRegID(),
@@ -945,7 +945,7 @@ public class CommonDoctorServiceImpl {
 
 			i = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataUpdate(tmpBenFlowID, tmpbeneficiaryRegID,
 					tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, (short) 0, tcSpecialistFlag, tcUserID, tcDate,
-					labTechnicianFlag);
+					labTechnicianFlag, doctorSignatureFlag);
 
 		}
 

@@ -94,6 +94,11 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
 
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
 					&& requestOBJ.get("investigation") != null) {
@@ -188,7 +193,7 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 
 				// call method to update beneficiary flow table
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					updateSuccessFlag = 1;
