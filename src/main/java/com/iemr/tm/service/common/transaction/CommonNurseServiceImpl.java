@@ -2887,17 +2887,17 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 		if (form != null && dose != null && frequency != null && duration != null && durationUnit != null) {
 			double qtyInOneDay = getQtyForOneDay(form, dose, frequency);
 
-			if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")||
-					frequency.equalsIgnoreCase("Single Dose Before  Food") || frequency.equalsIgnoreCase("Single Dose After  Food")) {
-				qtyPrescribed = (int) Math.ceil(qtyInOneDay);
-			} else {
+			// if (frequency.equalsIgnoreCase("Single Dose") || frequency.equalsIgnoreCase("Stat Dose")||
+			// 		frequency.equalsIgnoreCase("Single Dose Before  Food") || frequency.equalsIgnoreCase("Single Dose After  Food")) {
+			// 	qtyPrescribed = (int) Math.ceil(qtyInOneDay);
+			// } else {
 				if (durationUnit.equalsIgnoreCase("Day(s)"))
 					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * qtyInOneDay);
 				else if (durationUnit.equalsIgnoreCase("Week(s)"))
 					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * 7 * qtyInOneDay);
 				else if (durationUnit.equalsIgnoreCase("Month(s)"))
 					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * 30 * qtyInOneDay);
-			}
+			// }
 		}
 
 		return qtyPrescribed;
