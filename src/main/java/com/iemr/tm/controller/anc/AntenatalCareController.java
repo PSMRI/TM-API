@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +67,7 @@ public class AntenatalCareController {
 	 */
 	@Operation(summary = "Save ANC nurse data")
 	@PostMapping(value = { "/save/nurseData" })
+	@PreAuthorize("hasRole('NURSE') ")
 	public String saveBenANCNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -98,6 +100,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Save ANC doctor data")
 	@PostMapping(value = { "/save/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String saveBenANCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -132,6 +135,7 @@ public class AntenatalCareController {
 	@Operation(summary = "Get ANC beneficiary visit details from nurse")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseANC" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenVisitDetailsFrmNurseANC(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -158,6 +162,7 @@ public class AntenatalCareController {
 	@Operation(summary = "Get ANC beneficiary details from nurse")
 	@PostMapping(value = { "/getBenANCDetailsFrmNurseANC" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenANCDetailsFrmNurseANC(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -184,6 +189,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Get ANC beneficiary history from nurse")
 	@PostMapping(value = { "/getBenANCHistoryDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenANCHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\", \"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -209,6 +215,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Get ANC beneficiary vitals from nurse")
 	@PostMapping(value = { "/getBenANCVitalDetailsFrmNurseANC" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenANCVitalDetailsFrmNurseANC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -235,6 +242,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Get ANC beneficiary examination details from nurse")
 	@PostMapping(value = { "/getBenExaminationDetailsANC" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenExaminationDetailsANC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -260,6 +268,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Get ANC beneficiary case record")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorANC" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenCaseRecordFromDoctorANC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -288,6 +297,7 @@ public class AntenatalCareController {
 	@Operation(summary = "Check high risk pregnancy status for ANC beneficiary")
 	@PostMapping(value = { "/getHRPStatus" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getHRPStatus(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -316,6 +326,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Update ANC beneficiary data")
 	@PostMapping(value = { "/update/ANCScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateANCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -344,6 +355,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Update ANC beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateANCHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -372,6 +384,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Update ANC beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateANCVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -400,6 +413,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Update ANC examination data")
 	@PostMapping(value = { "/update/examinationScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateANCExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -428,6 +442,7 @@ public class AntenatalCareController {
 
 	@Operation(summary = "Update ANC doctor data")
 	@PostMapping(value = { "/update/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String updateANCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 
