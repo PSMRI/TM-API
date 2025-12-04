@@ -810,10 +810,12 @@ public class CSServiceImpl implements CSService {
 	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long docDataSuccessFlag = null;
 		Long tcRequestStatusFlag = null;
+		final String Doctor_Signature = "doctorSignatureFlag";
+
 
 		Boolean doctorSignatureFlag = false;
-			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			if (requestOBJ.has(Doctor_Signature) && !requestOBJ.get(Doctor_Signature).isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get(Doctor_Signature).getAsBoolean();
 			}
 
 

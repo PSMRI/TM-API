@@ -78,6 +78,8 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		final String Doctor_Signature = "doctorSignatureFlag";
+
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -95,8 +97,8 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			if (requestOBJ.has(Doctor_Signature) && !requestOBJ.get(Doctor_Signature).isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get(Doctor_Signature).getAsBoolean();
 			}
 
 			// checking if test is prescribed
