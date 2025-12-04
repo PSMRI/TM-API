@@ -967,7 +967,8 @@ public class Covid19ServiceImpl implements Covid19Service {
 		Integer prescriptionSuccessFlag = null;
 		// Long diagnosisSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		final String Doctor_Signature = "doctorSignatureFlag";
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
 
 
 		if (requestOBJ != null) {
@@ -983,8 +984,8 @@ public class Covid19ServiceImpl implements Covid19Service {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (requestOBJ.has(Doctor_Signature) && !requestOBJ.get(Doctor_Signature).isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get(Doctor_Signature).getAsBoolean();
+			if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
 			}
 
 			// checking if test is prescribed

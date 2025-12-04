@@ -316,7 +316,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer investigationSuccessFlag = null;
 		Integer vitalsRBSTestFlag=null;
 		Long referSaveSuccessFlag = null;
-		final String Doctor_Signature = "doctorSignatureFlag";
+		boolean doctorSignature = quickConsultDoctorOBJ.has("doctorSignatureFlag");
 
 
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -342,8 +342,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			isMedicinePrescribed = true;
 
 		Boolean doctorSignatureFlag = false;
-		if (quickConsultDoctorOBJ.has(Doctor_Signature) && !quickConsultDoctorOBJ.get(Doctor_Signature).isJsonNull()) {
-		doctorSignatureFlag = quickConsultDoctorOBJ.get(Doctor_Signature).getAsBoolean();
+		if (doctorSignature) {
+		doctorSignatureFlag = doctorSignature;
 		}
 
 		// save prescribed medicine

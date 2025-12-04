@@ -756,7 +756,7 @@ public class NCDCareServiceImpl implements NCDCareService {
 		Integer prescriptionSuccessFlag = null;
 		Long diagnosisSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		final String Doctor_Signature = "doctorSignatureFlag";
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -775,8 +775,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 
 
 			
-			if (requestOBJ.has(Doctor_Signature) && !requestOBJ.get(Doctor_Signature).isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get(Doctor_Signature).getAsBoolean();
+			if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
 			}
 
 			// checking if test is prescribed

@@ -348,11 +348,11 @@ public class ANCServiceImpl implements ANCService {
 		Long diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		final String Doctor_Signature = "doctorSignatureFlag";
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
 
 		Boolean doctorSignatureFlag = false;
-		if (requestOBJ.has(Doctor_Signature) && !requestOBJ.get(Doctor_Signature).isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get(Doctor_Signature).getAsBoolean();
+		if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
 		}
 
 		if (requestOBJ != null) {
