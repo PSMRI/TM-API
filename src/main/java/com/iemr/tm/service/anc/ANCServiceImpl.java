@@ -348,7 +348,12 @@ public class ANCServiceImpl implements ANCService {
 		Long diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
+		Boolean doctorSignatureFlag = false;
+		if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
+		}
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -466,7 +471,7 @@ public class ANCServiceImpl implements ANCService {
 
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed, tcRequestOBJ);
+						isMedicinePrescribed, tcRequestOBJ,doctorSignatureFlag);
 
 				if (i > 0)
 					saveSuccessFlag = diagnosisSuccessFlag;
@@ -1488,6 +1493,11 @@ public class ANCServiceImpl implements ANCService {
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
 
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+		}
+
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
 					&& requestOBJ.get("investigation") != null) {
@@ -1596,7 +1606,7 @@ public class ANCServiceImpl implements ANCService {
 
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 				if (i > 0)
 					updateSuccessFlag = investigationSuccessFlag;
 				else

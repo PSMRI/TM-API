@@ -810,6 +810,14 @@ public class CSServiceImpl implements CSService {
 	public Long saveCancerScreeningDoctorData(JsonObject requestOBJ, String Authorization) throws Exception {
 		Long docDataSuccessFlag = null;
 		Long tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
+
+		Boolean doctorSignatureFlag = false;
+			if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
+			}
+
 
 		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 
@@ -907,7 +915,7 @@ public class CSServiceImpl implements CSService {
 						&& commonUtilityClass.getIsSpecialist() == true) {
 					l1 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocDataFromSpecialist(tmpBenFlowID,
 							tmpbeneficiaryRegID, tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag,
-							tcSpecialistFlag, (short) 0);
+							tcSpecialistFlag, (short) 0, doctorSignatureFlag);
 
 					if (tcSpecialistFlag == 9) {
 						int l = tCRequestModelRepo.updateStatusIfConsultationCompleted(
@@ -916,7 +924,7 @@ public class CSServiceImpl implements CSService {
 				} else {
 					l2 = commonBenStatusFlowServiceImpl.updateBenFlowAfterDocData(tmpBenFlowID, tmpbeneficiaryRegID,
 							tmpBeneficiaryID, tmpBenVisitID, docFlag, pharmaFalg, oncologistFlag, tcSpecialistFlag,
-							tcUserID, tcDate, (short) 0);
+							tcUserID, tcDate, (short) 0, doctorSignatureFlag);
 				}
 
 				if (l1 > 0 || l2 > 0)

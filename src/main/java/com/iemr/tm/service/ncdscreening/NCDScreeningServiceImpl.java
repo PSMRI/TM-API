@@ -1008,7 +1008,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -1022,6 +1023,11 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
+
+			Boolean doctorSignatureFlag = false;
+			if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
+			}
 
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
@@ -1119,7 +1125,7 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed, tcRequestOBJ);
+						isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					saveSuccessFlag = investigationSuccessFlag;

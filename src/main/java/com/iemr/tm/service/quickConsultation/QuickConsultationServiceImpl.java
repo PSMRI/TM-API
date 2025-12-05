@@ -316,6 +316,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer investigationSuccessFlag = null;
 		Integer vitalsRBSTestFlag=null;
 		Long referSaveSuccessFlag = null;
+		boolean doctorSignature = quickConsultDoctorOBJ.has("doctorSignatureFlag");
+
 
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
@@ -338,6 +340,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		JsonArray drugList = quickConsultDoctorOBJ.getAsJsonArray("prescription");
 		if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0)
 			isMedicinePrescribed = true;
+
+		Boolean doctorSignatureFlag = false;
+		if (doctorSignature) {
+		doctorSignatureFlag = doctorSignature;
+		}
 
 		// save prescribed medicine
 		if (isMedicinePrescribed) {
@@ -414,7 +421,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			}
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed, tcRequestOBJ);
+					isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 			if (i > 0)
 				returnOBJ = 1;
@@ -521,6 +528,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Boolean isTestPrescribed = false;
 		Boolean isMedicinePrescribed = false;
 
+		Boolean doctorSignatureFlag = false;
+			if (quickConsultDoctorOBJ.has("doctorSignatureFlag") && !quickConsultDoctorOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = quickConsultDoctorOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
 		// checking if test is prescribed
 		if (quickConsultDoctorOBJ.has("labTestOrders")) {
 			testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
@@ -609,7 +620,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				
 			}
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed, tcRequestOBJ);
+					isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 			if (i > 0)
 				updateSuccessFlag = benChiefComplaintID;
