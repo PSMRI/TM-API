@@ -2884,6 +2884,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			String durationUnit) {
 		int qtyPrescribed = 0;
 
+		logger.info(frequency,"Frequency");
 		if (form != null && dose != null && frequency != null && duration != null && durationUnit != null) {
 			double qtyInOneDay = getQtyForOneDay(form, dose, frequency);
 
