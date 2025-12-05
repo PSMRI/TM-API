@@ -967,7 +967,9 @@ public class Covid19ServiceImpl implements Covid19Service {
 		Integer prescriptionSuccessFlag = null;
 		// Long diagnosisSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
+
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -982,8 +984,8 @@ public class Covid19ServiceImpl implements Covid19Service {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
-			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			if (doctorSignature) {
+			doctorSignatureFlag = doctorSignature;
 			}
 
 			// checking if test is prescribed

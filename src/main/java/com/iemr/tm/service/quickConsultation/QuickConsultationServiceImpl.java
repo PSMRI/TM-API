@@ -316,6 +316,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Integer investigationSuccessFlag = null;
 		Integer vitalsRBSTestFlag=null;
 		Long referSaveSuccessFlag = null;
+		boolean doctorSignature = quickConsultDoctorOBJ.has("doctorSignatureFlag");
+
 
 		TeleconsultationRequestOBJ tcRequestOBJ = null;
 		CommonUtilityClass commonUtilityClass = InputMapper.gson().fromJson(quickConsultDoctorOBJ,
@@ -340,8 +342,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			isMedicinePrescribed = true;
 
 		Boolean doctorSignatureFlag = false;
-		if (quickConsultDoctorOBJ.has("doctorSignatureFlag") && !quickConsultDoctorOBJ.get("doctorSignatureFlag").isJsonNull()) {
-		doctorSignatureFlag = quickConsultDoctorOBJ.get("doctorSignatureFlag").getAsBoolean();
+		if (doctorSignature) {
+		doctorSignatureFlag = doctorSignature;
 		}
 
 		// save prescribed medicine

@@ -300,7 +300,7 @@ public class PNCServiceImpl implements PNCService {
 		Long diagnosisSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		// Integer tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
@@ -316,7 +316,7 @@ public class PNCServiceImpl implements PNCService {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			if (doctorSignature) {
 			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
 			}
 
