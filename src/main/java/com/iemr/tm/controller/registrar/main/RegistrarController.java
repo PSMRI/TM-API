@@ -399,7 +399,6 @@ public class RegistrarController {
 	// beneficiary registration with common and identity new
 	@Operation(summary = "Register a new beneficiary new API")
 	@PostMapping(value = { "/registrarBeneficaryRegistrationNew" })
-	@PreAuthorize("hasRole('NURSE') || hasRole('REGISTRAR') || hasRole('ASHA')")
 	public String registrarBeneficaryRegistrationNew(@RequestBody String comingReq,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		String s;
