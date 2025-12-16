@@ -45,9 +45,14 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 		try {
 			String jwtFromCookie = CookieUtil.getJwtTokenFromCookie(request);
 			String jwtFromHeader = request.getHeader("Jwttoken");
+			String authHeader = request.getHeader("Authorization");
 
 			String jwtToken = jwtFromCookie != null ? jwtFromCookie : jwtFromHeader;
 			if(null == jwtToken || jwtToken.trim().isEmpty()) {
+				filterChain.doFilter(request, response);
+				return;
+			}
+			if(authHeader!=null){
 				filterChain.doFilter(request, response);
 				return;
 			}
