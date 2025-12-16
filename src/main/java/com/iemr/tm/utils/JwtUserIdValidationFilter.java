@@ -129,7 +129,7 @@ public class JwtUserIdValidationFilter implements Filter {
 				String userAgent = request.getHeader("User-Agent");
 				logger.info("User-Agent: " + userAgent);
 
-				if (userAgent != null && isMobileClient(userAgent) && authHeader != null) {
+				if (authHeader != null) {
 					try {
 						logger.info("TM-API_AUTH:"+authHeader);
 						UserAgentContext.setUserAgent(userAgent);
