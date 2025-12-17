@@ -48,6 +48,10 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 			String  authToken = request.getHeader("Authorization");
 			if(authToken!=null){
 				logger.info("authToken"+authToken);
+			String userName= 	jwtUtil.extractUsername(authToken);
+				logger.info("authToken"+userName);
+
+
 
 			}else {
 				logger.info("authToken"+"Null");
