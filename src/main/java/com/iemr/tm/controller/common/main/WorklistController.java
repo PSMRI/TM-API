@@ -35,21 +35,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.data.benFlowStatus.BeneficiaryFlowStatus;
 import com.iemr.tm.service.common.transaction.CommonDoctorServiceImpl;
 import com.iemr.tm.service.common.transaction.CommonNurseServiceImpl;
 import com.iemr.tm.service.common.transaction.CommonServiceImpl;
-import com.iemr.tm.utils.CookieUtil;
 import com.iemr.tm.utils.JwtUtil;
 import com.iemr.tm.utils.mapper.InputMapper;
 import com.iemr.tm.utils.response.OutputResponse;
+import org.springframework.security.core.Authentication;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/common", headers = "Authorization", consumes = "application/json", produces = "application/json")
@@ -711,18 +709,22 @@ public class WorklistController {
 	@Operation(summary = "Get teleconsultation specialist worklist")
 	@GetMapping(value = { "/getTCSpecialistWorklist/{providerServiceMapID}/{serviceID}" })
 	public String getTCSpecialistWorkListNew(@PathVariable("providerServiceMapID") Integer providerServiceMapID,
-			 @PathVariable("serviceID") Integer serviceID, HttpServletRequest request) {
+			 @PathVariable("serviceID") Integer serviceID, Authentication authentication) {
 		OutputResponse response = new OutputResponse();
-		try {
-		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
-		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-			Integer userID=Integer.parseInt(userId);
-			if (providerServiceMapID != null && userId != null ) {
+       try {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            response.setError(403, "Unauthorized access");
+            return response.toString();
+        }
+
+        Integer userID = Integer.valueOf(authentication.getPrincipal().toString());
+
+			if (providerServiceMapID != null && userID != null ) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTM(providerServiceMapID, userID,
 						serviceID);
 				if (s != null)
 					response.setResponse(s);
-			} else if(userId  == null || jwtToken == null) {
+			} else if(userID  == null ) {
 				response.setError(403, "Unauthorized access!");
 			} else {
 				logger.error("Invalid request");
@@ -742,20 +744,21 @@ public class WorklistController {
 			"/getTCSpecialistWorklistPatientApp/{providerServiceMapID}/{serviceID}/{vanID}" })
 	public String getTCSpecialistWorkListNewPatientApp(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, 
-			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID, HttpServletRequest request) {
+			@PathVariable("serviceID") Integer serviceID, @PathVariable("vanID") Integer vanID, Authentication authentication) {
 		OutputResponse response = new OutputResponse();
 		try {
-		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
-		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-		Integer userID=Integer.parseInt(userId);
+		 if (authentication == null || !authentication.isAuthenticated()) {
+            response.setError(403, "Unauthorized access");
+            return response.toString();
+        }
+
+        Integer userID = Integer.valueOf(authentication.getPrincipal().toString());
 			if (providerServiceMapID != null && userID != null) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewForTMPatientApp(providerServiceMapID,
 						userID, serviceID, vanID);
 				if (s != null)
 					response.setResponse(s);
-			} else if(userId  == null || jwtToken == null) {
-				response.setError(403, "Unauthorized access!");
-			} else {
+			}  else {
 				logger.error("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
@@ -773,21 +776,22 @@ public class WorklistController {
 			"/getTCSpecialistWorklistFutureScheduled/{providerServiceMapID}/{serviceID}" })
 	public String getTCSpecialistWorklistFutureScheduled(
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, 
-			@PathVariable("serviceID") Integer serviceID, HttpServletRequest request) {
+			@PathVariable("serviceID") Integer serviceID, Authentication authentication) {
 		OutputResponse response = new OutputResponse();
 		try {
 
-		String jwtToken = CookieUtil.getJwtTokenFromCookie(request);
-		String userId = jwtUtil.getUserIdFromToken(jwtToken);
-		Integer userID=Integer.parseInt(userId);
+		 if (authentication == null || !authentication.isAuthenticated()) {
+            response.setError(403, "Unauthorized access");
+            return response.toString();
+        }
+
+        Integer userID = Integer.valueOf(authentication.getPrincipal().toString());
 			if (providerServiceMapID != null && userID != null ) {
 				String s = commonDoctorServiceImpl.getTCSpecialistWorkListNewFutureScheduledForTM(providerServiceMapID,
 						userID, serviceID);
 				if (s != null)
 					response.setResponse(s);
-			} else if(userId  == null || jwtToken == null) {
-				response.setError(403, "Unauthorized access!");
-			} else {
+			}  else {
 				logger.error("Invalid request");
 				response.setError(5000, "Invalid request");
 			}
