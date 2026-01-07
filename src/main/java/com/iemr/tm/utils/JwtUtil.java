@@ -59,11 +59,20 @@ public class JwtUtil {
 		return claims != null ? claimsResolver.apply(claims) : null;
 	}
 
-	private Claims extractAllClaims(String token) {
+	public Claims extractAllClaims(String token) {
 		return Jwts.parser()
 			.verifyWith(getSigningKey())
 			.build()
 			.parseSignedClaims(token)
 			.getPayload();
 	}
+
+	public String getUserIdFromToken(String token) {
+     Claims claims = validateToken(token);
+     if (claims == null) {
+         return null;
+     }
+     return claims.get("userId", String.class);
+ }
 }
+

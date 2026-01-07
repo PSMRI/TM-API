@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +71,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Save general OPD data collected by nurse")
 	@PostMapping(value = { "/save/nurseData" })
+	@PreAuthorize("hasRole('NURSE')")
 	public String saveBenGenOPDNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -106,6 +108,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Save general OPD data collected by doctor")
 	@PostMapping(value = { "/save/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR')")
 	public String saveBenGenOPDDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -137,6 +140,7 @@ public class GeneralOPDController {
 
 	@Operation(summary = "Get general OPD beneficiary visit details")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseGOPD" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNurseGOPD(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -169,7 +173,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Get general OPD beneficiary history")
 	@PostMapping(value = { "/getBenHistoryDetails" })
-
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -200,6 +204,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Get general OPD beneficiary vitals")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenVitalDetailsFrmNurse(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -231,7 +236,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Get general OPD beneficiary examination details")
 	@PostMapping(value = { "/getBenExaminationDetails" })
-
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenExaminationDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -263,6 +268,7 @@ public class GeneralOPDController {
 	@Operation(summary = "Get general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorGeneralOPD" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenCaseRecordFromDoctorGeneralOPD(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -289,6 +295,7 @@ public class GeneralOPDController {
 
 	@Operation(summary = "Update beneficiary's general OPD visit details")
 	@PostMapping(value = { "/update/visitDetailsScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateVisitNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -323,6 +330,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Update beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -357,6 +365,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Update general OPD beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -391,6 +400,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Update general OPD beneficiary examination data")
 	@PostMapping(value = { "/update/examinationScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -424,6 +434,7 @@ public class GeneralOPDController {
 	 */
 	@Operation(summary = "Update general OPD beneficiary case record and referral")
 	@PostMapping(value = { "/update/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String updateGeneralOPDDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 

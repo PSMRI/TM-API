@@ -24,12 +24,19 @@ package com.iemr.tm.controller.teleconsultation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.JwtUtil;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -41,11 +48,15 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping(value = "/tc", headers = "Authorization", consumes = "application/json", produces = "application/json")
+@PreAuthorize("hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 public class TeleConsultationController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Autowired
 	private TeleConsultationServiceImpl teleConsultationServiceImpl;
+
+	@Autowired
+	private JwtUtil jwtUtil;
 
 	@Operation(summary = "Update beneficiary arrival status based on request")
 	@PostMapping(value = { "/update/benArrivalStatus" })
@@ -137,24 +148,33 @@ public class TeleConsultationController {
 	// TC request List
 	@Operation(summary = "Get teleconsultation request list for a specialist")
 	@PostMapping(value = { "/getTCRequestList" })
-	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ) {
+	public String getTCSpecialistWorkListNew(@RequestBody String requestOBJ, Authentication authentication) {
 		OutputResponse response = new OutputResponse();
 		try {
+		 if (authentication == null || !authentication.isAuthenticated()) {
+            response.setError(403, "Unauthorized access");
+            return response.toString();
+        }
+
+        Integer userID = Integer.valueOf(authentication.getPrincipal().toString());
+
 			if (requestOBJ != null) {
 				JsonObject jsnOBJ = new JsonObject();
 				JsonParser jsnParser = new JsonParser();
 				JsonElement jsnElmnt = jsnParser.parse(requestOBJ);
 				jsnOBJ = jsnElmnt.getAsJsonObject();
-
+				if (userID != null) {
 				String s = teleConsultationServiceImpl.getTCRequestListBySpecialistIdAndDate(
-						jsnOBJ.get("psmID").getAsInt(), jsnOBJ.get("userID").getAsInt(),
+						jsnOBJ.get("psmID").getAsInt(), userID,
 						jsnOBJ.get("date").getAsString());
 				if (s != null)
 					response.setResponse(s);
 			} else {
-				logger.error("Invalid request, either ProviderServiceMapID or userID or reqDate is invalid");
+				response.setError(403, "Unauthorized access!");
+			} } else {
+				logger.error("Invalid request, either ProviderServiceMapID or reqDate is invalid");
 				response.setError(5000,
-						"Invalid request, either ProviderServiceMapID or UserID or RequestDate is invalid");
+						"Invalid request, either ProviderServiceMapID or RequestDate is invalid");
 			}
 
 		} catch (Exception e) {
