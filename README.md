@@ -1,7 +1,8 @@
 # AMRIT - Telemedicine (TM) Service
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![Build Status](https://github.com/PSMRI/TM-API/actions/workflows/sast-and-package.yml/badge.svg)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-PSMRI%2FTM--API-blue)](https://deepwiki.com/PSMRI/TM-API)
+
 
 The AMRIT Telemedicine (TM) Service enhances the capabilities of Health and Wellness Centers (HWCs) by providing remote healthcare services, improving accessibility, enabling collaborative care, and integrating with other facilities such as drug dispensing and laboratory services. This service aims to extend the reach and convenience of HWCs, ensuring that patients receive necessary medical advice and services without the need for in-person visits.
 
