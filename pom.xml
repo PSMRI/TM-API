@@ -6,7 +6,7 @@
 
 	<groupId>com.iemr.tm</groupId>
 	<artifactId>tm-api</artifactId>
-	<version>3.6.0</version>
+	<version>3.6.2</version>
 	<packaging>war</packaging>
 
 	<name>TM-API</name>
