@@ -11,10 +11,8 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - name: Checkout API repo (full history)
+      - name: Checkout API repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -25,15 +23,15 @@ jobs:
 
       - name: Build API (skip tests)
         run: mvn -B clean package -DskipTests
-
+        
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Run API in swagger profile
         run: |
-          nohup mvn spring-boot:run \
-            -Dspring-boot.run.profiles=swagger \
-            -Dspring-boot.run.arguments=--server.port=9090 \
+          nohup java -jar target/tm-api-*.war \
+            --spring.profiles.active=swagger \
+            --server.port=9090 \
             > app.log 2>&1 &
           echo $! > api_pid.txt
 
@@ -69,9 +67,17 @@ jobs:
       - name: Stop API
         if: always()
         run: |
+          # Graceful shutdown of the process group
+          sleep 5
+          # Force kill the process group if still running
           if [ -f api_pid.txt ]; then
-            kill -9 $(cat api_pid.txt) || true
-          fi
+              PID=$(cat api_pid.txt)
+              kill -TERM -- -"$PID" 2>/dev/null || true
+              sleep 2
+              kill -9 -- -"$PID" 2>/dev/null || true
+            fi
+            # Fallback: kill any remaining java process on port 9090
+            fuser -k 9090/tcp 2>/dev/null || true
 
       - name: Checkout AMRIT-Docs
         uses: actions/checkout@v4
@@ -87,7 +93,7 @@ jobs:
           cp tm-api.json amrit-docs/docs/swagger/tm-api.json
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.DOCS_REPO_TOKEN }}
           path: amrit-docs
@@ -95,6 +101,7 @@ jobs:
           base: main
           commit-message: "chore(docs): auto-update TM-API swagger"
           title: "chore(docs): auto-update TM-API swagger"
+          delete-branch: true
           body: |
             This PR automatically updates TM-API Swagger JSON
             from the latest main branch build.
