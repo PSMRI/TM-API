@@ -20,7 +20,10 @@ public class SwaggerConfig {
         String uatUrl = env.getProperty("api.uat.url", DEFAULT_SERVER_URL);
         String demoUrl = env.getProperty("api.demo.url", DEFAULT_SERVER_URL);
         return new OpenAPI()
-            .info(new Info().title("TeleMedicine(TM) API").version("version").description("A microservice for the creation and management of beneficiaries."))
+            .info(new Info()
+                .title("TeleMedicine(TM) API")
+                .version("1.0.0")
+                .description("A microservice for TeleMedicine, providing APIs for remote healthcare consultations, patient management, and related telehealth operations."))
             .addSecurityItem(new SecurityRequirement().addList("my security"))
             .components(new Components().addSecuritySchemes("my security",
                 new SecurityScheme().name("my security").type(SecurityScheme.Type.HTTP).scheme("bearer")))
