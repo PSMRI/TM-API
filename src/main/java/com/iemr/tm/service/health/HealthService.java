@@ -134,7 +134,7 @@ public class HealthService {
 
     private HealthCheckResult checkRedisHealth() {
         if (redisTemplate == null) {
-            return new HealthCheckResult(true, null);
+            return new HealthCheckResult(true, "Redis not configured — skipped");
         }
         
         CompletableFuture<String> future = null;
