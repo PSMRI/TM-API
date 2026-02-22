@@ -429,6 +429,7 @@ public class HealthService {
             logger.debug("Advanced MySQL checks failed: {}", ex.getMessage());
             future.cancel(true);
             return new AdvancedCheckResult(true);
+        }
     }
 
     private AdvancedCheckResult performAdvancedMySQLChecks() {
