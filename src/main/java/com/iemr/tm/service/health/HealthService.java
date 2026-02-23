@@ -404,7 +404,7 @@ public class HealthService {
             return new AdvancedCheckResult(hasIssues);
         } catch (Exception e) {
             logger.debug("Advanced MySQL checks encountered exception, marking degraded");
-            return new AdvancedCheckResult(true);
+            return new AdvancedCheckResult(false);
         }
     }
 
