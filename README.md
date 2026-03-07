@@ -35,66 +35,26 @@ For step-by-step guide, follow this [guide] (https://piramal-swasthya.gitbook.io
 ## Prerequisites
 - JDK 17 (LTS)
 - Maven
+- Node.js
 
 To build the TM module from source, follow these steps:
 
 1. Clone the repository to your local machine.
-2. Install the required dependencies and build the module using the following command:
+2. Enable git hooks (run once after cloning):
+   - Run the command `git config core.hooksPath .git-hooks`.
+3. Install the required dependencies and build the module using the following command:
 - Execute the following command:
-  ```
+  ```bash
   mvn clean install
   ```
-3.  You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
-4. Run the development server by following these steps:
+4.  You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
+5. Run the development server by following these steps:
 - Start the Redis server.
 - Execute the following command:
-  ```
+  ```bash
   mvn spring-boot:run -DENV_VAR=local
   ```
 - Open your browser and navigate to http://localhost:8080/swagger-ui.html#!/
-
-## Setting Up Commit Hooks
-
-This project uses Git hooks to enforce consistent code quality and commit message standards. Even though this is a Java project, the hooks are powered by Node.js. Follow these steps to set up the hooks locally:
-
-### Prerequisites
-- Node.js (v14 or later)
-- npm (comes with Node.js)
-
-### Setup Steps
-
-1. **Install Node.js and npm**
-   - Download and install from [nodejs.org](https://nodejs.org/)
-   - Verify installation with:
-     ```
-     node --version
-     npm --version
-     ```
-2. **Install dependencies**
-   - From the project root directory, run:
-     ```
-     npm ci
-     ```
-   - This will install all required dependencies including Husky and commitlint
-3. **Verify hooks installation**
-   - The hooks should be automatically installed by Husky
-   - You can verify by checking if the `.husky` directory contains executable hooks
-### Commit Message Convention
-This project follows a specific commit message format:
-- Format: `type(scope): subject`
-- Example: `feat(login): add remember me functionality`
-Types include:
-- `feat`: A new feature
-- `fix`: A bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, etc.)
-- `refactor`: Code changes that neither fix bugs nor add features
-- `perf`: Performance improvements
-- `test`: Adding or fixing tests
-- `build`: Changes to build process or tools
-- `ci`: Changes to CI configuration
-- `chore`: Other changes (e.g., maintenance tasks, dependencies)
-Your commit messages will be automatically validated when you commit, ensuring project consistency.
 
 ## Usage
 
