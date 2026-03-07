@@ -44,14 +44,14 @@ To build the TM module from source, follow these steps:
    - Run the command `git config core.hooksPath .git-hooks`.
 3. Install the required dependencies and build the module using the following command:
 - Execute the following command:
-  ```
+  ```bash
   mvn clean install
   ```
 4.  You can copy `common_example.properties` to `common_local.properties` and edit the file accordingly. The file is under `src/main/environment` folder.
 5. Run the development server by following these steps:
 - Start the Redis server.
 - Execute the following command:
-  ```
+  ```bash
   mvn spring-boot:run -DENV_VAR=local
   ```
 - Open your browser and navigate to http://localhost:8080/swagger-ui.html#!/
