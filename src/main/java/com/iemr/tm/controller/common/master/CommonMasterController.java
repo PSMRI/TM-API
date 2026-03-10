@@ -106,4 +106,14 @@ public class CommonMasterController {
 		return response.toString();
 	}
 
+	@Operation(summary = "Get ECG abnormal findings master data")
+	@GetMapping(value = "/ecgAbnormalFindings", produces = MediaType.APPLICATION_JSON)
+	public String getECGAbnormalFindings() {
+		logger.info("getECGAbnormalFindings ...");
+		OutputResponse response = new OutputResponse();
+		response.setResponse(commonMasterServiceImpl.getECGAbnormalFindings());
+		logger.info("ECG abnormal findings" + response.toString());
+		return response.toString();
+	}
+
 }
