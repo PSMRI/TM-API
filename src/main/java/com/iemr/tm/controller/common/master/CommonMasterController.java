@@ -39,7 +39,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping(value = "/master", produces = "application/json")
+@RequestMapping(value = "/master", headers = "Authorization", produces = "application/json")
 /** Objective: provides master data based on given visitCategory */
 @PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 public class CommonMasterController {
