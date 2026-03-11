@@ -31,7 +31,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.service.common.master.CommonMasterServiceImpl;
@@ -40,7 +39,7 @@ import com.iemr.tm.utils.response.OutputResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping(value = "/master", headers = "Authorization", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/master", headers = "Authorization", produces = "application/json")
 /** Objective: provides master data based on given visitCategory */
 @PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 public class CommonMasterController {
