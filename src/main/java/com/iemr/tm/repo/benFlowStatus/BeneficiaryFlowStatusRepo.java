@@ -118,7 +118,7 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 
 	@Query("SELECT  t.benFlowID, t.beneficiaryRegID, t.visitDate, t.benName, t.age, t.ben_age_val, t.genderID, t.genderName, "
 			+ " t.villageName, t.districtName, t.beneficiaryID, t.servicePointName, t.VisitReason, t.VisitCategory, t.benVisitID,  "
-			+ " t.registrationDate, t.benVisitDate, t.visitCode, t.consultationDate, t.fatherName, t.preferredPhoneNum FROM BeneficiaryFlowStatus t "
+			+ " t.registrationDate, t.benVisitDate, t.visitCode, t.consultationDate, t.fatherName, t.preferredPhoneNum, t.doctorSignatureFlag FROM BeneficiaryFlowStatus t "
 			+ " Where t.beneficiaryRegID = :benRegID AND t.benFlowID = :benFlowID ")
 	public ArrayList<Object[]> getBenDetailsForLeftSidePanel(@Param("benRegID") Long benRegID,
 			@Param("benFlowID") Long benFlowID);
@@ -204,17 +204,18 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	 *updating lab technician flag as well after feto sense.
 	 */
 	@Transactional
-	@Modifying
+	@Modifying	
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
 			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U', "
 			+ " t.specialist_flag = :tcSpecialistFlag, t.tCSpecialistUserID = :tcSpecialistUserID, "
-			+ "t.tCRequestDate = :tcDate, t.lab_technician_flag = :labTechnicianFlag "
+			+ "t.tCRequestDate = :tcDate, t.lab_technician_flag = :labTechnicianFlag, t.doctorSignatureFlag = :signatureFlag "
 			+ " WHERE t.benFlowID = :benFlowID AND " + " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivity(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
 			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
 			@Param("tcSpecialistFlag") Short tcSpecialistFlag, @Param("tcSpecialistUserID") int tcSpecialistUserID,
-			@Param("tcDate") Timestamp tcDate,@Param("labTechnicianFlag") Short labTechnicianFlag);
+			@Param("tcDate") Timestamp tcDate,@Param("labTechnicianFlag") Short labTechnicianFlag,
+			@Param("signatureFlag") Boolean signatureFlag);
 
 	/***
 	 * @author DU20091017
@@ -224,12 +225,12 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
 			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U', "
-			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag " 
+			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag, t.doctorSignatureFlag = :signatureFlag "
 			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivitySpecialist(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
 			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
-			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag);
+			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag, @Param("signatureFlag") Boolean signatureFlag);
 	
 	/***
 	 * @author DU20091017
@@ -239,12 +240,12 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
 			+ " t.oncologist_flag = :oncologistFlag, t.consultationDate = now(), t.processed = 'U', "
-			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag " 
+			+ " t.specialist_flag = :tcSpecialistFlag , t.lab_technician_flag = :labTechnicianFlag, t.doctorSignatureFlag = :signatureFlag"
 			+ " WHERE t.benFlowID = :benFlowID AND t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivitySpecialistANC(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
 			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
-			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag);
+			@Param("tcSpecialistFlag") Short tcSpecialistFlag,@Param("labTechnicianFlag") Short labTechnicianFlag, @Param("signatureFlag") Boolean signatureFlag);
 
 	/***
 	 * @author DU20091017
@@ -254,22 +255,24 @@ public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlo
 	@Modifying
 	@Query("UPDATE BeneficiaryFlowStatus t set t.pharmacist_flag = :pharmaFlag, "
 			+ " t.oncologist_flag = :oncologistFlag, t.processed = 'U', t.specialist_flag = :tcSpecialistFlag, "
-			+ "t.lab_technician_flag = :labTechnicianFlag"
+			+ "t.lab_technician_flag = :labTechnicianFlag, t.doctorSignatureFlag = :signatureFlag"
 			+ " WHERE t.benFlowID = :benFlowID AND  t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
 	public int updateBenFlowStatusAfterDoctorActivityTCSpecialist(@Param("benFlowID") Long benFlowID,
 			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("pharmaFlag") Short pharmaFlag,
 			@Param("oncologistFlag") Short oncologistFlag, @Param("tcSpecialistFlag") Short tcSpecialistFlag,
-			@Param("labTechnicianFlag") Short labTechnicianFlag);
+			@Param("labTechnicianFlag") Short labTechnicianFlag, @Param("signatureFlag") Boolean signatureFlag);
 
 	@Transactional
-	@Modifying
-	@Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
-			+ " t.oncologist_flag = :oncologistFlag , t.processed = 'U' " + " WHERE t.benFlowID = :benFlowID AND "
-			+ " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
-	public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
-			@Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
-			@Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag);
-
+    @Modifying
+    @Query("UPDATE BeneficiaryFlowStatus t set t.doctorFlag = :docFlag , t.pharmacist_flag = :pharmaFlag, "
+            + " t.oncologist_flag = :oncologistFlag , t.processed = 'U', t.doctorSignatureFlag = :signatureFlag"
+            + " WHERE t.benFlowID = :benFlowID AND "
+            + " t.beneficiaryRegID = :benRegID AND t.beneficiaryID = :benID ")
+    public int updateBenFlowStatusAfterDoctorActivityUpdate(@Param("benFlowID") Long benFlowID,
+            @Param("benRegID") Long benRegID, @Param("benID") Long benID, @Param("docFlag") Short docFlag,
+            @Param("pharmaFlag") Short pharmaFlag, @Param("oncologistFlag") Short oncologistFlag,
+            @Param("signatureFlag") Boolean signatureFlag);
+			
 	@Query("SELECT t from BeneficiaryFlowStatus t "
 			+ " WHERE t.benVisitDate >= Date(:fromDate) AND t.vanID = :vanID AND t.radiologist_flag = 1 "
 			+ " AND t.providerServiceMapId= :providerServiceMapId ORDER BY t.benVisitDate DESC ")

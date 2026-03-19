@@ -24,6 +24,7 @@ package com.iemr.tm.controller.dataSyncLayerCentral;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,7 @@ import io.swagger.v3.oas.annotations.Operation;
  */
 @RestController
 @RequestMapping(value = "/dataSync", headers = "Authorization", consumes = "application/json", produces = "application/json")
+@PreAuthorize("hasRole('DATASYNC') || hasRole('DATA_SYNC') ")
 public class MMUDataSyncVanToServer {
 	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 

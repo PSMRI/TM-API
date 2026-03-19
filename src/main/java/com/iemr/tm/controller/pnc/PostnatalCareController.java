@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +67,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Save PNC nurse data")
 	@PostMapping(value = { "/save/nurseData" })
+	@PreAuthorize("hasRole('NURSE')")
 	public String saveBenPNCNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -103,6 +105,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Save PNC doctor data")
 	@PostMapping(value = { "/save/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String saveBenPNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -135,6 +138,7 @@ public class PostnatalCareController {
 
 	@Operation(summary = "Get PNC beneficiary visit details from nurse")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNursePNC" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	@Transactional(rollbackFor = Exception.class)
 	public String getBenVisitDetailsFrmNursePNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
@@ -168,6 +172,7 @@ public class PostnatalCareController {
 	@Operation(summary = "Get PNC beneficiary details from nurse")
 	@PostMapping(value = { "/getBenPNCDetailsFrmNursePNC" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String getBenPNCDetailsFrmNursePNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -199,7 +204,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Get PNC beneficiary history nurse")
 	@PostMapping(value = { "/getBenHistoryDetails" })
-
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String getBenHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -230,6 +235,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Get PNC beneficiary vital details from nurse")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurse" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String getBenVitalDetailsFrmNurse(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -261,7 +267,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Get PNC beneficiary examination details from nurse")
 	@PostMapping(value = { "/getBenExaminationDetailsPNC" })
-
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String getBenExaminationDetailsPNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -293,6 +299,7 @@ public class PostnatalCareController {
 	@Operation(summary = "Get PNC beneficiary case record")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorPNC" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String getBenCaseRecordFromDoctorPNC(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -319,6 +326,7 @@ public class PostnatalCareController {
 
 	@Operation(summary = "Update PNC doctor data")
 	@PostMapping(value = { "/update/PNCScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String updatePNCCareNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -354,6 +362,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Update PNC beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -389,6 +398,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Update PNC beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -424,6 +434,7 @@ public class PostnatalCareController {
 	 */
 	@Operation(summary = "Update PNC examination data")
 	@PostMapping(value = { "/update/examinationScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String updateGeneralOPDExaminationNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -452,6 +463,7 @@ public class PostnatalCareController {
 
 	@Operation(summary = "Update PNC doctor data")
 	@PostMapping(value = { "/update/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR')  ")
 	public String updatePNCDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 

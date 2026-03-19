@@ -981,6 +981,11 @@ public class Covid19ServiceImpl implements Covid19Service {
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
 
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
 					&& requestOBJ.get("investigation") != null) {
@@ -1085,7 +1090,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 					
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-						isMedicinePrescribed, tcRequestOBJ);
+						isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					saveSuccessFlag = referSaveSuccessFlag;
@@ -1186,6 +1191,12 @@ public class Covid19ServiceImpl implements Covid19Service {
 
 			Boolean isTestPrescribed = false;
 			Boolean isMedicinePrescribed = false;
+
+			Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
 
 			// checking if test is prescribed
 			if (requestOBJ.has("investigation") && !requestOBJ.get("investigation").isJsonNull()
@@ -1304,7 +1315,7 @@ public class Covid19ServiceImpl implements Covid19Service {
 					
 				}
 				int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass,
-						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ);
+						isTestPrescribed, isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 				if (i > 0)
 					updateSuccessFlag = investigationSuccessFlag;

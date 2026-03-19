@@ -339,6 +339,11 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		if (drugList != null && !drugList.isJsonNull() && drugList.size() > 0)
 			isMedicinePrescribed = true;
 
+		Boolean doctorSignatureFlag = false;
+		if (quickConsultDoctorOBJ.has("doctorSignatureFlag") && !quickConsultDoctorOBJ.get("doctorSignatureFlag").isJsonNull()) {
+		doctorSignatureFlag = quickConsultDoctorOBJ.get("doctorSignatureFlag").getAsBoolean();
+		}
+
 		// save prescribed medicine
 		if (isMedicinePrescribed) {
 
@@ -414,7 +419,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			}
 			// call method to update beneficiary flow table
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataSave(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed, tcRequestOBJ);
+					isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 			if (i > 0)
 				returnOBJ = 1;
@@ -521,6 +526,10 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 		Boolean isTestPrescribed = false;
 		Boolean isMedicinePrescribed = false;
 
+		Boolean doctorSignatureFlag = false;
+			if (quickConsultDoctorOBJ.has("doctorSignatureFlag") && !quickConsultDoctorOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = quickConsultDoctorOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
 		// checking if test is prescribed
 		if (quickConsultDoctorOBJ.has("labTestOrders")) {
 			testList = quickConsultDoctorOBJ.getAsJsonArray("labTestOrders");
@@ -609,7 +618,7 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 				
 			}
 			int i = commonDoctorServiceImpl.updateBenFlowtableAfterDocDataUpdate(commonUtilityClass, isTestPrescribed,
-					isMedicinePrescribed, tcRequestOBJ);
+					isMedicinePrescribed, tcRequestOBJ, doctorSignatureFlag);
 
 			if (i > 0)
 				updateSuccessFlag = benChiefComplaintID;

@@ -26,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +62,7 @@ public class PatientAppCommonMasterController {
 	 */
 	@Operation(summary = "Chief complaints master data API for patient app")
 	@PostMapping(value = "/patientApp/chiefComplaintsMaster/{visitCategoryID}/{providerServiceMapID}/{gender}")
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String patientAppChiefComplaintsMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
 		logger.info("Nurse master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
@@ -75,6 +77,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "COVID master data API for patient app")
 	@PostMapping(value = "/patientApp/covidMaster/{visitCategoryID}/{providerServiceMapID}/{gender}")
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String patientAppCovidMasterData(@PathVariable("visitCategoryID") Integer visitCategoryID,
 			@PathVariable("providerServiceMapID") Integer providerServiceMapID, @PathVariable("gender") String gender) {
 		logger.info("Nurse master Data for categoryID:" + visitCategoryID + " and providerServiceMapID:"
@@ -89,6 +92,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Save COVID data in patient app")
 	@PostMapping(value = { "/save/covidScreeningDataPatientApp" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String saveBenCovidDoctorDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -108,6 +112,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Save chief-complaints data in patient app")
 	@PostMapping(value = { "/save/chiefComplaintsDataPatientApp" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR')  ")
 	public String saveBenChiefComplaintsDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -127,6 +132,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Save tele-consultation slot in data patient app")
 	@PostMapping(value = { "/save/tcSlotDetailsDataPatientApp" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String saveTCSlotDataPatientApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -148,6 +154,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Get patient episode data for specialist in patient app")
 	@PostMapping(value = { "/get/getPatientEpisodeData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String getPatientEpisodeDataMobileApp(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -169,6 +176,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Get patient booked slot data in patient app")
 	@PostMapping(value = { "/get/getPatientBookedSlotDetails" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String getPatientBookedSlotDetails(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -190,6 +198,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Save specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/saveSpecialistDiagnosisData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String saveSpecialistDiagnosisData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -211,6 +220,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Get specialist diagnosis data in patient app")
 	@PostMapping(value = { "/save/getSpecialistDiagnosisData" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String getSpecialistDiagnosisData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -232,6 +242,7 @@ public class PatientAppCommonMasterController {
 
 	@Operation(summary = "Get last 3 episode data of the patient in patient app")
 	@PostMapping(value = { "/get/getPatientsEpisodes" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('TCSPECIALIST') || hasRole('TC_SPECIALIST') ")
 	public String getPatientsLast_3_Episode(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();

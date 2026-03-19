@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Service
 public class CookieUtil {
 
-	public Optional<String> getCookieValue(HttpServletRequest request, String cookieName) {
+	public static Optional<String> getCookieValue(HttpServletRequest request, String cookieName) {
 		Cookie[] cookies = request.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
@@ -36,4 +36,11 @@ public class CookieUtil {
 	                 .findFirst()
 	                 .orElse(null);
 	}
+
+	 /**
+     * Get auth token from cookies (for legacy support)
+     */
+    public static String getAuthTokenFromCookie(HttpServletRequest request) {
+        return getCookieValue(request, "Authorization").orElse(null);
+    }
 }

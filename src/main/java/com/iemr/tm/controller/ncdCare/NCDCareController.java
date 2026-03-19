@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,6 +70,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Save NCD care data collected by nurse")
 	@PostMapping(value = { "/save/nurseData" })
+	@PreAuthorize("hasRole('NURSE') ")
 	public String saveBenNCDCareNurseData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) throws Exception {
 		OutputResponse response = new OutputResponse();
@@ -105,6 +107,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Save NCD care beneficiary case record and referral")
 	@PostMapping(value = { "/save/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String saveBenNCDCareDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -137,6 +140,7 @@ public class NCDCareController {
 	@Operation(summary = "Get NCD care beneficiary visit details")
 	@PostMapping(value = { "/getBenVisitDetailsFrmNurseNCDCare" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenVisitDetailsFrmNurseNCDCare(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -168,7 +172,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Get NCD care beneficiary history")
 	@PostMapping(value = { "/getBenNCDCareHistoryDetails" })
-
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenNCDCareHistoryDetails(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -199,6 +203,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Get NCD care beneficiary vitals")
 	@PostMapping(value = { "/getBenVitalDetailsFrmNurseNCDCare" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenVitalDetailsFrmNurseNCDCare(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -231,6 +236,7 @@ public class NCDCareController {
 	@Operation(summary = "Get NCD care beneficiary case record and referral")
 	@PostMapping(value = { "/getBenCaseRecordFromDoctorNCDCare" })
 	@Transactional(rollbackFor = Exception.class)
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getBenCaseRecordFromDoctorNCDCare(
 			@Param(value = "{\"benRegID\":\"Long\",\"visitCode\":\"Long\"}") @RequestBody String comingRequest) {
 		OutputResponse response = new OutputResponse();
@@ -257,6 +263,7 @@ public class NCDCareController {
 
 	@Operation(summary = "Update NCD care beneficiary history")
 	@PostMapping(value = { "/update/historyScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateHistoryNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -294,6 +301,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Update NCD care beneficiary vitals")
 	@PostMapping(value = { "/update/vitalScreen" })
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String updateVitalNurse(@RequestBody String requestObj) {
 
 		OutputResponse response = new OutputResponse();
@@ -328,6 +336,7 @@ public class NCDCareController {
 	 */
 	@Operation(summary = "Update NCD care beneficiary case record and referral")
 	@PostMapping(value = { "/update/doctorData" })
+	@PreAuthorize("hasRole('DOCTOR') ")
 	public String updateNCDCareDoctorData(@RequestBody String requestObj,
 			@RequestHeader(value = "Authorization") String Authorization) {
 

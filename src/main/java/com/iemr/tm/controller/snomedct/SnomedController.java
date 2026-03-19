@@ -24,6 +24,7 @@ package com.iemr.tm.controller.snomedct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RequestMapping(value = "/snomed", consumes = "application/json", produces = "application/json")
 @RestController
+@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 public class SnomedController {
 	private Logger logger = LoggerFactory.getLogger(SnomedController.class);
 

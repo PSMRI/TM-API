@@ -24,6 +24,7 @@ package com.iemr.tm.controller.videoconsultationcontroller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.iemr.tm.service.videoconsultation.VideoConsultationService;
 import com.iemr.tm.utils.response.OutputResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import com.iemr.tm.utils.CookieUtil;
+import com.iemr.tm.utils.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -44,19 +50,29 @@ public class VideoConsultationController {
 	@Autowired
 	private VideoConsultationService videoConsultationService;
 
+	@Autowired
+	private JwtUtil jwtUtil;
+
 	@Operation(summary = "Login to video consultation service")
 	@GetMapping(value = "/login/{userID}", headers = "Authorization", produces = {
 			"application/json" })
-	public String login(@PathVariable("userID") Long userID) {
+	public String login(@PathVariable("userID") Long userID, Authentication authentication) {
 
 		OutputResponse response = new OutputResponse();
-
 		try {
+ 		if (authentication == null || !authentication.isAuthenticated()) {
+            response.setError(403, "Unauthorized access");
+            return response.toString();
+        }
 
-			String createdData = videoConsultationService.login(userID);
+		String userId = authentication.getPrincipal().toString();
+			if(userID.toString().equals(userId)) {
+				String createdData = videoConsultationService.login(userID);
 
-			response.setResponse(createdData.toString());
-
+				response.setResponse(createdData.toString());
+			} else {
+				response.setError(403, "Unauthorized access!");
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			response.setError(e);
