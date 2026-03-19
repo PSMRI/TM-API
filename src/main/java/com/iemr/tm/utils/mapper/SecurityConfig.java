@@ -40,6 +40,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/user/*").permitAll()
+            .requestMatchers("/version").permitAll()
+            .requestMatchers("/health").permitAll()
             .anyRequest().authenticated()
         )
         .exceptionHandling(ex -> ex
