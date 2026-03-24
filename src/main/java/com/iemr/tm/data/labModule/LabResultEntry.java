@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,6 +43,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
 import com.google.gson.annotations.Expose;
+import com.iemr.tm.utils.IntegerListConverter;
 
 @Entity
 @Table(name = "t_lab_testresult")
@@ -96,6 +98,11 @@ public class LabResultEntry {
 	@Column(name = "Remarks")
 	@Expose
 	private String remarks;
+
+	@Expose
+	@Column(name = "abnormal_findings", columnDefinition = "json")
+	@Convert(converter = IntegerListConverter.class)
+	private List<Integer> abnormalFindings;
 
 	@Transient
 	private List<Map<String, String>> compList;
@@ -278,6 +285,7 @@ public class LabResultEntry {
 					tmpOBJ.setProcedureName(obj.getProcedureData().getProcedureName());
 					tmpOBJ.setProcedureType(obj.getProcedureData().getProcedureType());
 					tmpOBJ.setCreatedDate(obj.getCreatedDate());
+					tmpOBJ.setAbnormalFindings(obj.getAbnormalFindings());
 
 					compDetails = new HashMap<String, Object>();
 					compDetails.put("testComponentID", obj.getTestComponentID());
@@ -305,6 +313,13 @@ public class LabResultEntry {
 					compDetails.put("fileIDs", fileIds);
 
 					compDetails.put("remarks", obj.getRemarks());
+
+					// Add abnormal findings for ECG procedures
+					if (obj.getProcedureData() != null && obj.getProcedureData().getProcedureName() != null
+							&& obj.getProcedureData().getProcedureName().equalsIgnoreCase("ECG")
+							&& obj.getAbnormalFindings() != null) {
+						compDetails.put("abnormalFindings", obj.getAbnormalFindings());
+					}
 
 					componentList = new ArrayList<>();
 					componentList.add(compDetails);
@@ -341,6 +356,14 @@ public class LabResultEntry {
 					}
 
 					compDetails.put("remarks", obj.getRemarks());
+
+					// Add abnormal findings for ECG procedures
+					if (obj.getProcedureData() != null && obj.getProcedureData().getProcedureName() != null
+							&& obj.getProcedureData().getProcedureName().equalsIgnoreCase("ECG")
+							&& obj.getAbnormalFindings() != null) {
+						compDetails.put("abnormalFindings", obj.getAbnormalFindings());
+					}
+
 					componentList.add(compDetails);
 				}
 			}
@@ -471,6 +494,14 @@ public class LabResultEntry {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public List<Integer> getAbnormalFindings() {
+		return abnormalFindings;
+	}
+
+	public void setAbnormalFindings(List<Integer> abnormalFindings) {
+		this.abnormalFindings = abnormalFindings;
 	}
 
 	public Boolean getDeleted() {
