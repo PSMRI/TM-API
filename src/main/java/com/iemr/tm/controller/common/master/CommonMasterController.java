@@ -41,7 +41,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping(value = "/master", headers = "Authorization", produces = "application/json")
 /** Objective: provides master data based on given visitCategory */
-@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
+@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LABTECHNICIAN')")
 public class CommonMasterController {
 
 	private Logger logger = LoggerFactory.getLogger(CommonMasterController.class);
