@@ -73,7 +73,7 @@ public class JwtAuthenticationUtil {
 				throw new IEMRException("Invalid JWT token.");
 			}
 
-			String userId = claims.get("userId", String.class);
+			String userId = claims.getSubject();
 
 			// Check if user data is present in Redis
 			Users user = getUserFromCache(userId);

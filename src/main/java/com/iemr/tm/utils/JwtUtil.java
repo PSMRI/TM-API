@@ -72,7 +72,7 @@ public class JwtUtil {
      if (claims == null) {
          return null;
      }
-     return claims.get("userId", String.class);
+     return claims.getSubject();
  }
 }
 

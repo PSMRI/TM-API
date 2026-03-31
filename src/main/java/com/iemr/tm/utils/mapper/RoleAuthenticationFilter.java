@@ -60,8 +60,8 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
 
             if (jwtToken != null && !jwtToken.isBlank()) {
                 Claims claims = jwtUtil.validateToken(jwtToken);
-                if (claims != null && claims.get("userId") != null) {
-                    userId = Long.valueOf(claims.get("userId").toString());
+                if (claims != null && claims.getSubject() != null) {
+                    userId = Long.valueOf(claims.getSubject().toString());
                     logger.info("UserId resolved from JWT: {}", userId);
                 }
             }
