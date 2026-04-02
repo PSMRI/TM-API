@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -572,6 +573,31 @@ public class CommonServiceImpl implements CommonService {
 		} else
 			return null;
 
+	}
+
+	public byte[] downloadFileFromKM(String requestOBJ, String Authorization) throws JSONException {
+		RestTemplate restTemplate = new RestTemplate();
+		JSONObject obj = new JSONObject(requestOBJ);
+		if (obj.has("fileID")) {
+			String fileUUID = benVisitDetailRepo.getFileUUID(obj.getInt("fileID"));
+			if (fileUUID != null) {
+				Map<String, Object> requestBody = new HashMap<>();
+				requestBody.put("fileUID", fileUUID);
+
+				String downloadUrl = openkmDocUrl.replace("getKMFileDownloadURL", "downloadFileByUID");
+				HttpHeaders headers = new HttpHeaders();
+				headers.set("Authorization", Authorization);
+				headers.set("Content-Type", "application/json");
+				HttpEntity<Object> request = new HttpEntity<>(requestBody, headers);
+				ResponseEntity<byte[]> response = restTemplate.exchange(downloadUrl, HttpMethod.POST, request, byte[].class);
+				return response.getBody();
+			}
+		}
+		return null;
+	}
+
+	public String getFileNameByID(int fileID) {
+		return benVisitDetailRepo.getFileName(fileID);
 	}
 
 	@Override

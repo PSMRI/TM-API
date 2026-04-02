@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -801,6 +802,29 @@ public class WorklistController {
 			response.setError(5000, "Error while getting TC specialist future scheduled worklist");
 		}
 		return response.toString();
+	}
+
+	// download file from openkm
+	@Operation(summary = "Download file from openKM")
+	@PostMapping(value = "/downloadFile", consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
+	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') || hasRole('LAB TECHNICIAN') ")
+	public ResponseEntity<byte[]> downloadFile(@RequestBody String request,
+			@RequestHeader(value = "Authorization") String Authorization) {
+		try {
+			JSONObject obj = new JSONObject(request);
+			byte[] fileBytes = commonServiceImpl.downloadFileFromKM(request, Authorization);
+			if (fileBytes != null) {
+				String fileName = commonServiceImpl.getFileNameByID(obj.getInt("fileID"));
+				org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+				headers.set("Content-Disposition", "attachment; filename=" + (fileName != null ? fileName : "download"));
+				headers.set("Content-Type", "application/octet-stream");
+				return new ResponseEntity<>(fileBytes, headers, org.springframework.http.HttpStatus.OK);
+			}
+			return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			logger.error("Error while downloading file : " + e);
+			return new ResponseEntity<>(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	// openkm file download
