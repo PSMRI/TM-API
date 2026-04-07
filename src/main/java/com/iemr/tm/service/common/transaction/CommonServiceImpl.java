@@ -68,12 +68,16 @@ import com.iemr.tm.utils.CookieUtil;
 import com.iemr.tm.utils.RestTemplateUtil;
 import com.iemr.tm.utils.exception.IEMRException;
 import com.iemr.tm.utils.mapper.InputMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 @PropertySource("classpath:application.properties")
 public class CommonServiceImpl implements CommonService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
 	@Value("${openkmDocUrl}")
 	private String openkmDocUrl;
@@ -559,6 +563,9 @@ public class CommonServiceImpl implements CommonService {
 		if (obj.has("fileID")) {
 			fileUUID = benVisitDetailRepo.getFileUUID(obj.getInt("fileID"));
 
+			logger.info("fileUUID for fileID " + obj.getInt("fileID") + " is " + fileUUID);
+			logger.info("openkmDocUrl is " + openkmDocUrl);
+			
 			if (fileUUID != null) {
 				Map<String, Object> requestBody = new HashMap<>();
 				requestBody.put("fileUID", fileUUID);
@@ -566,7 +573,26 @@ public class CommonServiceImpl implements CommonService {
 				HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(requestBody, Authorization);
 				ResponseEntity<String> response = restTemplate.exchange(openkmDocUrl, HttpMethod.POST, request,
 						String.class);
-				return response.getBody();
+				logger.info("Response=" + response.getBody());
+
+				String responseBody = response.getBody();
+				if (responseBody != null) {
+					JSONObject responseObj = new JSONObject(responseBody);
+					if (responseObj.has("data")) {
+						Object dataVal = responseObj.get("data");
+						if (dataVal instanceof JSONObject) {
+							JSONObject dataObj = (JSONObject) dataVal;
+							if (dataObj.has("response")) {
+								String fileUrl = dataObj.getString("response");
+								// Fix malformed URL: https://user:pass@https://host -> https://user:pass@host
+								fileUrl = fileUrl.replaceAll("@https?://", "@");
+								return fileUrl;
+							}
+						}
+						return dataVal.toString();
+					}
+				}
+				return responseBody;
 			} else
 				return null;
 		} else

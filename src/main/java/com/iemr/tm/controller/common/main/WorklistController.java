@@ -806,7 +806,6 @@ public class WorklistController {
 	// openkm file download
 	@Operation(summary = "Add file as string to openKM")
 	@PostMapping(value = "/getKMFile", produces = MediaType.APPLICATION_JSON, consumes = MediaType.APPLICATION_JSON, headers = "Authorization")
-	@PreAuthorize("hasRole('NURSE') || hasRole('DOCTOR') ")
 	public String getKMFile(@Param(value = "{}") @RequestBody String request,
 			@RequestHeader(value = "Authorization") String Authorization) {
 		OutputResponse response = new OutputResponse();
@@ -819,6 +818,7 @@ public class WorklistController {
 			}
 		} catch (Exception e) {
 			logger.error("Error while getting file download url : " + e);
+			response.setError(5000, "Error while getting file download url");
 		}
 		return response.toString();
 	}
