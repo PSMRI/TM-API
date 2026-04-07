@@ -565,7 +565,9 @@ public class CommonServiceImpl implements CommonService {
 		String fileUUID = null;
 		JSONObject obj = new JSONObject(requestOBJ);
 		if (obj.has("fileID")) {
-			fileUUID = benVisitDetailRepo.getFileUUID(obj.getInt("fileID"));
+			int fileID = obj.getInt("fileID");
+			fileUUID = benVisitDetailRepo.getFileUUID(fileID);
+			String fileName = benVisitDetailRepo.getFileName(fileID);
 
 			logger.info("fileUUID for fileID " + obj.getInt("fileID") + " is " + fileUUID);
 			logger.info("openkmDocUrl is " + openkmDocUrl);
@@ -599,7 +601,10 @@ public class CommonServiceImpl implements CommonService {
 								}
 								try (InputStream is = conn.getInputStream()) {
 									byte[] fileBytes = is.readAllBytes();
-									return Base64.getEncoder().encodeToString(fileBytes);
+									JSONObject result = new JSONObject();
+									result.put("fileContent", Base64.getEncoder().encodeToString(fileBytes));
+									result.put("fileName", fileName != null ? fileName : "download");
+									return result.toString();
 								} finally {
 									conn.disconnect();
 								}
