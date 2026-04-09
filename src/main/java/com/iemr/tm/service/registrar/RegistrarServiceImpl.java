@@ -702,7 +702,7 @@ public class RegistrarServiceImpl implements RegistrarService {
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		ResponseEntity<String> response = restTemplate.exchange(beneficiaryEditUrl, HttpMethod.POST, request,
 				String.class);
-logger.info("Edit url="+beneficiaryEditUrl);
+
 		if (response.getStatusCodeValue() == 200) {
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
 			if (obj.getPassToNurse() != null && obj.getPassToNurse() == true)
