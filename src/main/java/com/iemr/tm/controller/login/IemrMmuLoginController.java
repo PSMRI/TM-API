@@ -46,7 +46,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/user", headers = "Authorization", consumes = "application/json", produces = "application/json")
-@PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('LABTECHNICIAN') || hasRole('REGISTRAR') || hasRole('DATASYNC') || hasRole('DATA_SYNC') || hasRole('DOCTOR') || hasRole('LAB_TECHNICIAN') || hasRole('TC_SPECIALIST') || hasRole('ONCOLOGIST') || hasRole('RADIOLOGIST') || hasRole('ASHA')")
+@PreAuthorize("hasRole('NURSE') || hasRole('PHARMACIST') || hasRole('LABTECHNICIAN') || hasRole('REGISTRAR') || hasRole('DATASYNC') || hasRole('DATA_SYNC') || hasRole('DOCTOR') || hasRole('LAB_TECHNICIAN') || hasRole('TC_SPECIALIST') || hasRole('ONCOLOGIST') || hasRole('RADIOLOGIST') || hasRole('ASHA') || hasRole('VOLUNTEER')")
 public class IemrMmuLoginController {
 
 	private Logger logger = LoggerFactory.getLogger(RegistrarController.class);
