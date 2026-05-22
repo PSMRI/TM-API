@@ -819,6 +819,7 @@ public class WorklistController {
 			}
 		} catch (Exception e) {
 			logger.error("Error while getting file download url : " + e);
+			response.setError(5000, "Error while getting file download url");
 		}
 		return response.toString();
 	}

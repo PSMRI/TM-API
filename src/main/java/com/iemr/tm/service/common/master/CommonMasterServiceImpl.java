@@ -24,6 +24,8 @@ package com.iemr.tm.service.common.master;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iemr.tm.service.labtechnician.LabTechnicianServiceImpl;
+
 @Service
 public class CommonMasterServiceImpl implements CommonMaterService {
 
@@ -34,10 +36,16 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 	private NCDScreeningMasterServiceImpl ncdScreeningServiceImpl;
 	private QCMasterDataServiceImpl qCMasterDataServiceImpl;
 	private NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl;
+	private LabTechnicianServiceImpl labTechnicianServiceImpl;
 
 	@Autowired
 	public void setNcdCareMasterDataServiceImpl(NCDCareMasterDataServiceImpl ncdCareMasterDataServiceImpl) {
 		this.ncdCareMasterDataServiceImpl = ncdCareMasterDataServiceImpl;
+	}
+
+	@Autowired
+	public void setLabTechnicianServiceImpl(LabTechnicianServiceImpl labTechnicianServiceImpl) {
+		this.labTechnicianServiceImpl = labTechnicianServiceImpl;
 	}
 
 	@Autowired
@@ -219,6 +227,11 @@ public class CommonMasterServiceImpl implements CommonMaterService {
 			doctorMasterData = "Invalid VisitCategoryID";
 		}
 		return doctorMasterData;
+	}
+
+	@Override
+	public String getECGAbnormalFindings() {
+		return labTechnicianServiceImpl.getECGAbnormalFindings();
 	}
 
 }
