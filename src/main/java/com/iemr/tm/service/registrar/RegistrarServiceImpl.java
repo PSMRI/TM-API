@@ -40,6 +40,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -111,6 +113,9 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
 	@Autowired
 	private CookieUtil cookieUtil;
+
+	@Autowired
+	private LettuceConnectionFactory redisConnectionFactory;
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -658,7 +663,24 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
 		Map<String, Object> responseMap = new HashMap<>();
-        
+
+		// Inject correct vanID from Redis (mobile sends vanID=0 as placeholder)
+		try {
+			RedisConnection conn = redisConnectionFactory.getConnection();
+			byte[] vanIDBytes = conn.get("camp:vanID".getBytes());
+			byte[] ppIDBytes = conn.get("camp:parkingPlaceID".getBytes());
+			conn.close();
+			if (vanIDBytes != null) {
+				JSONObject reqJson = new JSONObject(comingRequest);
+				reqJson.put("vanID", Integer.parseInt(new String(vanIDBytes)));
+				if (ppIDBytes != null)
+					reqJson.put("parkingPlaceID", Integer.parseInt(new String(ppIDBytes)));
+				comingRequest = reqJson.toString();
+			}
+		} catch (Exception e) {
+			logger.warn("Camp vanID injection skipped: " + e.getMessage());
+		}
+
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		logger.info("Before Calling Common-API registration : "+request.getHeaders());
