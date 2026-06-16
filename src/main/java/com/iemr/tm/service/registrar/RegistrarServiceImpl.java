@@ -117,6 +117,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Autowired
 	private LettuceConnectionFactory redisConnectionFactory;
 
+	// When true, beneficiary registration fails loudly if camp is not configured
+	// instead of silently registering with vanID unset
+	@Value("${stoptb.enforce.vanid:false}")
+	private boolean enforceVanID;
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -665,20 +670,25 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Map<String, Object> responseMap = new HashMap<>();
 
 		// Inject correct vanID from Redis (mobile sends vanID=0 as placeholder)
+		byte[] vanIDBytes = null;
+		byte[] ppIDBytes = null;
 		try {
 			RedisConnection conn = redisConnectionFactory.getConnection();
-			byte[] vanIDBytes = conn.get("camp:vanID".getBytes());
-			byte[] ppIDBytes = conn.get("camp:parkingPlaceID".getBytes());
+			vanIDBytes = conn.get("camp:vanID".getBytes());
+			ppIDBytes = conn.get("camp:parkingPlaceID".getBytes());
 			conn.close();
-			if (vanIDBytes != null) {
-				JSONObject reqJson = new JSONObject(comingRequest);
-				reqJson.put("vanID", Integer.parseInt(new String(vanIDBytes)));
-				if (ppIDBytes != null)
-					reqJson.put("parkingPlaceID", Integer.parseInt(new String(ppIDBytes)));
-				comingRequest = reqJson.toString();
-			}
 		} catch (Exception e) {
-			logger.warn("Camp vanID injection skipped: " + e.getMessage());
+			logger.warn("Camp vanID lookup failed: " + e.getMessage());
+		}
+		if (vanIDBytes != null) {
+			JSONObject reqJson = new JSONObject(comingRequest);
+			reqJson.put("vanID", Integer.parseInt(new String(vanIDBytes)));
+			if (ppIDBytes != null)
+				reqJson.put("parkingPlaceID", Integer.parseInt(new String(ppIDBytes)));
+			comingRequest = reqJson.toString();
+		} else if (enforceVanID) {
+			throw new Exception(
+					"Camp not configured: vanID missing. Please select van/service point in MMU before registering beneficiary.");
 		}
 
 		RestTemplate restTemplate = new RestTemplate();
