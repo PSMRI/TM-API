@@ -195,10 +195,16 @@ public class CommonDoctorServiceImpl {
 		int clinicalObservationFlag = 0;
 		int chiefComFlag = 0;
 
-		// save clinical observation
-		BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
-				.save(getBenClinicalObservations(wrapperAncFindings));
-		if (benClinicalObservationsRS != null) {
+		// save clinical observation — guard against duplicate insert for same visit
+		String existingObsStatus = benClinicalObservationsRepo.getBenClinicalObservationStatus(
+				wrapperAncFindings.getBeneficiaryRegID(), wrapperAncFindings.getVisitCode());
+		if (existingObsStatus == null) {
+			BenClinicalObservations benClinicalObservationsRS = benClinicalObservationsRepo
+					.save(getBenClinicalObservations(wrapperAncFindings));
+			if (benClinicalObservationsRS != null) {
+				clinicalObservationFlag = 1;
+			}
+		} else {
 			clinicalObservationFlag = 1;
 		}
 
