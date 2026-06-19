@@ -47,7 +47,7 @@ public interface BenClinicalObservationsRepo extends CrudRepository<BenClinicalO
 			+ "WHERE ba.beneficiaryRegID = :benRegID AND ba.deleted = false AND ba.visitCode = :visitCode")
 	public ArrayList<Object[]> getFindingsData(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
-	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND visitCode = :visitCode ORDER BY clinicalObservationID DESC LIMIT 1")
+	@Query("SELECT processed from BenClinicalObservations where beneficiaryRegID=:benRegID AND visitCode = :visitCode AND deleted = false ORDER BY clinicalObservationID DESC LIMIT 1")
 	public String getBenClinicalObservationStatus(@Param("benRegID") Long benRegID, @Param("visitCode") Long visitCode);
 
 	@Transactional
