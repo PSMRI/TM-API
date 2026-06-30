@@ -699,6 +699,11 @@ public class RegistrarServiceImpl implements RegistrarService {
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
 			String responseStr = response.getBody();
 			JSONObject responseOBJ = new JSONObject(responseStr);
+			if (!responseOBJ.has("data") || responseOBJ.isNull("data")) {
+				logger.error("Common-API registration failed, response: " + responseStr);
+				response1.setError(5000, responseOBJ.optString("errorMessage", "Error in registration; please contact administrator"));
+				return response1.toString();
+			}
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
 			responseMap.put("benGenId", beneficiaryID);
@@ -722,7 +727,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 				}
 			}
 		} else {
-			// log error that registration failed.
+			logger.error("Common-API registration call failed, status: " + response.getStatusCodeValue());
+			response1.setError(5000, "Error in registration; please contact administrator");
 		}
 		return response1.toString();
 	}
