@@ -673,12 +673,18 @@ public class RegistrarServiceImpl implements RegistrarService {
 		// Inject correct vanID from Redis (mobile sends vanID=0 as placeholder)
 		byte[] vanIDBytes = null;
 		byte[] ppIDBytes = null;
+		System.out.println("[TRACE][TM-API] before Redis camp:vanID/parkingPlaceID lookup");
 		try {
 			RedisConnection conn = redisConnectionFactory.getConnection();
+			System.out.println("[TRACE][TM-API] Redis connection acquired");
 			vanIDBytes = conn.get("camp:vanID".getBytes());
+			System.out.println("[TRACE][TM-API] Redis camp:vanID fetched : " + (vanIDBytes == null ? "null" : new String(vanIDBytes)));
 			ppIDBytes = conn.get("camp:parkingPlaceID".getBytes());
+			System.out.println("[TRACE][TM-API] Redis camp:parkingPlaceID fetched : " + (ppIDBytes == null ? "null" : new String(ppIDBytes)));
 			conn.close();
+			System.out.println("[TRACE][TM-API] Redis connection closed");
 		} catch (Exception e) {
+			System.out.println("[TRACE][TM-API] Redis camp:vanID lookup threw exception : " + e);
 			logger.warn("Camp vanID lookup failed: " + e.getMessage());
 		}
 		if (vanIDBytes != null) {
