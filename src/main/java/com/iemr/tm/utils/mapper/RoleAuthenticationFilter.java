@@ -135,7 +135,6 @@ public class RoleAuthenticationFilter extends OncePerRequestFilter {
                     .setAuthentication(authentication);
 
             logger.info("Authentication set for userId {}", userId);
-            System.out.println("[TRACE][TM-API] userId=" + userId + " path=" + request.getRequestURI() + " roles=" + authRoles);
 
         } catch (Exception e) {
             logger.error("Authentication error", e);
