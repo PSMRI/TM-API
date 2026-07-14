@@ -663,7 +663,6 @@ public class RegistrarServiceImpl implements RegistrarService {
 
 	// New beneficiary registration with common and identity
 	public String registerBeneficiary(String comingRequest, String Authorization) throws Exception {
-		System.out.println("[TRACE][TM-API] registerBeneficiary incoming request body : " + comingRequest);
 
 		OutputResponse response1 = new OutputResponse();
 		Long beneficiaryRegID = null;
@@ -695,10 +694,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		logger.info("Before Calling Common-API registration : "+request.getHeaders());
-		System.out.println("[TRACE][TM-API] calling Common-API url=" + registrationUrl + " body=" + comingRequest);
 		ResponseEntity<String> response = restTemplate.exchange(registrationUrl, HttpMethod.POST, request,
 				String.class);
-		System.out.println("[TRACE][TM-API] Common-API response status=" + response.getStatusCodeValue() + " body=" + response.getBody());
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
 			String responseStr = response.getBody();
 			JSONObject responseOBJ = new JSONObject(responseStr);
