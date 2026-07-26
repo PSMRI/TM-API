@@ -21,8 +21,12 @@
 */
 package com.iemr.tm.service.common.transaction;
 
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -554,14 +558,16 @@ public class CommonServiceImpl implements CommonService {
 
 	// end
 
-	public String getOpenKMDocURL(String requestOBJ, String Authorization) throws JSONException {
+	public String getOpenKMDocURL(String requestOBJ, String Authorization) throws Exception {
 		RestTemplate restTemplate = new RestTemplate();
 		HttpServletRequest requestHeader = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
 		String fileUUID = null;
 		JSONObject obj = new JSONObject(requestOBJ);
 		if (obj.has("fileID")) {
-			fileUUID = benVisitDetailRepo.getFileUUID(obj.getInt("fileID"));
+			int fileID = obj.getInt("fileID");
+			fileUUID = benVisitDetailRepo.getFileUUID(fileID);
+			String fileName = benVisitDetailRepo.getFileName(fileID);
 
 			logger.info("fileUUID for fileID " + obj.getInt("fileID") + " is " + fileUUID);
 			logger.info("openkmDocUrl is " + openkmDocUrl);
@@ -586,7 +592,22 @@ public class CommonServiceImpl implements CommonService {
 								String fileUrl = dataObj.getString("response");
 								// Fix malformed URL: https://user:pass@https://host -> https://user:pass@host
 								fileUrl = fileUrl.replaceAll("@https?://", "@");
-								return fileUrl;
+								// Download file from OpenKM and return as base64
+								URL url = new URL(fileUrl);
+								HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+								if (url.getUserInfo() != null) {
+									String basicAuth = "Basic " + Base64.getEncoder().encodeToString(url.getUserInfo().getBytes());
+									conn.setRequestProperty("Authorization", basicAuth);
+								}
+								try (InputStream is = conn.getInputStream()) {
+									byte[] fileBytes = is.readAllBytes();
+									JSONObject result = new JSONObject();
+									result.put("fileContent", Base64.getEncoder().encodeToString(fileBytes));
+									result.put("fileName", fileName != null ? fileName : "download");
+									return result.toString();
+								} finally {
+									conn.disconnect();
+								}
 							}
 						}
 						return dataVal.toString();

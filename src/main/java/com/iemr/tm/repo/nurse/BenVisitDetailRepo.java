@@ -91,6 +91,9 @@ public interface BenVisitDetailRepo extends CrudRepository<BeneficiaryVisitDetai
 	@Query(nativeQuery = true, value = " SELECT FileUID from t_kmfilemanager where KmFileManagerID = :fileID ")
 	public String getFileUUID(@Param("fileID") int fileID);
 
+	@Query(nativeQuery = true, value = " SELECT FileName from t_kmfilemanager where KmFileManagerID = :fileID ")
+	public String getFileName(@Param("fileID") int fileID);
+
 	// get file uuid from file id
 	@Transactional
 	@Modifying
