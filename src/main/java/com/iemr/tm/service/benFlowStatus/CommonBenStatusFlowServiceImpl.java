@@ -71,8 +71,11 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 					// VanSerialNo was never populated for i_ben_flow_outreach — following the
 					// same convention used elsewhere (VanSerialNo = record's own local PK, e.g.
 					// IdentityService.regMap.setVanSerialNo(regMap.getBenRegId())).
-					objRS.setVanSerialNo(objRS.getBenFlowID());
-					objRS = beneficiaryFlowStatusRepo.save(objRS);
+					// A full-entity save() here (as this used to do) would also rewrite `deleted`
+					// (insertable=false but NOT updatable=false) with the in-memory object's never-set
+					// null, clobbering the DB's own DEFAULT b'0' and making the row invisible to every
+					// worklist query filtering `deleted = false` — use a targeted UPDATE instead.
+					beneficiaryFlowStatusRepo.updateVanSerialNo(objRS.getBenFlowID(), objRS.getBenFlowID());
 					returnOBJ = 1;
 				} else
 					returnOBJ = 0;
@@ -160,6 +163,34 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 			obj.setVillageID(obj.getI_bendemographics().getDistrictBranchID());
 		if (obj.getI_bendemographics().getDistrictBranchName() != null)
 			obj.setVillageName(obj.getI_bendemographics().getDistrictBranchName());
+
+		// Stop TB's district/village IDs are Nikshay-scoped, not AMRIT's general m_district/
+		// m_village numbering - the same numeric ID can mean two different real places
+		// depending on the scheme, so the client-sent name text can silently be wrong.
+		// Only override for PSMs actually mapped to a Nikshay TU (i.e. genuinely Stop TB) -
+		// every other program (ANC/NCD/cancer-screening/etc.) keeps using client-sent text
+		// as before, since their IDs are correctly AMRIT-scoped already.
+		try {
+			if (obj.getProviderServiceMapID() != null
+					&& beneficiaryFlowStatusRepo.countNikshayMappedUsersForPSM(obj.getProviderServiceMapID()) > 0) {
+				if (obj.getDistrictID() != null) {
+					String correctDistrictName = beneficiaryFlowStatusRepo.getNikshayDistrictName(obj.getDistrictID());
+					if (correctDistrictName != null) {
+						obj.setDistrictName(correctDistrictName);
+					}
+				}
+				if (obj.getVillageID() != null) {
+					String correctVillageName = beneficiaryFlowStatusRepo.getNikshayVillageName(obj.getVillageID());
+					if (correctVillageName != null) {
+						obj.setVillageName(correctVillageName);
+					}
+				}
+			}
+		} catch (Exception e) {
+			// Never let a Nikshay-name lookup failure block registration - worst case the
+			// display text stays whatever the client sent, same as before this fix existed.
+			logger.warn("Nikshay district/village name resolution failed, keeping client-sent text: " + e.getMessage());
+		}
 
 		if (obj.getI_bendemographics().getServicePointID() != null)
 			obj.setServicePointID(obj.getI_bendemographics().getServicePointID());
