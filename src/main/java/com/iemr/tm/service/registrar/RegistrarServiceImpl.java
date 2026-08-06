@@ -118,8 +118,10 @@ public class RegistrarServiceImpl implements RegistrarService {
 	private LettuceConnectionFactory redisConnectionFactory;
 
 	// When true, beneficiary registration fails loudly if camp is not configured
-	// instead of silently registering with vanID unset
-	@Value("${stoptb.enforce.vanid:false}")
+	// instead of silently registering with vanID unset. No inline default — every
+	// properties file must set this explicitly, so a forgotten config fails loudly
+	// at startup instead of running fail-open.
+	@Value("${stoptb.enforce.vanid}")
 	private boolean enforceVanID;
 
 	@Autowired
