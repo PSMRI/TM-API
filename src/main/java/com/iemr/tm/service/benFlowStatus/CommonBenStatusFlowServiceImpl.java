@@ -67,9 +67,14 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 
 			if (beneficiaryRegID != null && beneficiaryID != null && beneficiaryRegID > 0 && beneficiaryID > 0) {
 				objRS = beneficiaryFlowStatusRepo.save(obj);
-				if (objRS != null)
+				if (objRS != null) {
+					// VanSerialNo was never populated for i_ben_flow_outreach — following the
+					// same convention used elsewhere (VanSerialNo = record's own local PK, e.g.
+					// IdentityService.regMap.setVanSerialNo(regMap.getBenRegId())).
+					objRS.setVanSerialNo(objRS.getBenFlowID());
+					objRS = beneficiaryFlowStatusRepo.save(objRS);
 					returnOBJ = 1;
-				else
+				} else
 					returnOBJ = 0;
 			} else {
 				Calendar cal = Calendar.getInstance();
@@ -85,9 +90,11 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 					returnOBJ = 3;
 				} else {
 					objRS = beneficiaryFlowStatusRepo.save(obj);
-					if (objRS != null)
+					if (objRS != null) {
+						objRS.setVanSerialNo(objRS.getBenFlowID());
+						objRS = beneficiaryFlowStatusRepo.save(objRS);
 						returnOBJ = 1;
-					else
+					} else
 						returnOBJ = 0;
 				}
 
