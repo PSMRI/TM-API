@@ -40,8 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -114,8 +112,15 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Autowired
 	private CookieUtil cookieUtil;
 
-	@Autowired
-	private LettuceConnectionFactory redisConnectionFactory;
+	// This deployment's van/camp ID. Previously looked up from Redis ("camp:vanID"),
+	// written at MMU login and deleted (globally, unscoped) on ANY user's logout — a Redis
+	// outage or an unrelated user's logout would silently break registration on this camp.
+	// Each camp/van already runs its own dedicated backend instance, so which van this is
+	// never actually changes at runtime; reading it from properties removes the Redis
+	// dependency entirely. No inline default — every properties file must set this
+	// explicitly. Scope: vanID only, parkingPlaceID is not part of this change.
+	@Value("${stoptb.van.id}")
+	private int vanID;
 
 	// When true, beneficiary registration fails loudly if camp is not configured
 	// instead of silently registering with vanID unset. No inline default — every
@@ -671,26 +676,16 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long beneficiaryID = null;
 		Map<String, Object> responseMap = new HashMap<>();
 
-		// Inject correct vanID from Redis (mobile sends vanID=0 as placeholder)
-		byte[] vanIDBytes = null;
-		byte[] ppIDBytes = null;
-		try {
-			RedisConnection conn = redisConnectionFactory.getConnection();
-			vanIDBytes = conn.get("camp:vanID".getBytes());
-			ppIDBytes = conn.get("camp:parkingPlaceID".getBytes());
-			conn.close();
-		} catch (Exception e) {
-			logger.warn("Camp vanID lookup failed: " + e.getMessage());
-		}
-		if (vanIDBytes != null) {
+		// Inject configured vanID (mobile sends vanID=0 as placeholder). Previously looked
+		// up from Redis at request time; now a fixed property of this deployment (see
+		// vanID field javadoc above).
+		if (vanID > 0) {
 			JSONObject reqJson = new JSONObject(comingRequest);
-			reqJson.put("vanID", Integer.parseInt(new String(vanIDBytes)));
-			if (ppIDBytes != null)
-				reqJson.put("parkingPlaceID", Integer.parseInt(new String(ppIDBytes)));
+			reqJson.put("vanID", vanID);
 			comingRequest = reqJson.toString();
 		} else if (enforceVanID) {
 			throw new Exception(
-					"Camp not configured: vanID missing. Please select van/service point in MMU before registering beneficiary.");
+					"Camp not configured: stoptb.van.id is 0. Set stoptb.van.id in this deployment's properties file.");
 		}
 
 		RestTemplate restTemplate = new RestTemplate();
