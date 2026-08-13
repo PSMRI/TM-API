@@ -64,6 +64,10 @@ public class CommonBenStatusFlowServiceImpl implements CommonBenStatusFlowServic
 		int returnOBJ = 0;
 		try {
 			BeneficiaryFlowStatus obj = getBenFlowRecordObj(requestOBJ, beneficiaryRegID, beneficiaryID);
+			System.out.println("TRACE createBenFlowRecord: benRegID=" + obj.getBeneficiaryRegID()
+					+ " providerServiceMapID=" + obj.getProviderServiceMapID()
+					+ " villageID=" + obj.getVillageID()
+					+ " vanID=" + obj.getVanID());
 
 			if (beneficiaryRegID != null && beneficiaryID != null && beneficiaryRegID > 0 && beneficiaryID > 0) {
 				objRS = beneficiaryFlowStatusRepo.save(obj);

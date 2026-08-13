@@ -707,13 +707,19 @@ public class RegistrarServiceImpl implements RegistrarService {
 			responseMap.put("benRegId", beneficiaryRegID);
 
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+			System.out.println("TRACE registerBeneficiary: benRegID=" + beneficiaryRegID + " isMobile="
+					+ (obj != null ? obj.getIsMobile() : "obj=null") + " providerServiceMapID="
+					+ (obj != null ? obj.getProviderServiceMapID() : null) + " villageID="
+					+ (obj != null ? obj.getVillageID() : null));
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
+				System.out.println("TRACE registerBeneficiary: isMobile=true branch — createBenFlowRecord SKIPPED, benRegID=" + beneficiaryRegID);
 				responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
 		        response1.setResponse(new Gson().toJson(responseMap));
 
 			} else {
 				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
 						beneficiaryID);
+				System.out.println("TRACE registerBeneficiary: createBenFlowRecord returned=" + i + " benRegID=" + beneficiaryRegID);
 
 				if (i > 0) {
 					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
