@@ -112,6 +112,23 @@ public class RegistrarServiceImpl implements RegistrarService {
 	@Autowired
 	private CookieUtil cookieUtil;
 
+	// This deployment's van/camp ID. Previously looked up from Redis ("camp:vanID"),
+	// written at MMU login and deleted (globally, unscoped) on ANY user's logout — a Redis
+	// outage or an unrelated user's logout would silently break registration on this camp.
+	// Each camp/van already runs its own dedicated backend instance, so which van this is
+	// never actually changes at runtime; reading it from properties removes the Redis
+	// dependency entirely. No inline default — every properties file must set this
+	// explicitly. Scope: vanID only, parkingPlaceID is not part of this change.
+	@Value("${stoptb.van.id}")
+	private int vanID;
+
+	// When true, beneficiary registration fails loudly if camp is not configured
+	// instead of silently registering with vanID unset. No inline default — every
+	// properties file must set this explicitly, so a forgotten config fails loudly
+	// at startup instead of running fail-open.
+	@Value("${stoptb.enforce.vanid}")
+	private boolean enforceVanID;
+
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
 		this.commonBenStatusFlowServiceImpl = commonBenStatusFlowServiceImpl;
@@ -658,7 +675,19 @@ public class RegistrarServiceImpl implements RegistrarService {
 		Long beneficiaryRegID = null;
 		Long beneficiaryID = null;
 		Map<String, Object> responseMap = new HashMap<>();
-        
+
+		// Inject configured vanID (mobile sends vanID=0 as placeholder). Previously looked
+		// up from Redis at request time; now a fixed property of this deployment (see
+		// vanID field javadoc above).
+		if (vanID > 0) {
+			JSONObject reqJson = new JSONObject(comingRequest);
+			reqJson.put("vanID", vanID);
+			comingRequest = reqJson.toString();
+		} else if (enforceVanID) {
+			throw new Exception(
+					"Camp not configured: stoptb.van.id is 0. Set stoptb.van.id in this deployment's properties file.");
+		}
+
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<Object> request = RestTemplateUtil.createRequestEntity(comingRequest, Authorization);
 		logger.info("Before Calling Common-API registration : "+request.getHeaders());
@@ -667,19 +696,30 @@ public class RegistrarServiceImpl implements RegistrarService {
 		if (response.getStatusCodeValue() == 200 & response.hasBody()) {
 			String responseStr = response.getBody();
 			JSONObject responseOBJ = new JSONObject(responseStr);
+			if (!responseOBJ.has("data") || responseOBJ.isNull("data")) {
+				logger.error("Common-API registration failed, response: " + responseStr);
+				response1.setError(5000, responseOBJ.optString("errorMessage", "Error in registration; please contact administrator"));
+				return response1.toString();
+			}
 			beneficiaryRegID = responseOBJ.getJSONObject("data").getLong("beneficiaryRegID");
 			beneficiaryID = responseOBJ.getJSONObject("data").getLong("beneficiaryID");
 			responseMap.put("benGenId", beneficiaryID);
 			responseMap.put("benRegId", beneficiaryRegID);
 
 			BeneficiaryFlowStatus obj = InputMapper.gson().fromJson(comingRequest, BeneficiaryFlowStatus.class);
+			System.out.println("TRACE registerBeneficiary: benRegID=" + beneficiaryRegID + " isMobile="
+					+ (obj != null ? obj.getIsMobile() : "obj=null") + " providerServiceMapID="
+					+ (obj != null ? obj.getProviderServiceMapID() : null) + " villageID="
+					+ (obj != null ? obj.getVillageID() : null));
 			if (obj != null && obj.getIsMobile() != null && obj.getIsMobile()) {
+				System.out.println("TRACE registerBeneficiary: isMobile=true branch — createBenFlowRecord SKIPPED, benRegID=" + beneficiaryRegID);
 				responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
 		        response1.setResponse(new Gson().toJson(responseMap));
 
 			} else {
 				int i = commonBenStatusFlowServiceImpl.createBenFlowRecord(comingRequest, beneficiaryRegID,
 						beneficiaryID);
+				System.out.println("TRACE registerBeneficiary: createBenFlowRecord returned=" + i + " benRegID=" + beneficiaryRegID);
 
 				if (i > 0) {
 					responseMap.put("response", "Beneficiary successfully registered. Beneficiary ID is : "+ beneficiaryID+" , BenRegID is : "+beneficiaryRegID);
@@ -690,7 +730,8 @@ public class RegistrarServiceImpl implements RegistrarService {
 				}
 			}
 		} else {
-			// log error that registration failed.
+			logger.error("Common-API registration call failed, status: " + response.getStatusCodeValue());
+			response1.setError(5000, "Error in registration; please contact administrator");
 		}
 		return response1.toString();
 	}

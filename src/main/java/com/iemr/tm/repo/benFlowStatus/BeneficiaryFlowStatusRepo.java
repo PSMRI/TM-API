@@ -44,6 +44,32 @@ import com.iemr.tm.data.benFlowStatus.BeneficiaryFlowStatus;
 
 public interface BeneficiaryFlowStatusRepo extends CrudRepository<BeneficiaryFlowStatus, Long> {
 
+	// Targeted update — touches ONLY vanSerialNo. A full-entity save() here would also
+	// rewrite every other updatable column (e.g. `deleted`, which is insertable=false but
+	// NOT updatable=false) with whatever stale value the in-memory Java object happens to
+	// hold, silently clobbering the DB's own DEFAULT for columns never explicitly set.
+	@Transactional
+	@Modifying
+	@Query("UPDATE BeneficiaryFlowStatus t SET t.vanSerialNo = :vanSerialNo WHERE t.benFlowID = :id")
+	void updateVanSerialNo(@Param("id") Long id, @Param("vanSerialNo") Long vanSerialNo);
+
+	// Stop TB's district/village IDs are Nikshay-scoped, not AMRIT's general m_district/
+	// m_village numbering - the two ID spaces overlap (e.g. ID 1 means "Nicobars" in
+	// m_district but "Alluri Sitharama Raju" in m_nikshay_district), so client-sent text
+	// for these IDs can silently land on the wrong scheme's name. Gate any Nikshay-table
+	// resolution on this check first - a PSM with no Nikshay TU mapping is a non-Stop-TB
+	// program (ANC/NCD/cancer-screening/etc.) and must NOT go through the Nikshay tables.
+	@Query(value = "SELECT COUNT(*) FROM m_userservicerolemapping "
+			+ "WHERE ProviderServiceMapID = :psmId AND NikshayTUID IS NOT NULL AND Deleted = false LIMIT 1",
+			nativeQuery = true)
+	int countNikshayMappedUsersForPSM(@Param("psmId") Integer psmId);
+
+	@Query(value = "SELECT DistrictName FROM m_nikshay_district WHERE NikshayDistrictID = :id", nativeQuery = true)
+	String getNikshayDistrictName(@Param("id") Integer id);
+
+	@Query(value = "SELECT VillageName FROM m_nikshay_village WHERE NikshayVillageID = :id", nativeQuery = true)
+	String getNikshayVillageName(@Param("id") Integer id);
+
 	// nurse worklist
 //	@Query("SELECT  t from BeneficiaryFlowStatus t WHERE (t.nurseFlag = 1 OR t.nurseFlag = 100) AND (t.specialist_flag <> 100 OR t.specialist_flag is null) AND t.deleted = false "
 //			+ " AND Date(t.visitDate)  = curdate() AND t.providerServiceMapId = :providerServiceMapId "
