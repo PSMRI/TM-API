@@ -148,6 +148,22 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private Integer TMReferredWL;
 
 	private BenVisitDetailRepo benVisitDetailRepo;
+
+	@org.springframework.beans.factory.annotation.Autowired
+	private com.iemr.tm.repo.login.UserLoginRepo userLoginRepo;
+
+	/**
+	 * Resolve the numeric user ID of the responsible staff member from the username
+	 * captured in createdBy. Returns null if it cannot be resolved so an unknown
+	 * staff member never blocks the save.
+	 */
+	private Long resolveUserId(String username) {
+		if (username == null || username.trim().isEmpty())
+			return null;
+		com.iemr.tm.data.login.Users user = userLoginRepo.getUserByUsername(username.trim());
+		return user != null ? user.getUserID() : null;
+	}
+
 	private BenChiefComplaintRepo benChiefComplaintRepo;
 	private BenMedHistoryRepo benMedHistoryRepo;
 	private BencomrbidityCondRepo bencomrbidityCondRepo;
@@ -412,6 +428,10 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 			}
 		}
 		beneficiaryVisitDetail.setReportFilePath(sb.toString());
+
+		// Store the responsible nurse's user ID (resolved from the createdBy username)
+		if (beneficiaryVisitDetail.getNurseID() == null)
+			beneficiaryVisitDetail.setNurseID(resolveUserId(beneficiaryVisitDetail.getCreatedBy()));
 
 		response = benVisitDetailRepo.save(beneficiaryVisitDetail);
 
