@@ -360,6 +360,11 @@ public class ANCServiceImpl implements ANCService {
 			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
 		}
 
+		Boolean doctorSignatureFlag = false;
+		if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+		}
+
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
 			// TcSpecialistSlotBookingRequestOBJ tcSpecialistSlotBookingRequestOBJ = null;

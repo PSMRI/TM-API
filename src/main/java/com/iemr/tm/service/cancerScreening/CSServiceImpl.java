@@ -825,6 +825,12 @@ public class CSServiceImpl implements CSService {
 			}
 
 
+		Boolean doctorSignatureFlag = false;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
+			}
+
+
 		if (requestOBJ != null && requestOBJ.has("diagnosis") && !requestOBJ.get("diagnosis").isJsonNull()) {
 
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
