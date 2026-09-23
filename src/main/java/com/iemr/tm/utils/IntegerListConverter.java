@@ -19,17 +19,34 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.service.common.master;
+package com.iemr.tm.utils;
 
-public interface CommonMaterService {
+import java.util.List;
 
-	public String getVisitReasonAndCategories();
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
-	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID, String gender);
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID, String gender,
-			Integer facilityID, Integer vanID);
+@Converter
+public class IntegerListConverter implements AttributeConverter<List<Integer>, String> {
 
-	public String getECGAbnormalFindings();
+    private final Gson gson = new Gson();
 
+    @Override
+    public String convertToDatabaseColumn(List<Integer> attribute) {
+        if (attribute == null || attribute.isEmpty()) {
+            return null;
+        }
+        return gson.toJson(attribute);
+    }
+
+    @Override
+    public List<Integer> convertToEntityAttribute(String dbData) {
+        if (dbData == null || dbData.trim().isEmpty()) {
+            return null;
+        }
+        return gson.fromJson(dbData, new TypeToken<List<Integer>>(){}.getType());
+    }
 }

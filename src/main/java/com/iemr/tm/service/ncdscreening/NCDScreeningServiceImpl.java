@@ -1025,8 +1025,8 @@ public class NCDScreeningServiceImpl implements NCDScreeningService {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (doctorSignature) {
-			doctorSignatureFlag = doctorSignature;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
 			}
 
 			// checking if test is prescribed

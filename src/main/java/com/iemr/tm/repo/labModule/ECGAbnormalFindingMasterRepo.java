@@ -19,17 +19,17 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-package com.iemr.tm.service.common.master;
+package com.iemr.tm.repo.labModule;
 
-public interface CommonMaterService {
+import java.util.List;
 
-	public String getVisitReasonAndCategories();
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-	public String getMasterDataForNurse(Integer visitCategoryID, Integer providerServiceMapID, String gender);
+import com.iemr.tm.data.labModule.ECGAbnormalFindingMaster;
 
-	public String getMasterDataForDoctor(Integer visitCategoryID, Integer providerServiceMapID, String gender,
-			Integer facilityID, Integer vanID);
+@Repository
+public interface ECGAbnormalFindingMasterRepo extends CrudRepository<ECGAbnormalFindingMaster, Integer> {
 
-	public String getECGAbnormalFindings();
-
+	List<ECGAbnormalFindingMaster> findByDeleted(Boolean deleted);
 }

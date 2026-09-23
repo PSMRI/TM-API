@@ -35,9 +35,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.iemr.tm.data.labModule.ECGAbnormalFindingMaster;
 import com.iemr.tm.data.labModule.LabResultEntry;
 import com.iemr.tm.data.labModule.WrapperLabResultEntry;
 import com.iemr.tm.data.labtechnician.V_benLabTestOrderedDetails;
+import com.iemr.tm.repo.labModule.ECGAbnormalFindingMasterRepo;
 import com.iemr.tm.repo.labModule.LabResultEntryRepo;
 import com.iemr.tm.repo.labtechnician.V_benLabTestOrderedDetailsRepo;
 import com.iemr.tm.service.benFlowStatus.CommonBenStatusFlowServiceImpl;
@@ -47,7 +49,24 @@ import com.iemr.tm.utils.mapper.InputMapper;
 public class LabTechnicianServiceImpl implements LabTechnicianService {
 	private V_benLabTestOrderedDetailsRepo v_benLabTestOrderedDetailsRepo;
 	private LabResultEntryRepo labResultEntryRepo;
+	private ECGAbnormalFindingMasterRepo ecgAbnormalFindingMasterRepo;
 	private CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl;
+
+	@org.springframework.beans.factory.annotation.Autowired
+	private com.iemr.tm.repo.nurse.BenVisitDetailRepo benVisitDetailRepo;
+	@org.springframework.beans.factory.annotation.Autowired
+	private com.iemr.tm.repo.login.UserLoginRepo userLoginRepo;
+
+	/**
+	 * Resolve the numeric user ID of the responsible staff member from the username
+	 * captured in createdBy. Returns null if it cannot be resolved.
+	 */
+	private Long resolveUserId(String username) {
+		if (username == null || username.trim().isEmpty())
+			return null;
+		com.iemr.tm.data.login.Users user = userLoginRepo.getUserByUsername(username.trim());
+		return user != null ? user.getUserID() : null;
+	}
 
 	@Autowired
 	public void setCommonBenStatusFlowServiceImpl(CommonBenStatusFlowServiceImpl commonBenStatusFlowServiceImpl) {
@@ -57,6 +76,11 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 	@Autowired
 	public void setLabResultEntryRepo(LabResultEntryRepo labResultEntryRepo) {
 		this.labResultEntryRepo = labResultEntryRepo;
+	}
+
+	@Autowired
+	public void setEcgAbnormalFindingMasterRepo(ECGAbnormalFindingMasterRepo ecgAbnormalFindingMasterRepo) {
+		this.ecgAbnormalFindingMasterRepo = ecgAbnormalFindingMasterRepo;
 	}
 
 	@Autowired
@@ -352,6 +376,12 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 			labResultSaveFlag = saveLabTestResult(wrapperLabResults);
 
 			if (labResultSaveFlag == 1) {
+				// Store the responsible lab technician's user ID against the visit
+				if (wrapperLabResults.getVisitCode() != null) {
+					Long labTechnicianID = resolveUserId(wrapperLabResults.getCreatedBy());
+					if (labTechnicianID != null)
+						benVisitDetailRepo.updateLabTechnicianID(labTechnicianID, wrapperLabResults.getVisitCode());
+				}
 				int i = updateBenFlowStatusFlagAfterLabResultEntry(wrapperLabResults.getLabCompleted(),
 						wrapperLabResults.getBenFlowID(), wrapperLabResults.getBeneficiaryRegID(),
 						wrapperLabResults.getVisitID(), wrapperLabResults.getNurseFlag(),
@@ -417,6 +447,7 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 						LabResultEntry labCompResult = new LabResultEntry();
 						labCompResult.setPrescriptionID(labResult.getPrescriptionID());
 						labCompResult.setProcedureID(labResult.getProcedureID());
+						labCompResult.setAbnormalFindings(labResult.getAbnormalFindings());
 
 						if (null != comp.get("testComponentID") && !comp.get("testComponentID").toString().isEmpty()
 								&& ((null != comp.get("testResultValue") && !comp.get("testResultValue").toString().isEmpty())
@@ -501,5 +532,10 @@ public class LabTechnicianServiceImpl implements LabTechnicianService {
 	public String getLabResultForVisitcode(Long benRegID, Long visitCode) {
 		ArrayList<LabResultEntry> labResultList = getLabResultDataForBen(benRegID, visitCode);
 		return new Gson().toJson(labResultList);
+	}
+
+	public String getECGAbnormalFindings() {
+		List<ECGAbnormalFindingMaster> findings = ecgAbnormalFindingMasterRepo.findByDeleted(false);
+		return new Gson().toJson(findings);
 	}
 }

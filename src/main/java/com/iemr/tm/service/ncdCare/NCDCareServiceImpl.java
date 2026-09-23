@@ -772,11 +772,8 @@ public class NCDCareServiceImpl implements NCDCareService {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-
-
-			
-			if (doctorSignature) {
-			doctorSignatureFlag = doctorSignature;
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
+			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
 			}
 
 			// checking if test is prescribed

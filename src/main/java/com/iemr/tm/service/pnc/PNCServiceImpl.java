@@ -316,7 +316,7 @@ public class PNCServiceImpl implements PNCService {
 			Boolean isMedicinePrescribed = false;
 
 			Boolean doctorSignatureFlag = false;
-			if (doctorSignature) {
+			if (requestOBJ.has("doctorSignatureFlag") && !requestOBJ.get("doctorSignatureFlag").isJsonNull()) {
 			doctorSignatureFlag = requestOBJ.get("doctorSignatureFlag").getAsBoolean();
 			}
 

@@ -342,8 +342,8 @@ public class QuickConsultationServiceImpl implements QuickConsultationService {
 			isMedicinePrescribed = true;
 
 		Boolean doctorSignatureFlag = false;
-		if (doctorSignature) {
-		doctorSignatureFlag = doctorSignature;
+		if (quickConsultDoctorOBJ.has("doctorSignatureFlag") && !quickConsultDoctorOBJ.get("doctorSignatureFlag").isJsonNull()) {
+		doctorSignatureFlag = quickConsultDoctorOBJ.get("doctorSignatureFlag").getAsBoolean();
 		}
 
 		// save prescribed medicine
