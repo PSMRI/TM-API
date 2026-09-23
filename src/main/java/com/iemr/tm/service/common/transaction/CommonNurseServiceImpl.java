@@ -2903,7 +2903,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 	private int calculateQtyPrescribed(String form, String dose, String frequency, String duration,
 			String durationUnit) {
 		int qtyPrescribed = 0;
-
+		logger.info("Frequecy", frequency);
 		if (form != null && dose != null && frequency != null && duration != null && durationUnit != null) {
 			double qtyInOneDay = getQtyForOneDay(form, dose, frequency);
 
@@ -2918,6 +2918,7 @@ public class CommonNurseServiceImpl implements CommonNurseService {
 				else if (durationUnit.equalsIgnoreCase("Month(s)"))
 					qtyPrescribed = (int) Math.ceil(Integer.parseInt(duration) * 30 * qtyInOneDay);
 			}
+		
 		}
 
 		return qtyPrescribed;
