@@ -6,7 +6,7 @@
 
 	<groupId>com.iemr.tm</groupId>
 	<artifactId>tm-api</artifactId>
-	<version>3.6.2</version>
+	<version>3.9.0</version>
 	<packaging>war</packaging>
 
 	<name>TM-API</name>
@@ -302,6 +302,11 @@
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>

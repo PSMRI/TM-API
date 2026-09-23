@@ -738,6 +738,8 @@ public class GeneralOPDServiceImpl implements GeneralOPDService {
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
 
 		//Integer tcRequestStatusFlag = null;
 
