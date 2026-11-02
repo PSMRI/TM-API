@@ -78,6 +78,8 @@ public class NCDSCreeningDoctorServiceImpl implements NCDSCreeningDoctorService 
 		Integer findingSuccessFlag = null;
 		Integer prescriptionSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;

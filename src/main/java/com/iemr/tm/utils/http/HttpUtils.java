@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import javax.ws.rs.core.MediaType;
 
+import com.iemr.tm.utils.RestTemplateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -57,14 +58,20 @@ public class HttpUtils {
 		}
 	}
 
+
+
 	public String get(String uri) {
 		String body;
+		HttpHeaders localheaders = new HttpHeaders();
+		localheaders.add("Content-Type", "application/json");
+		RestTemplateUtil.getJwttokenFromHeaders(localheaders);
 		HttpEntity<String> requestEntity = new HttpEntity<String>(headers);
 		ResponseEntity<String> responseEntity = rest.exchange(uri, HttpMethod.GET, requestEntity, String.class);
 		setStatus((HttpStatus) responseEntity.getStatusCode());
 		body = responseEntity.getBody();
 		return body;
 	}
+
 
 	public String get(String uri, HashMap<String, Object> header) {
 		String body;

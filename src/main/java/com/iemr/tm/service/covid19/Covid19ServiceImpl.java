@@ -967,7 +967,9 @@ public class Covid19ServiceImpl implements Covid19Service {
 		Integer prescriptionSuccessFlag = null;
 		// Long diagnosisSuccessFlag = null;
 		Long referSaveSuccessFlag = null;
-		Integer tcRequestStatusFlag = null;
+		boolean doctorSignature = requestOBJ.has("doctorSignatureFlag");
+
+
 
 		if (requestOBJ != null) {
 			TeleconsultationRequestOBJ tcRequestOBJ = null;
