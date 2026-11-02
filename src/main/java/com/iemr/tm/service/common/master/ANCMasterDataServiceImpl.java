@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -162,6 +163,10 @@ public class ANCMasterDataServiceImpl {
 	private ItemFormMasterRepo itemFormMasterRepo;
 	private RouteOfAdminRepo routeOfAdminRepo;
 	private V_DrugPrescriptionRepo v_DrugPrescriptionRepo;
+
+	// This deployment's camp van; same property RegistrarServiceImpl uses. 0 = not a camp server.
+	@Value("${stoptb.van.id}")
+	private int campVanID;
 
 	@Autowired
 	private CovidSymptomsMasterRepo covidSymptomsMasterRepo;
@@ -560,6 +565,12 @@ public class ANCMasterDataServiceImpl {
 			      NonedlList.get(i).setUnitOfMeasurement(NonedlList.get(i).getUom().getuOMName());
 		}
 		ArrayList<V_DrugPrescription> itemList = new ArrayList<>();
+		// Stop TB camp: the deployment's van (stoptb.van.id) decides the store, whatever van/facility the
+		// app sends. Servers without a camp van (stoptb.van.id=0) keep using the request values.
+		if (campVanID > 0) {
+			vanID = campVanID;
+			facilityID = null;
+		}
 		if (facilityID == null || facilityID <= 0) {
 			Integer fID = masterVanRepo.getFacilityID(vanID);
 			if (fID != null && fID > 0)
